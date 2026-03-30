@@ -225,6 +225,12 @@ body {
   gap: 12px;
 }
 
+.char-img {
+  width: 160px;
+  height: auto;
+  object-fit: contain;
+}
+
 .cookie-label {
   font-size: 18px;
   color: #555;
