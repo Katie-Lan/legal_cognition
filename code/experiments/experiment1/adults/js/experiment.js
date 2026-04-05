@@ -157,14 +157,7 @@ const scenarios = [
    WARMUP TIMELINE
    ---------------------------------------------------------- */
 
-// Slide 1 – Title
-const warmupTitle = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: `<p class="slide-title">Warmup</p>`,
-  choices: ['Next'],
-};
-
-// Slide 2 – Introduce P and V
+// Slide 1 – Introduce P and V
 const warmupIntroPersons = {
   type: jsPsychHtmlButtonResponse,
   stimulus: `
@@ -453,7 +446,6 @@ function trialSeparator(trialNum, total) {
 
 // Warmup block
 const warmupBlock = [
-  warmupTitle,
   warmupIntroPersons,
   warmupShowSlots,
   warmupFillCookies,
@@ -478,13 +470,6 @@ shuffledScenarios.forEach((scenario, idx) => {
   buildTestTrial(scenario).forEach(t => testBlock.push(t));
 });
 
-// "Test trial" section header (matches the mock)
-const testTrialTitle = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: `<p class="slide-title">Test Trials</p>`,
-  choices: ['Next'],
-};
-
 // Final screen
 const endScreen = {
   type: jsPsychHtmlButtonResponse,
@@ -503,7 +488,6 @@ const endScreen = {
    ---------------------------------------------------------- */
 const timeline = [
   ...warmupBlock,
-  testTrialTitle,
   ...testBlock,
   endScreen,
 ];
