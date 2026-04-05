@@ -52,23 +52,6 @@ function cookieGridHTML(filled, total, size, animate) {
   return html;
 }
 
-/** Small HUD fixed to top-left */
-function hudHTML(pCookies, vCookies) {
-  return `
-    <div class="hud">
-      <div class="hud-person">
-        <div class="char-card small">Andy</div>
-        <div class="hud-label">Andy has ${pCookies} cookies</div>
-        ${cookieGridHTML(pCookies, 5, 'small', false)}
-      </div>
-      <div class="hud-person">
-        <div class="char-card small">Suzie</div>
-        <div class="hud-label">Suzie has ${vCookies} cookies</div>
-        ${cookieGridHTML(vCookies, 5, 'small', false)}
-      </div>
-    </div>`;
-}
-
 /** Two-person display (P left, V right) with optional cookies */
 function twoPersonHTML({ pCookies, vCookies, pLabel, vLabel, showSlots, animate }) {
   return `
@@ -88,10 +71,9 @@ function twoPersonHTML({ pCookies, vCookies, pLabel, vLabel, showSlots, animate 
     </div>`;
 }
 
-/** Slide with HUD + two-person display on left + instruction text on right */
-function slideWithHUD(hudP, hudV, mainHTML, instructionHTML) {
+/** Slide with two-person display on left + instruction text on right */
+function slideLayout(mainHTML, instructionHTML) {
   return `
-    ${hudHTML(hudP, hudV)}
     <div class="slide-wrapper">
       <div>${mainHTML}</div>
       <div class="slide-content-area">
@@ -230,30 +212,20 @@ const warmupFillCookies = {
   choices: ['Next'],
 };
 
-// Slide 5 – HUD introduced
-const warmupHUDIntro = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: slideWithHUD(5, 5,
-    twoPersonHTML({ pCookies: 5, vCookies: 5, pLabel: 'Andy has 5 cookies', vLabel: 'Suzie has 5 cookies', showSlots: true }),
-    'To help you remember how many cookies Andy and Suzie have we will keep this at the top of your screen'
-  ),
-  choices: ['Next'],
-};
-
-// Slide 6 – "You will learn something P does"
+// Slide 5 – "You will learn something P does"
 const warmupLearnEvent = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: slideWithHUD(5, 5,
+  stimulus: slideLayout(
     twoPersonHTML({ pCookies: 5, vCookies: 5, pLabel: 'Andy has 5 cookies', vLabel: 'Suzie has 5 cookies', showSlots: true }),
     'You will then learn about something Andy does'
   ),
   choices: ['Next'],
 };
 
-// Slide 7 – V loses 2 cookies (V: 5→3)
+// Slide 6 – V loses 2 cookies (V: 5→3)
 const warmupVLoses = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: slideWithHUD(5, 5,
+  stimulus: slideLayout(
     twoPersonHTML({
       pCookies: 5, vCookies: 3,
       pLabel: 'Andy has 5 cookies', vLabel: 'Suzie has 3 cookies',
@@ -264,10 +236,10 @@ const warmupVLoses = {
   choices: ['Next'],
 };
 
-// Slide 8 – "You will decide what should happen"
+// Slide 7 – "You will decide what should happen"
 const warmupDecide = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: slideWithHUD(5, 3,
+  stimulus: slideLayout(
     twoPersonHTML({
       pCookies: 5, vCookies: 3,
       pLabel: 'Andy has 5 cookies', vLabel: 'Suzie has 3 cookies',
@@ -278,10 +250,10 @@ const warmupDecide = {
   choices: ['Next'],
 };
 
-// Slide 9 – Explain P→V option (static)
+// Slide 8 – Explain P→V option (static)
 const warmupExplainPtoV = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: slideWithHUD(5, 3,
+  stimulus: slideLayout(
     '',
     'You can decide to take some cookies from Andy and give them to Suzie'
   ),
@@ -308,7 +280,7 @@ const warmupPracticeV = {
 // Slide 11 – Explain P→Trash option (static)
 const warmupExplainPtoTrash = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: slideWithHUD(5, 3, '', 'You can also decide to take some cookies from Andy and put them in the trash'),
+  stimulus: slideLayout('', 'You can also decide to take some cookies from Andy and put them in the trash'),
   choices: ['Next'],
 };
 
@@ -332,7 +304,7 @@ const warmupPracticeTrash = {
 // Slide 13 – Explain both option
 const warmupExplainBoth = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: slideWithHUD(5, 3, '', 'You can also decide to take cookies from Andy and put them in the trash and give some to Suzie'),
+  stimulus: slideLayout('', 'You can also decide to take cookies from Andy and put them in the trash and give some to Suzie'),
   choices: ['Next'],
 };
 
@@ -356,14 +328,14 @@ const warmupPracticeBoth = {
 // Slide 15 – "Choice is yours"
 const warmupChoiceYours = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: slideWithHUD(5, 3, '', "The choice is yours! You decide where you want to put Andy's cookies"),
+  stimulus: slideLayout('', "The choice is yours! You decide where you want to put Andy's cookies"),
   choices: ['Next'],
 };
 
 // Slide 16 – "Ready to begin"
 const warmupReady = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: slideWithHUD(5, 3, '', "If you're ready to begin, please click next"),
+  stimulus: slideLayout('', "If you're ready to begin, please click next"),
   choices: ['Begin'],
 };
 
@@ -407,39 +379,21 @@ function buildTestTrial(scenario) {
     choices: ['Next'],
   };
 
-  // Slide D – HUD reminder
+  // Slide D – Event animation/description
   const slideD = {
     type: jsPsychHtmlButtonResponse,
-    stimulus: slideWithHUD(scenario.p_cookies, scenario.v_initial,
-      twoPersonHTML({
-        pCookies: scenario.p_cookies,
-        vCookies: scenario.v_initial,
-        pLabel: `Andy has ${scenario.p_cookies} cookies`,
-        vLabel: `Suzie has ${scenario.v_initial} cookies`,
-        showSlots: true
-      }),
-      'To help you remember how many cookies Andy and Suzie have we will keep this at the top of your screen'
-    ),
-    choices: ['Next'],
-  };
-
-  // Slide E – Event animation/description
-  const slideE = {
-    type: jsPsychHtmlButtonResponse,
     stimulus: `
-      ${hudHTML(scenario.p_cookies, scenario.v_initial)}
-      <div style="padding-top:100px; display:flex; justify-content:center;">
+      <div style="padding-top:40px; display:flex; justify-content:center;">
         ${eventBoxHTML(scenario, false)}
       </div>`,
     choices: ['Next'],
   };
 
-  // Slide F – V loses cookies (harm result)
-  const slideF = {
+  // Slide E – V loses cookies (harm result)
+  const slideE = {
     type: jsPsychHtmlButtonResponse,
     stimulus: `
-      ${hudHTML(scenario.p_cookies, scenario.v_initial)}
-      <div style="padding-top:100px; display:flex; flex-direction:column; align-items:center; gap:24px;">
+      <div style="padding-top:40px; display:flex; flex-direction:column; align-items:center; gap:24px;">
         ${eventBoxHTML(scenario, false)}
         <div class="harm-result-container">
           <p class="harm-result-text">
@@ -455,8 +409,8 @@ function buildTestTrial(scenario) {
     choices: ['Next'],
   };
 
-  // Slide G – Allocation task
-  const slideG = {
+  // Slide F – Allocation task
+  const slideF = {
     type: jsPsychAllocation,
     p_cookies: scenario.p_cookies,
     v_cookies_current: scenario.v_after_harm,
@@ -473,7 +427,7 @@ function buildTestTrial(scenario) {
     harm_type: scenario.harm_type,
   };
 
-  return [slideA, slideB, slideC, slideD, slideE, slideF, slideG];
+  return [slideA, slideB, slideC, slideD, slideE, slideF];
 }
 
 /* ----------------------------------------------------------
@@ -503,7 +457,6 @@ const warmupBlock = [
   warmupIntroPersons,
   warmupShowSlots,
   warmupFillCookies,
-  warmupHUDIntro,
   warmupLearnEvent,
   warmupVLoses,
   warmupDecide,

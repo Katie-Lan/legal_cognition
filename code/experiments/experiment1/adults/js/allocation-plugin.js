@@ -88,25 +88,6 @@ var jsPsychAllocation = (function (jspsych) {
       }
 
       /* -------------------------------------------------------
-         HELPER: build HUD HTML
-      ------------------------------------------------------- */
-      function hudHTML() {
-        return `
-          <div class="hud" id="alloc-hud">
-            <div class="hud-person">
-              <div class="char-card small">Andy</div>
-              <div class="hud-label">Andy has ${trial.hud_p_cookies} cookies</div>
-              ${cookieGridHTML(trial.hud_p_cookies, 5, 'small', null, null)}
-            </div>
-            <div class="hud-person">
-              <div class="char-card small">Suzie</div>
-              <div class="hud-label">Suzie has ${trial.hud_v_cookies} cookies</div>
-              ${cookieGridHTML(trial.hud_v_cookies, 5, 'small', null, null)}
-            </div>
-          </div>`;
-      }
-
-      /* -------------------------------------------------------
          HELPER: build trash panel HTML
       ------------------------------------------------------- */
       function trashPanelHTML() {
@@ -224,7 +205,6 @@ var jsPsychAllocation = (function (jspsych) {
       const confirmLabel = trial.is_practice ? 'Done' : 'Confirm';
 
       const html = `
-        ${hudHTML()}
         <div class="allocation-screen">
           ${trial.harm_text ? `<div class="allocation-harm-text">${trial.harm_text}</div>` : ''}
           ${trial.instruction_text ? `<div class="allocation-instruction">${trial.instruction_text}</div>` : ''}
