@@ -147,12 +147,12 @@ var jsPsychAllocation = (function (jspsych) {
         }
 
         const vLabel = trial.v_cookies_current > 0
-          ? `Suzie has ${trial.v_cookies_current} cookie${trial.v_cookies_current !== 1 ? 's' : ''}`
-          : 'Suzie has 0 cookies';
+          ? `Cleo has ${trial.v_cookies_current} cookie${trial.v_cookies_current !== 1 ? 's' : ''}`
+          : 'Cleo has 0 cookies';
 
         return `
           <div class="alloc-panel" id="v-panel">
-            <div class="char-card medium">Suzie</div>
+            <div class="char-card medium">Cleo</div>
             <div class="panel-name">${vLabel}</div>
             ${trial.v_cookies_current > 0 ? existingHTML : ''}
             ${dropHTML}
@@ -211,8 +211,8 @@ var jsPsychAllocation = (function (jspsych) {
           <div class="allocation-columns">
             ${leftPanel}
             <div class="p-pool-col">
-              <div class="char-card medium">Andy</div>
-              <div class="panel-name">Andy has ${trial.p_cookies} cookies</div>
+              <div class="char-card medium">Finn</div>
+              <div class="panel-name">Finn has ${trial.p_cookies} cookies</div>
               ${pPoolHTML()}
             </div>
             ${rightPanel}

@@ -57,14 +57,14 @@ function twoPersonHTML({ pCookies, vCookies, pLabel, vLabel, showSlots, animate 
   return `
     <div class="two-person-display">
       <div class="person-col">
-        <img src="img/Andy.png" class="char-img" alt="Andy">
-        <div class="char-card large">Andy</div>
+        <img src="img/finn_neutral.png" class="char-img" alt="Finn">
+        <div class="char-card large">Finn</div>
         ${showSlots ? `<div class="cookie-label">${pLabel}</div>
           ${cookieGridHTML(pCookies, 5, 'large', animate)}` : ''}
       </div>
       <div class="person-col">
-        <img src="img/Suzie.png" class="char-img" alt="Suzie">
-        <div class="char-card large">Suzie</div>
+        <img src="img/cleo_neutral.png" class="char-img" alt="Cleo">
+        <div class="char-card large">Cleo</div>
         ${showSlots ? `<div class="cookie-label">${vLabel}</div>
           ${cookieGridHTML(vCookies, 5, 'large', animate)}` : ''}
       </div>
@@ -87,20 +87,20 @@ function eventBoxHTML(scenario, showHarm) {
   const harmTypeLabel = scenario.harm_type === 'intentional' ? 'perpetrator' : 'negligent';
   const vCookiesNow = showHarm ? scenario.v_after_harm : scenario.v_initial;
   const eventText = showHarm
-    ? `<strong>Oh no!</strong> Suzie lost ${scenario.harm_amount} cookies during this event.`
+    ? `<strong>Oh no!</strong> Cleo lost ${scenario.harm_amount} cookies during this event.`
     : scenario.event_text;
 
   return `
     <div class="event-box">
       <div class="event-scene">
         <div class="event-person ${harmTypeLabel}">
-          <div class="char-card medium">Andy</div>
-          <div class="event-person-label">Andy</div>
+          <div class="char-card medium">Finn</div>
+          <div class="event-person-label">Finn</div>
         </div>
         <div class="event-arrow">→</div>
         <div class="event-person">
-          <div class="char-card medium">Suzie</div>
-          <div class="event-person-label">Suzie</div>
+          <div class="char-card medium">Cleo</div>
+          <div class="event-person-label">Cleo</div>
         </div>
       </div>
       <div class="event-description">${eventText}</div>
@@ -118,8 +118,8 @@ const scenarios = [
     v_initial: 4,
     v_after_harm: 2,
     harm_amount: 2,
-    event_text: 'Andy walks up to Suzie and deliberately kicks 2 of Suzie\'s cookies, destroying them.',
-    event_title: 'Andy Kicks Suzie\'s Cookies'
+    event_text: 'Finn walks up to Cleo and deliberately kicks 2 of Cleo\'s cookies, destroying them.',
+    event_title: 'Finn Kicks Cleo\'s Cookies'
   },
   {
     id: 2,
@@ -128,8 +128,8 @@ const scenarios = [
     v_initial: 3,
     v_after_harm: 1,
     harm_amount: 2,
-    event_text: 'Andy spills water and doesn\'t clean it up. Suzie slips on the wet floor and 2 of Suzie\'s cookies are destroyed.',
-    event_title: 'Andy Spills Water — Suzie Slips'
+    event_text: 'Finn spills water and doesn\'t clean it up. Cleo slips on the wet floor and 2 of Cleo\'s cookies are destroyed.',
+    event_title: 'Finn Spills Water — Cleo Slips'
   },
   {
     id: 3,
@@ -138,8 +138,8 @@ const scenarios = [
     v_initial: 4,
     v_after_harm: 2,
     harm_amount: 2,
-    event_text: 'Andy is looking at their phone while riding a bicycle. Not paying attention, Andy crashes into Suzie and 2 of Suzie\'s cookies are destroyed.',
-    event_title: 'Andy Crashes Into Suzie'
+    event_text: 'Finn is looking at their phone while riding a bicycle. Not paying attention, Finn crashes into Cleo and 2 of Cleo\'s cookies are destroyed.',
+    event_title: 'Finn Crashes Into Cleo'
   },
   {
     id: 4,
@@ -148,8 +148,8 @@ const scenarios = [
     v_initial: 3,
     v_after_harm: 1,
     harm_amount: 2,
-    event_text: 'Andy picks up a rock and throws it at Suzie\'s cookies. The rock hits and destroys 2 of them.',
-    event_title: 'Andy Throws a Rock'
+    event_text: 'Finn picks up a rock and throws it at Cleo\'s cookies. The rock hits and destroys 2 of them.',
+    event_title: 'Finn Throws a Rock'
   }
 ];
 
@@ -176,7 +176,7 @@ const warmupShowSlots = {
   stimulus: `
     ${twoPersonHTML({
       pCookies: 0, vCookies: 0,
-      pLabel: 'Andy can carry 5 cookies', vLabel: 'Suzie can carry 5 cookies',
+      pLabel: 'Finn can carry 5 cookies', vLabel: 'Cleo can carry 5 cookies',
       showSlots: true, animate: false
     })}
     <div style="text-align:center; margin-top:10px;">
@@ -193,13 +193,13 @@ const warmupFillCookies = {
   stimulus: `
     ${twoPersonHTML({
       pCookies: 5, vCookies: 5,
-      pLabel: 'Andy has 5 cookies', vLabel: 'Suzie has 5 cookies',
+      pLabel: 'Finn has 5 cookies', vLabel: 'Cleo has 5 cookies',
       showSlots: true, animate: true
     })}
     <div style="text-align:center; margin-top:10px;">
       <p class="slide-instruction" style="display:inline-block; text-align:left;">
         You will then learn about how many cookies each person has.<br>
-        Here Andy has 5 and Suzie has 5
+        Here Finn has 5 and Cleo has 5
       </p>
     </div>`,
   choices: ['Next'],
@@ -209,8 +209,8 @@ const warmupFillCookies = {
 const warmupLearnEvent = {
   type: jsPsychHtmlButtonResponse,
   stimulus: slideLayout(
-    twoPersonHTML({ pCookies: 5, vCookies: 5, pLabel: 'Andy has 5 cookies', vLabel: 'Suzie has 5 cookies', showSlots: true }),
-    'You will then learn about something Andy does'
+    twoPersonHTML({ pCookies: 5, vCookies: 5, pLabel: 'Finn has 5 cookies', vLabel: 'Cleo has 5 cookies', showSlots: true }),
+    'You will then learn about something Finn does'
   ),
   choices: ['Next'],
 };
@@ -221,10 +221,10 @@ const warmupVLoses = {
   stimulus: slideLayout(
     twoPersonHTML({
       pCookies: 5, vCookies: 3,
-      pLabel: 'Andy has 5 cookies', vLabel: 'Suzie has 3 cookies',
+      pLabel: 'Finn has 5 cookies', vLabel: 'Cleo has 3 cookies',
       showSlots: true, animate: false
     }),
-    'After Andy does something, Suzie will lose some cookies.<br>Here Andy did something and Suzie lost 2 cookies'
+    'After Finn does something, Cleo will lose some cookies.<br>Here Finn did something and Cleo lost 2 cookies'
   ),
   choices: ['Next'],
 };
@@ -235,7 +235,7 @@ const warmupDecide = {
   stimulus: slideLayout(
     twoPersonHTML({
       pCookies: 5, vCookies: 3,
-      pLabel: 'Andy has 5 cookies', vLabel: 'Suzie has 3 cookies',
+      pLabel: 'Finn has 5 cookies', vLabel: 'Cleo has 3 cookies',
       showSlots: true
     }),
     'You will then decide what should happen'
@@ -248,7 +248,7 @@ const warmupExplainPtoV = {
   type: jsPsychHtmlButtonResponse,
   stimulus: slideLayout(
     '',
-    'You can decide to take some cookies from Andy and give them to Suzie'
+    'You can decide to take some cookies from Finn and give them to Cleo'
   ),
   choices: ['Next'],
 };
@@ -262,7 +262,7 @@ const warmupPracticeV = {
   hud_v_cookies: 5,
   trash_on_left: TRASH_ON_LEFT,
   harm_text: '',
-  instruction_text: "Let's give it a try! Try moving cookies from Andy to Suzie",
+  instruction_text: "Let's give it a try! Try moving cookies from Finn to Cleo",
   require_v: true,
   require_trash: false,
   require_both: false,
@@ -273,7 +273,7 @@ const warmupPracticeV = {
 // Slide 11 – Explain P→Trash option (static)
 const warmupExplainPtoTrash = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: slideLayout('', 'You can also decide to take some cookies from Andy and put them in the trash'),
+  stimulus: slideLayout('', 'You can also decide to take some cookies from Finn and put them in the trash'),
   choices: ['Next'],
 };
 
@@ -286,7 +286,7 @@ const warmupPracticeTrash = {
   hud_v_cookies: 5,
   trash_on_left: TRASH_ON_LEFT,
   harm_text: '',
-  instruction_text: "Let's give it a try! Try moving cookies from Andy to the trash",
+  instruction_text: "Let's give it a try! Try moving cookies from Finn to the trash",
   require_v: false,
   require_trash: true,
   require_both: false,
@@ -297,7 +297,7 @@ const warmupPracticeTrash = {
 // Slide 13 – Explain both option
 const warmupExplainBoth = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: slideLayout('', 'You can also decide to take cookies from Andy and put them in the trash and give some to Suzie'),
+  stimulus: slideLayout('', 'You can also decide to take cookies from Finn and put them in the trash and give some to Cleo'),
   choices: ['Next'],
 };
 
@@ -310,7 +310,7 @@ const warmupPracticeBoth = {
   hud_v_cookies: 5,
   trash_on_left: TRASH_ON_LEFT,
   harm_text: '',
-  instruction_text: "Let's give it a try! Try moving cookies from Andy to the trash and to Suzie",
+  instruction_text: "Let's give it a try! Try moving cookies from Finn to the trash and to Cleo",
   require_v: false,
   require_trash: false,
   require_both: true,
@@ -321,7 +321,7 @@ const warmupPracticeBoth = {
 // Slide 15 – "Choice is yours"
 const warmupChoiceYours = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: slideLayout('', "The choice is yours! You decide where you want to put Andy's cookies"),
+  stimulus: slideLayout('', "The choice is yours! You decide where you want to put Finn's cookies"),
   choices: ['Next'],
 };
 
@@ -337,7 +337,7 @@ const warmupReady = {
    ---------------------------------------------------------- */
 function buildTestTrial(scenario, scenarioIdx, total) {
 
-  // Slide A – Andy and V (blank)
+  // Slide A – Finn and V (blank)
   const slideA = {
     type: jsPsychHtmlButtonResponse,
     stimulus: twoPersonHTML({ showSlots: false }),
@@ -351,8 +351,8 @@ function buildTestTrial(scenario, scenarioIdx, total) {
     stimulus: `
       ${twoPersonHTML({
         pCookies: 0, vCookies: 0,
-        pLabel: `Andy can carry 5 cookies`,
-        vLabel: `Suzie can carry 5 cookies`,
+        pLabel: `Finn can carry 5 cookies`,
+        vLabel: `Cleo can carry 5 cookies`,
         showSlots: true, animate: false
       })}`,
     choices: ['Next'],
@@ -365,8 +365,8 @@ function buildTestTrial(scenario, scenarioIdx, total) {
       ${twoPersonHTML({
         pCookies: scenario.p_cookies,
         vCookies: scenario.v_initial,
-        pLabel: `Andy has ${scenario.p_cookies} cookies`,
-        vLabel: `Suzie has ${scenario.v_initial} cookies`,
+        pLabel: `Finn has ${scenario.p_cookies} cookies`,
+        vLabel: `Cleo has ${scenario.v_initial} cookies`,
         showSlots: true,
         animate: true
       })}`,
@@ -391,12 +391,12 @@ function buildTestTrial(scenario, scenarioIdx, total) {
         ${eventBoxHTML(scenario, false)}
         <div class="harm-result-container">
           <p class="harm-result-text">
-            Oh no, Suzie lost ${scenario.harm_amount} cookies.<br>
-            Suzie now only has <strong>${scenario.v_after_harm}</strong>
+            Oh no, Cleo lost ${scenario.harm_amount} cookies.<br>
+            Cleo now only has <strong>${scenario.v_after_harm}</strong>
             cookie${scenario.v_after_harm !== 1 ? 's' : ''} left.
           </p>
-          <div class="char-card large">Suzie</div>
-          <div class="cookie-label">Suzie has ${scenario.v_after_harm} cookies</div>
+          <div class="char-card large">Cleo</div>
+          <div class="cookie-label">Cleo has ${scenario.v_after_harm} cookies</div>
           ${cookieGridHTML(scenario.v_after_harm, 5, 'large', false)}
         </div>
       </div>`,
@@ -411,7 +411,7 @@ function buildTestTrial(scenario, scenarioIdx, total) {
     hud_p_cookies: scenario.p_cookies,
     hud_v_cookies: scenario.v_initial,
     trash_on_left: TRASH_ON_LEFT,
-    harm_text: `Oh no, Suzie lost ${scenario.harm_amount} cookies. Suzie now only has ${scenario.v_after_harm} cookie${scenario.v_after_harm !== 1 ? 's' : ''} left.`,
+    harm_text: `Oh no, Cleo lost ${scenario.harm_amount} cookies. Cleo now only has ${scenario.v_after_harm} cookie${scenario.v_after_harm !== 1 ? 's' : ''} left.`,
     instruction_text: '',
     require_v: false,
     require_trash: false,
