@@ -152,7 +152,8 @@ var jsPsychAllocation = (function (jspsych) {
 
         return `
           <div class="alloc-panel" id="v-panel">
-            <div class="char-card medium">Cleo</div>
+            <img src="img/cleo_neutral.png" class="alloc-char-img" alt="Cleo">
+            <p class="alloc-char-name">Cleo</p>
             <div class="panel-name">${vLabel}</div>
             ${trial.v_cookies_current > 0 ? existingHTML : ''}
             ${dropHTML}
@@ -211,7 +212,8 @@ var jsPsychAllocation = (function (jspsych) {
           <div class="allocation-columns">
             ${leftPanel}
             <div class="p-pool-col">
-              <div class="char-card medium">Finn</div>
+              <img src="img/finn_neutral.png" class="alloc-char-img" alt="Finn">
+              <p class="alloc-char-name">Finn</p>
               <div class="panel-name">Finn has ${trial.p_cookies} cookies</div>
               ${pPoolHTML()}
             </div>
