@@ -399,7 +399,7 @@ function buildTestTrial(scenario, scenarioIdx, total) {
   const slideD = {
     type: jsPsychHtmlButtonResponse,
     stimulus: `
-      <div style="padding-top:40px; display:flex; justify-content:center;">
+      <div style="padding-top:20px; display:flex; justify-content:center;">
         ${eventBoxHTML(scenario, false)}
       </div>`,
     choices: ['Next'],
@@ -409,7 +409,7 @@ function buildTestTrial(scenario, scenarioIdx, total) {
   const slideE = {
     type: jsPsychHtmlButtonResponse,
     stimulus: `
-      <div style="padding-top:40px; display:flex; flex-direction:column; align-items:center; gap:24px;">
+      <div style="padding-top:20px; display:flex; flex-direction:column; align-items:center; gap:24px;">
         ${eventBoxHTML(scenario, false)}
         <div class="harm-result-container">
           <p class="harm-result-text">
@@ -435,7 +435,7 @@ function buildTestTrial(scenario, scenarioIdx, total) {
     hud_v_cookies: scenario.v_initial,
     trash_on_left: TRASH_ON_LEFT,
     harm_text: `Oh no, Cleo lost ${scenario.harm_amount} cookies. Cleo now only has ${scenario.v_after_harm} cookie${scenario.v_after_harm !== 1 ? 's' : ''} left.`,
-    instruction_text: '',
+    instruction_text: 'Please decide whether you would like to move some of Finn\'s cookies.',
     require_v: false,
     require_trash: false,
     require_both: false,

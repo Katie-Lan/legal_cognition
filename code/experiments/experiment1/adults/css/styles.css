@@ -628,8 +628,12 @@ body {
 
 
 /* jspsych button override */
+.jspsych-html-button-response-btngroup {
+  margin-top: 16px !important;
+}
+
 .jspsych-btn {
-  margin-top: 28px;
+  margin-top: 0;
   padding: 10px 36px;
   font-size: 17px;
 }
