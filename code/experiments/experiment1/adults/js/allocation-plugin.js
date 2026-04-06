@@ -242,17 +242,11 @@ var jsPsychAllocation = (function (jspsych) {
       /* -------------------------------------------------------
          DRAG AND DROP LOGIC
       ------------------------------------------------------- */
-      let dragging = null;       // { cookieId, sourceZone }
+      let dragging = null;
       let ghostEl = display_element.querySelector('#drag-ghost');
-      let offsetX = 0, offsetY = 0;
 
       function getCookieEl(id) {
         return display_element.querySelector(`#p-cookie-${id}`);
-      }
-
-      function getDropSlot(zone, index) {
-        const id = zone === 'trash' ? `#trash-slot-${index}` : `#v-slot-${index}`;
-        return display_element.querySelector(id);
       }
 
       // Find the first empty slot in a zone
@@ -287,8 +281,7 @@ var jsPsychAllocation = (function (jspsych) {
 
         // Free the previous slot if in trash or v
         if (prevZone === 'trash' || prevZone === 'v') {
-          const prevSlots = display_element.querySelectorAll(`.drop-slot[data-zone="${prevZone}"]`);
-          prevSlots.forEach(s => {
+          display_element.querySelectorAll(`.drop-slot[data-zone="${prevZone}"]`).forEach(s => {
             if (parseInt(s.dataset.cookieId) === cookieId) {
               s.innerHTML = '';
               s.classList.remove('filled');
@@ -298,30 +291,22 @@ var jsPsychAllocation = (function (jspsych) {
           });
         }
 
+        const pEl = getCookieEl(cookieId);
         if (zone === 'pool') {
-          // Return to P pool
           cookieDest[cookieId] = 'pool';
-          const pEl = getCookieEl(cookieId);
-          if (pEl) {
-            pEl.style.opacity = '1';
-            pEl.classList.remove('dragging');
-          }
+          if (pEl) { pEl.style.opacity = '1'; pEl.classList.remove('dragging'); }
         } else {
-          // Place into slot
           cookieDest[cookieId] = zone;
           slotEl.innerHTML = '<span class="cookie-emoji">🍪</span>';
           slotEl.classList.remove('empty');
           slotEl.classList.add('filled');
-          slotEl.dataset.cookieId = cookieId;
-          // Dim the source cookie in P pool
-          const pEl = getCookieEl(cookieId);
-          if (pEl) pEl.style.opacity = '0.25';
+          slotEl.dataset.cookieId = String(cookieId);
+          if (pEl) { pEl.style.opacity = '0.25'; pEl.classList.remove('dragging'); }
         }
 
         updateConfirmBtn();
       }
 
-      // Show ghost at position
       function showGhost(x, y) {
         ghostEl.style.display = 'block';
         ghostEl.style.left = (x - 28) + 'px';
@@ -332,22 +317,13 @@ var jsPsychAllocation = (function (jspsych) {
         ghostEl.style.display = 'none';
       }
 
-      // Get element at point excluding ghost
-      function elementFromPoint(x, y) {
-        ghostEl.style.display = 'none';
-        const el = document.elementFromPoint(x, y);
-        ghostEl.style.display = 'block';
-        return el;
-      }
-
       /* Mouse events on the whole display element */
       display_element.addEventListener('mousedown', (e) => {
-        // Start drag on a P cookie that still has opacity (in pool)
         const cookieEl = e.target.closest('.cookie-slot.draggable');
         if (!cookieEl) return;
         const cookieId = parseInt(cookieEl.dataset.cookieId);
         if (isNaN(cookieId)) return;
-        if (cookieDest[cookieId] !== 'pool') return; // already placed; handle via slot click to return
+        if (cookieDest[cookieId] !== 'pool') return;
 
         e.preventDefault();
         dragging = { cookieId };
@@ -355,9 +331,9 @@ var jsPsychAllocation = (function (jspsych) {
         showGhost(e.clientX, e.clientY);
       });
 
-      // Allow clicking a filled drop-slot to return the cookie to P's pool
+      // Click a filled drop-slot to return its cookie to P's pool
       display_element.addEventListener('click', (e) => {
-        if (dragging) return; // ignore clicks during drag
+        if (dragging) return;
         const slotEl = e.target.closest('.drop-slot.filled');
         if (!slotEl) return;
         const cid = parseInt(slotEl.dataset.cookieId);
@@ -375,29 +351,42 @@ var jsPsychAllocation = (function (jspsych) {
 
       function onMouseUp(e) {
         if (!dragging) return;
-        hideGhost();
 
         const { cookieId } = dragging;
         dragging = null;
+        hideGhost(); // hide and keep hidden — do NOT re-show
 
-        // Find what's under the cursor
-        const target = elementFromPoint(e.clientX, e.clientY);
-        const dropSlot = target ? target.closest('.drop-slot.empty') : null;
+        const pEl = getCookieEl(cookieId);
+        if (pEl) pEl.classList.remove('dragging');
 
-        if (dropSlot) {
-          const zone = dropSlot.dataset.zone;
-          // Check capacity for V
+        // Ghost has pointer-events:none so document.elementFromPoint sees through it
+        const target = document.elementFromPoint(e.clientX, e.clientY);
+
+        // Accept drop on an exact empty slot OR anywhere inside a panel (snap to first empty slot)
+        const directSlot = target ? target.closest('.drop-slot.empty') : null;
+        const panel      = target ? target.closest('#v-panel, #trash-panel') : null;
+
+        let zone = null;
+        let slot = null;
+
+        if (directSlot) {
+          zone = directSlot.dataset.zone;
+          slot = directSlot;
+        } else if (panel) {
+          zone = panel.id === 'trash-panel' ? 'trash' : 'v';
+          slot = firstEmptySlot(zone);
+        }
+
+        if (zone && slot) {
           if (zone === 'v' && countInZone('v') >= maxGiveV) {
-            // V is full – return to pool
-            const pEl = getCookieEl(cookieId);
-            if (pEl) pEl.classList.remove('dragging');
+            // V is full – leave cookie in pool
+            if (pEl) pEl.style.opacity = '1';
           } else {
-            moveCookieTo(cookieId, zone, dropSlot);
+            moveCookieTo(cookieId, zone, slot);
           }
         } else {
-          // Not dropped on valid slot – return to pool appearance
-          const pEl = getCookieEl(cookieId);
-          if (pEl) pEl.classList.remove('dragging');
+          // Dropped outside any valid zone – return to pool
+          if (pEl) pEl.style.opacity = '1';
         }
       }
 
