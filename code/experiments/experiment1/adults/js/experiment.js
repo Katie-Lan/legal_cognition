@@ -458,16 +458,13 @@ function updateProgressBar(scenarioIdx, total) {
     container.innerHTML = `
       <div id="scenario-progress-track">
         <div id="scenario-progress-fill"></div>
-      </div>
-      <div id="scenario-progress-label"></div>`;
+      </div>`;
     document.body.appendChild(container);
     console.warn('[progress] container was missing — recreated');
   }
   const pct = ((scenarioIdx + 1) / total * 100).toFixed(1);
   container.style.display = 'block';
   document.getElementById('scenario-progress-fill').style.width = pct + '%';
-  document.getElementById('scenario-progress-label').textContent =
-    `Scenario ${scenarioIdx + 1} of ${total}`;
 }
 
 /* ----------------------------------------------------------
