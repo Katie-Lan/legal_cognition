@@ -8,17 +8,23 @@
    ---------------------------------------------------------- */
 const jsPsych = initJsPsych({
   on_finish: function () {
-    // Display data at the end (replace with JATOS / server POST in deployment)
-    const data = jsPsych.data.get().filter({ is_practice: false }).values();
-    console.table(data);
+    // Collect trial data (replace with JATOS / server POST in deployment)
+    const json = jsPsych.data.get().filter({ is_practice: false }).json();
+    console.table(jsPsych.data.get().filter({ is_practice: false }).values());
     document.body.innerHTML = `
       <div style="text-align:center; padding:80px; font-family:sans-serif;">
         <h2>Thank you for participating!</h2>
         <p>Your responses have been recorded.</p>
-        <button onclick="jsPsych.data.displayData('json')" style="padding:10px 24px; font-size:16px; cursor:pointer;">
+        <button id="view-data-btn" style="padding:10px 24px; font-size:16px; cursor:pointer;">
           View data
         </button>
+        <pre id="data-display" style="display:none; text-align:left; max-height:400px;
+          overflow:auto; background:#f5f5f5; padding:20px; font-size:13px;
+          border-radius:8px; margin-top:24px;">${json}</pre>
       </div>`;
+    document.getElementById('view-data-btn').addEventListener('click', function () {
+      document.getElementById('data-display').style.display = 'block';
+    });
   }
 });
 
