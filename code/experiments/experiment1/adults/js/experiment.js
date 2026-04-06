@@ -420,6 +420,7 @@ function buildTestTrial(scenario, scenarioIdx, total) {
           <div class="char-card large">Cleo</div>
           <div class="cookie-label">Cleo has ${scenario.v_after_harm} cookies</div>
           ${cookieGridHTML(scenario.v_after_harm, 5, 'large', false)}
+          <p class="decision-prompt">Please decide whether you would like to move some of Finn's cookies.</p>
         </div>
       </div>`,
     choices: ['Next'],
