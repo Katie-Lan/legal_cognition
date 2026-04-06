@@ -444,8 +444,21 @@ function buildTestTrial(scenario, scenarioIdx, total) {
    PROGRESS BAR HELPER
    ---------------------------------------------------------- */
 function updateProgressBar(scenarioIdx, total) {
+  let container = document.getElementById('scenario-progress-container');
+  if (!container) {
+    // jsPsych may have cleared the body — recreate the bar
+    container = document.createElement('div');
+    container.id = 'scenario-progress-container';
+    container.innerHTML = `
+      <div id="scenario-progress-track">
+        <div id="scenario-progress-fill"></div>
+      </div>
+      <div id="scenario-progress-label"></div>`;
+    document.body.appendChild(container);
+    console.warn('[progress] container was missing — recreated');
+  }
   const pct = ((scenarioIdx + 1) / total * 100).toFixed(1);
-  document.getElementById('scenario-progress-container').style.display = 'block';
+  container.style.display = 'block';
   document.getElementById('scenario-progress-fill').style.width = pct + '%';
   document.getElementById('scenario-progress-label').textContent =
     `Scenario ${scenarioIdx + 1} of ${total}`;
