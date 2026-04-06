@@ -226,9 +226,17 @@ body {
 }
 
 .char-img {
-  width: 160px;
+  width: 200px;
   height: auto;
   object-fit: contain;
+}
+
+.person-name {
+  font-size: 24px;
+  color: #333;
+  text-align: center;
+  margin: 8px 0 0;
+  font-weight: 500;
 }
 
 .char-img.intro-img {

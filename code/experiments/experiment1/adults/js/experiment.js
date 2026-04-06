@@ -58,13 +58,13 @@ function twoPersonHTML({ pCookies, vCookies, pLabel, vLabel, showSlots, animate 
     <div class="two-person-display">
       <div class="person-col">
         <img src="img/finn_neutral.png" class="char-img" alt="Finn">
-        <div class="char-card large">Finn</div>
+        <p class="person-name">Finn</p>
         ${showSlots ? `<div class="cookie-label">${pLabel}</div>
           ${cookieGridHTML(pCookies, 5, 'large', animate)}` : ''}
       </div>
       <div class="person-col">
         <img src="img/cleo_neutral.png" class="char-img" alt="Cleo">
-        <div class="char-card large">Cleo</div>
+        <p class="person-name">Cleo</p>
         ${showSlots ? `<div class="cookie-label">${vLabel}</div>
           ${cookieGridHTML(vCookies, 5, 'large', animate)}` : ''}
       </div>
