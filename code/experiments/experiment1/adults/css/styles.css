@@ -471,24 +471,27 @@ body {
   padding-left: 31px;
 }
 
-/* Trash icon area */
+/* Cookie jar icon area */
 .trash-icon-area {
   width: 110px;
   height: 96px;
-  border: 2px solid #ccc;
-  border-radius: 12px;
-  background: #f5f5f5;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 42px;
+}
+
+.cookie-jar-img {
+  width: 100px;
+  height: auto;
+  object-fit: contain;
 }
 
 /* Panel label */
 .panel-name {
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 500;
   color: #555;
+  text-align: center;
 }
 
 /* Confirm button */

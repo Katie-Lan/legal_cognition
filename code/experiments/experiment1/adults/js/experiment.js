@@ -289,7 +289,7 @@ const warmupPracticeV = {
 // Slide 11 – Explain P→Trash option (static)
 const warmupExplainPtoTrash = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: slideLayout('', 'You can also decide to take some cookies from Finn and put them in the trash'),
+  stimulus: slideLayout('', 'You can also decide to take some cookies from Finn and put them in the cookie jar'),
   choices: ['Next'],
 };
 
@@ -302,7 +302,7 @@ const warmupPracticeTrash = {
   hud_v_cookies: 5,
   trash_on_left: TRASH_ON_LEFT,
   harm_text: '',
-  instruction_text: "Let's give it a try! Try moving cookies from Finn to the trash",
+  instruction_text: "Let's give it a try! Try moving cookies from Finn to the cookie jar",
   require_v: false,
   require_trash: true,
   require_both: false,
@@ -313,7 +313,7 @@ const warmupPracticeTrash = {
 // Slide 13 – Explain both option
 const warmupExplainBoth = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: slideLayout('', 'You can also decide to take cookies from Finn and put them in the trash and give some to Cleo'),
+  stimulus: slideLayout('', 'You can also decide to take cookies from Finn and put them in the cookie jar and give some to Cleo'),
   choices: ['Next'],
 };
 
@@ -326,7 +326,7 @@ const warmupPracticeBoth = {
   hud_v_cookies: 5,
   trash_on_left: TRASH_ON_LEFT,
   harm_text: '',
-  instruction_text: "Let's give it a try! Try moving cookies from Finn to the trash and to Cleo",
+  instruction_text: "Let's give it a try! Try moving cookies from Finn to the cookie jar and to Cleo",
   require_v: false,
   require_trash: false,
   require_both: true,

@@ -104,8 +104,10 @@ var jsPsychAllocation = (function (jspsych) {
 
         return `
           <div class="alloc-panel" id="trash-panel">
-            <div class="trash-icon-area">🗑️</div>
-            <div class="panel-name">Trash</div>
+            <div class="trash-icon-area">
+              <img src="img/cookie_jar.png" class="cookie-jar-img" alt="Cookie jar">
+            </div>
+            <div class="panel-name">Put the cookie back to the cookie jar</div>
             ${gridHTML}
           </div>`;
       }
