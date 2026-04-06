@@ -231,6 +231,18 @@ body {
   object-fit: contain;
 }
 
+.char-img.intro-img {
+  width: 260px;
+}
+
+.intro-name {
+  font-size: 26px;
+  color: #333;
+  text-align: center;
+  margin: 10px 0 0;
+  font-weight: 500;
+}
+
 .cookie-label {
   font-size: 18px;
   color: #555;

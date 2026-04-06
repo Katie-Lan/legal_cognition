@@ -157,15 +157,31 @@ const scenarios = [
    WARMUP TIMELINE
    ---------------------------------------------------------- */
 
-// Slide 1 – Introduce P and V
-const warmupIntroPersons = {
+// Slide 1a – Intro text only
+const warmupIntroText = {
   type: jsPsychHtmlButtonResponse,
   stimulus: `
-    ${twoPersonHTML({ pCookies: 0, vCookies: 0, showSlots: false })}
-    <div style="text-align:center; margin-top:30px;">
+    <div style="text-align:center; padding:80px 40px;">
       <p class="slide-instruction" style="display:inline-block; text-align:left;">
         You will be introduced to different people today
       </p>
+    </div>`,
+  choices: ['Next'],
+};
+
+// Slide 1b – Figures with names (no grey card)
+const warmupIntroPersons = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <div class="two-person-display">
+      <div class="person-col">
+        <img src="img/finn_neutral.png" class="char-img intro-img" alt="Finn">
+        <p class="intro-name">Finn</p>
+      </div>
+      <div class="person-col">
+        <img src="img/cleo_neutral.png" class="char-img intro-img" alt="Cleo">
+        <p class="intro-name">Cleo</p>
+      </div>
     </div>`,
   choices: ['Next'],
 };
@@ -441,6 +457,7 @@ function updateProgressBar(scenarioIdx, total) {
 
 // Warmup block
 const warmupBlock = [
+  warmupIntroText,
   warmupIntroPersons,
   warmupShowSlots,
   warmupFillCookies,
