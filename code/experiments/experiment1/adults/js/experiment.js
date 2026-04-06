@@ -335,13 +335,14 @@ const warmupReady = {
 /* ----------------------------------------------------------
    TEST TRIAL BUILDER
    ---------------------------------------------------------- */
-function buildTestTrial(scenario) {
+function buildTestTrial(scenario, scenarioIdx, total) {
 
   // Slide A – Andy and V (blank)
   const slideA = {
     type: jsPsychHtmlButtonResponse,
     stimulus: twoPersonHTML({ showSlots: false }),
     choices: ['Next'],
+    on_start: function() { updateProgressBar(scenarioIdx, total); },
   };
 
   // Slide B – Show empty slots
@@ -424,20 +425,14 @@ function buildTestTrial(scenario) {
 }
 
 /* ----------------------------------------------------------
-   INTER-TRIAL SEPARATOR
+   PROGRESS BAR HELPER
    ---------------------------------------------------------- */
-function trialSeparator(trialNum, total) {
-  return {
-    type: jsPsychHtmlButtonResponse,
-    stimulus: `
-      <div style="text-align:center; padding:80px 40px; font-family:sans-serif; color:#444;">
-        <p style="font-size:22px;">
-          Scenario ${trialNum} of ${total}
-        </p>
-        <p style="font-size:18px; color:#888;">Click Next when you are ready.</p>
-      </div>`,
-    choices: ['Next'],
-  };
+function updateProgressBar(scenarioIdx, total) {
+  const pct = ((scenarioIdx + 1) / total * 100).toFixed(1);
+  document.getElementById('scenario-progress-container').style.display = 'block';
+  document.getElementById('scenario-progress-fill').style.width = pct + '%';
+  document.getElementById('scenario-progress-label').textContent =
+    `Scenario ${scenarioIdx + 1} of ${total}`;
 }
 
 /* ----------------------------------------------------------
@@ -466,8 +461,7 @@ const warmupBlock = [
 const shuffledScenarios = jsPsych.randomization.shuffle(scenarios);
 const testBlock = [];
 shuffledScenarios.forEach((scenario, idx) => {
-  testBlock.push(trialSeparator(idx + 1, shuffledScenarios.length));
-  buildTestTrial(scenario).forEach(t => testBlock.push(t));
+  buildTestTrial(scenario, idx, shuffledScenarios.length).forEach(t => testBlock.push(t));
 });
 
 // Final screen
