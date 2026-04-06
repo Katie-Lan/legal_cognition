@@ -575,7 +575,6 @@ body {
    ============================================================ */
 
 .slide-wrapper {
-  min-height: 92vh;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -628,12 +627,8 @@ body {
 
 
 /* jspsych button override */
-.jspsych-html-button-response-btngroup {
-  margin-top: 16px !important;
-}
-
 .jspsych-btn {
-  margin-top: 0;
+  margin-top: 28px;
   padding: 10px 36px;
   font-size: 17px;
 }
