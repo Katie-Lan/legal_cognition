@@ -533,4 +533,55 @@ const timeline = [
   endScreen,
 ];
 
-jsPsych.run(timeline);
+/* ============================================================
+   RESEARCHER DEBUG PANEL — JUMP TO ANY SECTION
+   *** DELETE THIS ENTIRE BLOCK BEFORE GIVING TO PARTICIPANTS ***
+   ============================================================ */
+(function () {
+  const sections = [
+    { label: 'Welcome Screen',              trial: welcomeScreen },
+    { label: 'Intro: Finn',                 trial: warmupIntroFinn },
+    { label: 'Intro: Cleo',                 trial: warmupIntroCleo },
+    { label: 'Warmup: Show Slots',          trial: warmupShowSlots },
+    { label: 'Warmup: Fill Cookies',        trial: warmupFillCookies },
+    { label: 'Warmup: Learn Event',         trial: warmupLearnEvent },
+    { label: 'Warmup: Cleo Loses Cookies',  trial: warmupVLoses },
+    { label: 'Warmup: Decide',              trial: warmupDecide },
+    { label: 'Warmup: Practice → Cleo',     trial: warmupPracticeV },
+    { label: 'Warmup: Practice → Jar',      trial: warmupPracticeTrash },
+    { label: 'Warmup: Practice → Both',     trial: warmupPracticeBoth },
+    { label: 'Warmup: Ready',               trial: warmupReady },
+    { label: 'Test Trials (first scenario)', trial: testBlock[0] },
+    { label: 'End Screen',                  trial: endScreen },
+  ];
+
+  const panel = document.createElement('div');
+  panel.id = 'researcher-debug-panel';
+  panel.innerHTML = `
+    <div id="rdp-title">🔬 Researcher: Jump to Section</div>
+    <select id="rdp-select">
+      ${sections.map((s, i) => `<option value="${i}">${s.label}</option>`).join('')}
+    </select>
+    <div id="rdp-buttons">
+      <button id="rdp-start">▶ Start from here</button>
+      <button id="rdp-run-all">Run from beginning</button>
+    </div>
+  `;
+  document.body.appendChild(panel);
+
+  function launch(startTrial) {
+    panel.style.display = 'none';
+    const idx = timeline.indexOf(startTrial);
+    jsPsych.run(idx > 0 ? timeline.slice(idx) : timeline);
+  }
+
+  document.getElementById('rdp-start').addEventListener('click', () => {
+    const i = parseInt(document.getElementById('rdp-select').value);
+    launch(sections[i].trial);
+  });
+
+  document.getElementById('rdp-run-all').addEventListener('click', () => {
+    launch(timeline[0]);
+  });
+})();
+/* *** END OF RESEARCHER DEBUG BLOCK *** */
