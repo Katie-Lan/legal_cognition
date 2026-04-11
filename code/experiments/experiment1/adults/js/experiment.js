@@ -214,7 +214,7 @@ const warmupShowSlots = {
       showSlots: true, animate: false
     })}
     <div style="text-align:center; margin-top:10px;">
-      <p class="slide-instruction" style="display:inline-block; text-align:left;">
+      <p class="slide-instruction">
         Each person has 5 slots for carrying cookies
       </p>
     </div>`,
@@ -231,7 +231,7 @@ const warmupFillCookies = {
       showSlots: true, animate: true
     })}
     <div style="text-align:center; margin-top:10px;">
-      <p class="slide-instruction" style="display:inline-block; text-align:left;">
+      <p class="slide-instruction">
         You will then learn about how many cookies each person has.<br>
         Here Finn has 3 and Cleo has 3
       </p>
