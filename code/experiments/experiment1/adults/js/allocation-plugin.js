@@ -221,9 +221,12 @@ var jsPsychAllocation = (function (jspsych) {
             </div>
             ${rightPanel}
           </div>
-          <button id="confirm-btn" ${needsDisabled() ? 'disabled' : ''}>
-            ${confirmLabel}
-          </button>
+          <div class="allocation-btn-row">
+            <button id="confirm-btn" ${needsDisabled() ? 'disabled' : ''}>
+              ${confirmLabel}
+            </button>
+            ${!trial.is_practice ? `<button id="do-nothing-btn">Do Nothing</button>` : ''}
+          </div>
         </div>
 
         <!-- Ghost element for drag visual -->
@@ -395,14 +398,13 @@ var jsPsychAllocation = (function (jspsych) {
       /* -------------------------------------------------------
          CONFIRM BUTTON
       ------------------------------------------------------- */
-      display_element.querySelector('#confirm-btn').addEventListener('click', () => {
-        // Cleanup
+      function finishAllocation(doNothing) {
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);
 
-        const inV = countInZone('v');
-        const inTrash = countInZone('trash');
-        const inPool = countInZone('pool');
+        const inV     = doNothing ? 0 : countInZone('v');
+        const inTrash = doNothing ? 0 : countInZone('trash');
+        const inPool  = doNothing ? trial.p_cookies : countInZone('pool');
 
         this.jsPsych.finishTrial({
           scenario_id: trial.scenario_id,
@@ -412,11 +414,22 @@ var jsPsychAllocation = (function (jspsych) {
           cookies_to_v: inV,
           cookies_to_trash: inTrash,
           cookies_kept_by_p: inPool,
+          do_nothing: doNothing,
           trash_on_left: trial.trash_on_left,
           is_practice: trial.is_practice,
           rt: Math.round(performance.now() - startTime),
         });
+      }
+
+      display_element.querySelector('#confirm-btn').addEventListener('click', () => {
+        finishAllocation.call(this, false);
       });
+
+      if (!trial.is_practice) {
+        display_element.querySelector('#do-nothing-btn').addEventListener('click', () => {
+          finishAllocation.call(this, true);
+        });
+      }
     } // end trial()
   } // end class
 
