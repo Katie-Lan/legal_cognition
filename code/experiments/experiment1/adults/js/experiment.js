@@ -71,18 +71,20 @@ function onePersonHTML(name, imgFile) {
 }
 
 /** Two-person display (P left, V right) with optional cookies */
-function twoPersonHTML({ pCookies, vCookies, pLabel, vLabel, showSlots, animate }) {
+function twoPersonHTML({ pCookies, vCookies, pLabel, vLabel, showSlots, animate,
+                         pName = 'Finn', vName = 'Cleo',
+                         pImg  = 'Finn.png', vImg = 'Cleo.png' }) {
   return `
     <div class="two-person-display">
       <div class="person-col">
-        <img src="img/Finn.png" class="char-img" alt="Finn">
-        <p class="person-name">Finn</p>
+        <img src="img/${pImg}" class="char-img" alt="${pName}">
+        <p class="person-name">${pName}</p>
         ${showSlots ? `<div class="cookie-label">${pLabel}</div>
           ${cookieGridHTML(pCookies, 5, 'large', animate)}` : ''}
       </div>
       <div class="person-col">
-        <img src="img/Cleo.png" class="char-img" alt="Cleo">
-        <p class="person-name">Cleo</p>
+        <img src="img/${vImg}" class="char-img" alt="${vName}">
+        <p class="person-name">${vName}</p>
         ${showSlots ? `<div class="cookie-label">${vLabel}</div>
           ${cookieGridHTML(vCookies, 5, 'large', animate)}` : ''}
       </div>
@@ -102,23 +104,24 @@ function slideLayout(mainHTML, instructionHTML) {
 
 /** Event box HTML for a scenario */
 function eventBoxHTML(scenario, showHarm) {
+  const pName = scenario.p_name || 'Finn';
+  const vName = scenario.v_name || 'Cleo';
   const harmTypeLabel = scenario.harm_type === 'intentional' ? 'perpetrator' : 'negligent';
-  const vCookiesNow = showHarm ? scenario.v_after_harm : scenario.v_initial;
   const eventText = showHarm
-    ? `<strong>Oh no!</strong> Cleo lost ${scenario.harm_amount} cookies during this event.`
+    ? `<strong>Oh no!</strong> ${vName} lost ${scenario.harm_amount} cookie${scenario.harm_amount !== 1 ? 's' : ''} during this event.`
     : scenario.event_text;
 
   return `
     <div class="event-box">
       <div class="event-scene">
         <div class="event-person ${harmTypeLabel}">
-          <div class="char-card medium">Finn</div>
-          <div class="event-person-label">Finn</div>
+          <div class="char-card medium">${pName}</div>
+          <div class="event-person-label">${pName}</div>
         </div>
         <div class="event-arrow">→</div>
         <div class="event-person">
-          <div class="char-card medium">Cleo</div>
-          <div class="event-person-label">Cleo</div>
+          <div class="char-card medium">${vName}</div>
+          <div class="event-person-label">${vName}</div>
         </div>
       </div>
       <div class="event-description">${eventText}</div>
@@ -128,46 +131,56 @@ function eventBoxHTML(scenario, showHarm) {
 /* ----------------------------------------------------------
    SCENARIO DEFINITIONS
    ---------------------------------------------------------- */
-const scenarios = [
+// Finn & Cleo scenarios (randomized block)
+const finnCleoScenarios = [
   {
     id: 1,
+    p_name: 'Finn', v_name: 'Cleo', p_img: 'Finn.png', v_img: 'Cleo.png',
     harm_type: 'intentional',
-    p_cookies: 3,
-    v_initial: 3,
-    v_after_harm: 1,
-    harm_amount: 2,
+    p_cookies: 3, p_after: 3,
+    v_initial: 3, v_after_harm: 1, harm_amount: 2,
     event_text: 'Finn walks up to Cleo and deliberately kicks 2 of Cleo\'s cookies, destroying them.',
     event_title: 'Finn Kicks Cleo\'s Cookies'
   },
   {
     id: 2,
+    p_name: 'Finn', v_name: 'Cleo', p_img: 'Finn.png', v_img: 'Cleo.png',
     harm_type: 'negligent',
-    p_cookies: 3,
-    v_initial: 3,
-    v_after_harm: 1,
-    harm_amount: 2,
+    p_cookies: 3, p_after: 3,
+    v_initial: 3, v_after_harm: 1, harm_amount: 2,
     event_text: 'Finn spills water and doesn\'t clean it up. Cleo slips on the wet floor and 2 of Cleo\'s cookies are destroyed.',
     event_title: 'Finn Spills Water — Cleo Slips'
   },
   {
     id: 3,
+    p_name: 'Finn', v_name: 'Cleo', p_img: 'Finn.png', v_img: 'Cleo.png',
     harm_type: 'negligent',
-    p_cookies: 3,
-    v_initial: 3,
-    v_after_harm: 1,
-    harm_amount: 2,
+    p_cookies: 3, p_after: 3,
+    v_initial: 3, v_after_harm: 1, harm_amount: 2,
     event_text: 'Finn is looking at their phone while riding a bicycle. Not paying attention, Finn crashes into Cleo and 2 of Cleo\'s cookies are destroyed.',
     event_title: 'Finn Crashes Into Cleo'
   },
   {
     id: 4,
+    p_name: 'Finn', v_name: 'Cleo', p_img: 'Finn.png', v_img: 'Cleo.png',
     harm_type: 'intentional',
-    p_cookies: 3,
-    v_initial: 3,
-    v_after_harm: 1,
-    harm_amount: 2,
+    p_cookies: 3, p_after: 3,
+    v_initial: 3, v_after_harm: 1, harm_amount: 2,
     event_text: 'Finn picks up a rock and throws it at Cleo\'s cookies. The rock hits and destroys 2 of them.',
     event_title: 'Finn Throws a Rock'
+  }
+];
+
+// Milo & Sasha scenarios (always after Finn & Cleo block)
+const miloSashaScenarios = [
+  {
+    id: 5,
+    p_name: 'Milo', v_name: 'Sasha', p_img: 'Milo.png', v_img: 'Sasha.png',
+    harm_type: 'intentional',
+    p_cookies: 3, p_after: 4,
+    v_initial: 3, v_after_harm: 2, harm_amount: 1,
+    event_text: 'Milo walks over to Sasha and steals one of her cookies and puts it in his own box.',
+    event_title: 'Milo Steals Sasha\'s Cookie'
   }
 ];
 
@@ -370,11 +383,17 @@ const warmupReady = {
    TEST TRIAL BUILDER
    ---------------------------------------------------------- */
 function buildTestTrial(scenario, scenarioIdx, total) {
+  const pName  = scenario.p_name  || 'Finn';
+  const vName  = scenario.v_name  || 'Cleo';
+  const pImg   = scenario.p_img   || 'Finn.png';
+  const vImg   = scenario.v_img   || 'Cleo.png';
+  const pAfter = scenario.p_after !== undefined ? scenario.p_after : scenario.p_cookies;
+  const pGained = pAfter - scenario.p_cookies; // > 0 means P gained cookies
 
-  // Slide A – Finn and V (blank)
+  // Slide A – characters (blank)
   const slideA = {
     type: jsPsychHtmlButtonResponse,
-    stimulus: twoPersonHTML({ showSlots: false }),
+    stimulus: twoPersonHTML({ showSlots: false, pName, vName, pImg, vImg }),
     choices: ['Next'],
     on_start: function() { updateProgressBar(scenarioIdx, total); },
   };
@@ -382,32 +401,31 @@ function buildTestTrial(scenario, scenarioIdx, total) {
   // Slide B – Show empty slots
   const slideB = {
     type: jsPsychHtmlButtonResponse,
-    stimulus: `
-      ${twoPersonHTML({
-        pCookies: 0, vCookies: 0,
-        pLabel: `Finn can carry 5 cookies`,
-        vLabel: `Cleo can carry 5 cookies`,
-        showSlots: true, animate: false
-      })}`,
+    stimulus: twoPersonHTML({
+      pCookies: 0, vCookies: 0,
+      pLabel: `${pName} can carry 5 cookies`,
+      vLabel: `${vName} can carry 5 cookies`,
+      showSlots: true, animate: false,
+      pName, vName, pImg, vImg
+    }),
     choices: ['Next'],
   };
 
   // Slide C – Fill in initial cookies (animated)
   const slideC = {
     type: jsPsychHtmlButtonResponse,
-    stimulus: `
-      ${twoPersonHTML({
-        pCookies: scenario.p_cookies,
-        vCookies: scenario.v_initial,
-        pLabel: `Finn has ${scenario.p_cookies} cookies`,
-        vLabel: `Cleo has ${scenario.v_initial} cookies`,
-        showSlots: true,
-        animate: true
-      })}`,
+    stimulus: twoPersonHTML({
+      pCookies: scenario.p_cookies,
+      vCookies: scenario.v_initial,
+      pLabel: `${pName} has ${scenario.p_cookies} cookies`,
+      vLabel: `${vName} has ${scenario.v_initial} cookies`,
+      showSlots: true, animate: true,
+      pName, vName, pImg, vImg
+    }),
     choices: ['Next'],
   };
 
-  // Slide D – Event animation/description
+  // Slide D – Event description
   const slideD = {
     type: jsPsychHtmlButtonResponse,
     stimulus: `
@@ -417,7 +435,10 @@ function buildTestTrial(scenario, scenarioIdx, total) {
     choices: ['Next'],
   };
 
-  // Slide E – V loses cookies (harm result)
+  // Slide E – Outcome: V loses, and P gains if applicable
+  const pGainedNote = pGained > 0
+    ? `<br>${pName} now has <strong>${pAfter}</strong> cookie${pAfter !== 1 ? 's' : ''}.`
+    : '';
   const slideE = {
     type: jsPsychHtmlButtonResponse,
     stimulus: `
@@ -425,14 +446,26 @@ function buildTestTrial(scenario, scenarioIdx, total) {
         ${eventBoxHTML(scenario, false)}
         <div class="harm-result-container">
           <p class="harm-result-text">
-            Oh no, Cleo lost ${scenario.harm_amount} cookies.<br>
-            Cleo now only has <strong>${scenario.v_after_harm}</strong>
-            cookie${scenario.v_after_harm !== 1 ? 's' : ''} left.
+            Oh no, ${vName} lost ${scenario.harm_amount} cookie${scenario.harm_amount !== 1 ? 's' : ''}.<br>
+            ${vName} now only has <strong>${scenario.v_after_harm}</strong>
+            cookie${scenario.v_after_harm !== 1 ? 's' : ''} left.${pGainedNote}
           </p>
-          <div class="char-card large">Cleo</div>
-          <div class="cookie-label">Cleo has ${scenario.v_after_harm} cookies</div>
-          ${cookieGridHTML(scenario.v_after_harm, 5, 'large', false)}
-          <p class="decision-prompt">Please decide whether you would like to move some of Finn's cookies.</p>
+          <div class="harm-result-chars">
+            <div class="harm-result-char">
+              <img src="img/${vImg}" class="char-img" alt="${vName}">
+              <p class="person-name">${vName}</p>
+              <div class="cookie-label">${vName} has ${scenario.v_after_harm} cookie${scenario.v_after_harm !== 1 ? 's' : ''}</div>
+              ${cookieGridHTML(scenario.v_after_harm, 5, 'large', false)}
+            </div>
+            ${pGained > 0 ? `
+            <div class="harm-result-char">
+              <img src="img/${pImg}" class="char-img" alt="${pName}">
+              <p class="person-name">${pName}</p>
+              <div class="cookie-label">${pName} has ${pAfter} cookie${pAfter !== 1 ? 's' : ''}</div>
+              ${cookieGridHTML(pAfter, 5, 'large', false)}
+            </div>` : ''}
+          </div>
+          <p class="decision-prompt">Please decide whether you would like to move some of ${pName}'s cookies.</p>
         </div>
       </div>`,
     choices: ['Next'],
@@ -441,13 +474,14 @@ function buildTestTrial(scenario, scenarioIdx, total) {
   // Slide F – Allocation task
   const slideF = {
     type: jsPsychAllocation,
-    p_cookies: scenario.p_cookies,
+    p_cookies: pAfter,
     v_cookies_current: scenario.v_after_harm,
     hud_p_cookies: scenario.p_cookies,
     hud_v_cookies: scenario.v_initial,
     trash_on_left: TRASH_ON_LEFT,
-    harm_text: `Oh no, Cleo lost ${scenario.harm_amount} cookies. Cleo now only has ${scenario.v_after_harm} cookie${scenario.v_after_harm !== 1 ? 's' : ''} left.`,
-    instruction_text: 'Please decide whether you would like to move some of Finn\'s cookies.',
+    harm_text: `Oh no, ${vName} lost ${scenario.harm_amount} cookie${scenario.harm_amount !== 1 ? 's' : ''}. ${vName} now only has ${scenario.v_after_harm} cookie${scenario.v_after_harm !== 1 ? 's' : ''} left.`,
+    instruction_text: `Please decide whether you would like to move some of ${pName}'s cookies.`,
+    p_name: pName, v_name: vName, p_img: pImg, v_img: vImg,
     require_v: false,
     require_trash: false,
     require_both: false,
@@ -504,11 +538,18 @@ const warmupBlock = [
   warmupReady,
 ];
 
-// Test trial block – randomized order
-const shuffledScenarios = jsPsych.randomization.shuffle(scenarios);
+// Finn & Cleo block — randomized order
+const shuffledFinnCleo = jsPsych.randomization.shuffle(finnCleoScenarios);
+const totalTrials = shuffledFinnCleo.length + miloSashaScenarios.length;
 const testBlock = [];
-shuffledScenarios.forEach((scenario, idx) => {
-  buildTestTrial(scenario, idx, shuffledScenarios.length).forEach(t => testBlock.push(t));
+let trialIdx = 0;
+shuffledFinnCleo.forEach(scenario => {
+  buildTestTrial(scenario, trialIdx++, totalTrials).forEach(t => testBlock.push(t));
+});
+
+// Milo & Sasha block — always after Finn & Cleo
+miloSashaScenarios.forEach(scenario => {
+  buildTestTrial(scenario, trialIdx++, totalTrials).forEach(t => testBlock.push(t));
 });
 
 // Final screen

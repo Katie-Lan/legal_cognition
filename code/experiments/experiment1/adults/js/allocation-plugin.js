@@ -39,6 +39,11 @@ var jsPsychAllocation = (function (jspsych) {
       scenario_id: { type: jspsych.ParameterType.INT, default: 0 },
       /** harm type stored in data */
       harm_type: { type: jspsych.ParameterType.STRING, default: '' },
+      /** Character names and images (overridable per scenario) */
+      p_name: { type: jspsych.ParameterType.STRING, default: 'Finn' },
+      v_name: { type: jspsych.ParameterType.STRING, default: 'Cleo' },
+      p_img:  { type: jspsych.ParameterType.STRING, default: 'Finn.png' },
+      v_img:  { type: jspsych.ParameterType.STRING, default: 'Cleo.png' },
     }
   };
 
@@ -149,13 +154,13 @@ var jsPsychAllocation = (function (jspsych) {
         }
 
         const vLabel = trial.v_cookies_current > 0
-          ? `Cleo has ${trial.v_cookies_current} cookie${trial.v_cookies_current !== 1 ? 's' : ''}`
-          : 'Cleo has 0 cookies';
+          ? `${trial.v_name} has ${trial.v_cookies_current} cookie${trial.v_cookies_current !== 1 ? 's' : ''}`
+          : `${trial.v_name} has 0 cookies`;
 
         return `
           <div class="alloc-panel" id="v-panel">
-            <img src="img/Cleo.png" class="alloc-char-img" alt="Cleo">
-            <p class="alloc-char-name">Cleo</p>
+            <img src="img/${trial.v_img}" class="alloc-char-img" alt="${trial.v_name}">
+            <p class="alloc-char-name">${trial.v_name}</p>
             <div class="panel-name">${vLabel}</div>
             ${trial.v_cookies_current > 0 ? existingHTML : ''}
             ${dropHTML}
@@ -214,9 +219,9 @@ var jsPsychAllocation = (function (jspsych) {
           <div class="allocation-columns">
             ${leftPanel}
             <div class="p-pool-col">
-              <img src="img/Finn.png" class="alloc-char-img" alt="Finn">
-              <p class="alloc-char-name">Finn</p>
-              <div class="panel-name">Finn has ${trial.p_cookies} cookies</div>
+              <img src="img/${trial.p_img}" class="alloc-char-img" alt="${trial.p_name}">
+              <p class="alloc-char-name">${trial.p_name}</p>
+              <div class="panel-name">${trial.p_name} has ${trial.p_cookies} cookies</div>
               ${pPoolHTML()}
             </div>
             ${rightPanel}
