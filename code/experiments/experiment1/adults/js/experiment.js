@@ -183,6 +183,7 @@ const secondBlockScenarios = [
     harm_type: 'strict_liability',
     p_cookies: 3, p_after: 3,
     v_initial: 3, v_after_harm: 2, harm_amount: 1,
+    video: 'mp4/sam%20and%20ella.mp4',
     event_text: 'Sam is carefully walking his dog on a leash. Even though Sam is holding the leash tightly and being very careful, the dog lunges toward Ella\'s cookies and eats one before Sam can stop it.',
     event_title: 'Sam\'s Dog Eats Ella\'s Cookie'
   }
