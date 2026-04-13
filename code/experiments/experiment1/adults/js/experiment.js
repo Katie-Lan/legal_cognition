@@ -73,7 +73,7 @@ function onePersonHTML(name, imgFile) {
 /** Two-person display (P left, V right) with optional cookies */
 function twoPersonHTML({ pCookies, vCookies, pLabel, vLabel, showSlots, animate,
                          pName = 'Finn', vName = 'Cleo',
-                         pImg  = 'Finn.png', vImg = 'Cleo.png' }) {
+                         pImg  = 'finn_neutral.png', vImg = 'cleo_neutral.png' }) {
   return `
     <div class="two-person-display">
       <div class="person-col">
@@ -137,7 +137,7 @@ function eventBoxHTML(scenario, showHarm) {
 const finnCleoScenarios = [
   {
     id: 2,
-    p_name: 'Finn', v_name: 'Cleo', p_img: 'Finn.png', v_img: 'Cleo.png',
+    p_name: 'Finn', v_name: 'Cleo', p_img: 'finn_neutral.png', v_img: 'cleo_neutral.png',
     harm_type: 'negligent',
     p_cookies: 3, p_after: 3,
     v_initial: 3, v_after_harm: 1, harm_amount: 2,
@@ -208,14 +208,14 @@ const welcomeScreen = {
 // Slide 1a – Introduce Finn
 const warmupIntroFinn = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: onePersonHTML('Finn', 'Finn.png'),
+  stimulus: onePersonHTML('Finn', 'finn_neutral.png'),
   choices: ['Next'],
 };
 
 // Slide 1b – Introduce Cleo
 const warmupIntroCleo = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: onePersonHTML('Cleo', 'Cleo.png'),
+  stimulus: onePersonHTML('Cleo', 'cleo_neutral.png'),
   choices: ['Next'],
 };
 
@@ -387,8 +387,8 @@ const warmupReady = {
 function buildTestTrial(scenario, scenarioIdx, total) {
   const pName  = scenario.p_name  || 'Finn';
   const vName  = scenario.v_name  || 'Cleo';
-  const pImg   = scenario.p_img   || 'Finn.png';
-  const vImg   = scenario.v_img   || 'Cleo.png';
+  const pImg   = scenario.p_img   || 'finn_neutral.png';
+  const vImg   = scenario.v_img   || 'cleo_neutral.png';
   const pAfter = scenario.p_after !== undefined ? scenario.p_after : scenario.p_cookies;
   const pGained = pAfter - scenario.p_cookies; // > 0 means P gained cookies
 

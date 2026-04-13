@@ -42,8 +42,8 @@ var jsPsychAllocation = (function (jspsych) {
       /** Character names and images (overridable per scenario) */
       p_name: { type: jspsych.ParameterType.STRING, default: 'Finn' },
       v_name: { type: jspsych.ParameterType.STRING, default: 'Cleo' },
-      p_img:  { type: jspsych.ParameterType.STRING, default: 'Finn.png' },
-      v_img:  { type: jspsych.ParameterType.STRING, default: 'Cleo.png' },
+      p_img:  { type: jspsych.ParameterType.STRING, default: 'finn_neutral.png' },
+      v_img:  { type: jspsych.ParameterType.STRING, default: 'cleo_neutral.png' },
     }
   };
 
