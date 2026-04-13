@@ -707,32 +707,17 @@ body {
   border: 1px solid #ccc;
 }
 
-#rdp-buttons {
-  display: flex;
-  gap: 8px;
-}
-
-#rdp-start, #rdp-run-all {
-  flex: 1;
+#rdp-jump {
+  width: 100%;
   padding: 6px 10px;
   font-size: 13px;
   border-radius: 5px;
   cursor: pointer;
   border: none;
-}
-
-#rdp-start {
   background: #f0b429;
   color: #fff;
   font-weight: bold;
 }
 
-#rdp-start:hover { background: #d49a1a; }
-
-#rdp-run-all {
-  background: #eee;
-  color: #333;
-}
-
-#rdp-run-all:hover { background: #ddd; }
+#rdp-jump:hover { background: #d49a1a; }
 /* *** END OF RESEARCHER DEBUG STYLES *** */

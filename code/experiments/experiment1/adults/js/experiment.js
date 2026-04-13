@@ -392,16 +392,20 @@ function buildTestTrial(scenario, scenarioIdx, total) {
   const pAfter = scenario.p_after !== undefined ? scenario.p_after : scenario.p_cookies;
   const pGained = pAfter - scenario.p_cookies; // > 0 means P gained cookies
 
+  const trialLabel = `${pName} & ${vName}`;
+
   // Slide A – characters (blank)
   const slideA = {
     type: jsPsychHtmlButtonResponse,
     stimulus: twoPersonHTML({ showSlots: false, pName, vName, pImg, vImg }),
     choices: ['Next'],
     on_start: function() { updateProgressBar(scenarioIdx, total); },
+    _debugLabel: `${trialLabel} — A: Characters`,
   };
 
   // Slide B – Show empty slots
   const slideB = {
+    _debugLabel: `${trialLabel} — B: Empty Slots`,
     type: jsPsychHtmlButtonResponse,
     stimulus: twoPersonHTML({
       pCookies: 0, vCookies: 0,
@@ -415,6 +419,7 @@ function buildTestTrial(scenario, scenarioIdx, total) {
 
   // Slide C – Fill in initial cookies (animated)
   const slideC = {
+    _debugLabel: `${trialLabel} — C: Initial Cookies`,
     type: jsPsychHtmlButtonResponse,
     stimulus: twoPersonHTML({
       pCookies: scenario.p_cookies,
@@ -429,6 +434,7 @@ function buildTestTrial(scenario, scenarioIdx, total) {
 
   // Slide D – Event description
   const slideD = {
+    _debugLabel: `${trialLabel} — D: Event`,
     type: jsPsychHtmlButtonResponse,
     stimulus: `
       <div style="padding-top:20px; display:flex; justify-content:center;">
@@ -442,6 +448,7 @@ function buildTestTrial(scenario, scenarioIdx, total) {
     ? `<br>${pName} now has <strong>${pAfter}</strong> cookie${pAfter !== 1 ? 's' : ''}.`
     : '';
   const slideE = {
+    _debugLabel: `${trialLabel} — E: Outcome`,
     type: jsPsychHtmlButtonResponse,
     stimulus: `
       <div style="padding-top:20px; display:flex; flex-direction:column; align-items:center; gap:24px;">
@@ -475,6 +482,7 @@ function buildTestTrial(scenario, scenarioIdx, total) {
 
   // Slide F – Allocation task
   const slideF = {
+    _debugLabel: `${trialLabel} — F: Allocation`,
     type: jsPsychAllocation,
     p_cookies: pAfter,
     v_cookies_current: scenario.v_after_harm,
@@ -568,6 +576,27 @@ const endScreen = {
 };
 
 /* ----------------------------------------------------------
+   DEBUG LABELS (read by researcher panel — harmless in production)
+   ---------------------------------------------------------- */
+welcomeScreen._debugLabel        = 'Welcome Screen';
+warmupIntroFinn._debugLabel      = 'Intro: Finn';
+warmupIntroCleo._debugLabel      = 'Intro: Cleo';
+warmupShowSlots._debugLabel      = 'Warmup: Show Slots';
+warmupFillCookies._debugLabel    = 'Warmup: Fill Cookies';
+warmupLearnEvent._debugLabel     = 'Warmup: Learn Event';
+warmupVLoses._debugLabel         = 'Warmup: Cleo Loses Cookies';
+warmupDecide._debugLabel         = 'Warmup: Decide';
+warmupExplainPtoV._debugLabel    = 'Warmup: Explain → Cleo';
+warmupPracticeV._debugLabel      = 'Warmup: Practice → Cleo';
+warmupExplainPtoTrash._debugLabel = 'Warmup: Explain → Jar';
+warmupPracticeTrash._debugLabel  = 'Warmup: Practice → Jar';
+warmupExplainBoth._debugLabel    = 'Warmup: Explain → Both';
+warmupPracticeBoth._debugLabel   = 'Warmup: Practice → Both';
+warmupChoiceYours._debugLabel    = 'Warmup: Choice Is Yours';
+warmupReady._debugLabel          = 'Warmup: Ready to Begin';
+endScreen._debugLabel            = 'End Screen';
+
+/* ----------------------------------------------------------
    RUN
    ---------------------------------------------------------- */
 const timeline = [
@@ -577,54 +606,36 @@ const timeline = [
 ];
 
 /* ============================================================
-   RESEARCHER DEBUG PANEL — JUMP TO ANY SECTION
+   RESEARCHER DEBUG PANEL — JUMP TO ANY SCREEN
    *** DELETE THIS ENTIRE BLOCK BEFORE GIVING TO PARTICIPANTS ***
    ============================================================ */
 (function () {
-  const sections = [
-    { label: 'Welcome Screen',              trial: welcomeScreen },
-    { label: 'Intro: Finn',                 trial: warmupIntroFinn },
-    { label: 'Intro: Cleo',                 trial: warmupIntroCleo },
-    { label: 'Warmup: Show Slots',          trial: warmupShowSlots },
-    { label: 'Warmup: Fill Cookies',        trial: warmupFillCookies },
-    { label: 'Warmup: Learn Event',         trial: warmupLearnEvent },
-    { label: 'Warmup: Cleo Loses Cookies',  trial: warmupVLoses },
-    { label: 'Warmup: Decide',              trial: warmupDecide },
-    { label: 'Warmup: Practice → Cleo',     trial: warmupPracticeV },
-    { label: 'Warmup: Practice → Jar',      trial: warmupPracticeTrash },
-    { label: 'Warmup: Practice → Both',     trial: warmupPracticeBoth },
-    { label: 'Warmup: Ready',               trial: warmupReady },
-    { label: 'Test Trials (first scenario)', trial: testBlock[0] },
-    { label: 'End Screen',                  trial: endScreen },
-  ];
+  // Read jump target from URL param (?jumpTo=N)
+  const params  = new URLSearchParams(window.location.search);
+  const jumpTo  = parseInt(params.get('jumpTo') || '0');
+
+  // Build dropdown: one option per timeline slide
+  const options = timeline.map((trial, i) => {
+    const label = trial._debugLabel || `Slide ${i}`;
+    const sel   = i === jumpTo ? ' selected' : '';
+    return `<option value="${i}"${sel}>${i}: ${label}</option>`;
+  }).join('');
 
   const panel = document.createElement('div');
   panel.id = 'researcher-debug-panel';
   panel.innerHTML = `
-    <div id="rdp-title">🔬 Researcher: Jump to Section</div>
-    <select id="rdp-select">
-      ${sections.map((s, i) => `<option value="${i}">${s.label}</option>`).join('')}
-    </select>
-    <div id="rdp-buttons">
-      <button id="rdp-start">▶ Start from here</button>
-      <button id="rdp-run-all">Run from beginning</button>
-    </div>
+    <div id="rdp-title">🔬 Researcher: Jump to Screen</div>
+    <select id="rdp-select">${options}</select>
+    <button id="rdp-jump">▶ Jump</button>
   `;
   document.body.appendChild(panel);
 
-  function launch(startTrial) {
-    panel.style.display = 'none';
-    const idx = timeline.indexOf(startTrial);
-    jsPsych.run(idx > 0 ? timeline.slice(idx) : timeline);
-  }
-
-  document.getElementById('rdp-start').addEventListener('click', () => {
-    const i = parseInt(document.getElementById('rdp-select').value);
-    launch(sections[i].trial);
+  document.getElementById('rdp-jump').addEventListener('click', () => {
+    const idx = document.getElementById('rdp-select').value;
+    window.location.href = window.location.pathname + '?jumpTo=' + idx;
   });
 
-  document.getElementById('rdp-run-all').addEventListener('click', () => {
-    launch(timeline[0]);
-  });
+  // Start experiment from the selected slide
+  jsPsych.run(jumpTo > 0 ? timeline.slice(jumpTo) : timeline);
 })();
 /* *** END OF RESEARCHER DEBUG BLOCK *** */
