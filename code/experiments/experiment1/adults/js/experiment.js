@@ -142,6 +142,7 @@ const finnCleoScenarios = [
     harm_type: 'negligent',
     p_cookies: 3, p_after: 3,
     v_initial: 3, v_after_harm: 1, harm_amount: 2,
+    video: 'mp4/finn%20and%20cleo.mp4',
     event_text: 'Finn spills water and doesn\'t clean it up. Cleo slips on the wet floor and 2 of Cleo\'s cookies are destroyed.',
     event_title: 'Finn Spills Water — Cleo Slips'
   }
@@ -443,53 +444,100 @@ function buildTestTrial(scenario, scenarioIdx, total) {
     choices: ['Next'],
   };
 
-  // Slide D – Event description
-  const slideD = {
-    _debugLabel: `${trialLabel} — D: Event`,
-    type: jsPsychHtmlButtonResponse,
-    stimulus: `
-      <div style="padding-top:20px; display:flex; justify-content:center;">
-        ${eventBoxHTML(scenario, false)}
-      </div>`,
-    choices: ['Next'],
-  };
+  // Slides D & E — video path present: replace text event + outcome with video + updated-cookies
+  let slidesDE;
+  if (scenario.video) {
+    // Slide D – Video
+    const slideD = {
+      _debugLabel: `${trialLabel} — D: Video`,
+      type: jsPsychHtmlButtonResponse,
+      stimulus: `
+        <div style="display:flex; flex-direction:column; align-items:center; gap:16px; padding-top:20px;">
+          <video width="640" controls style="border-radius:8px; max-width:100%;">
+            <source src="${scenario.video}" type="video/mp4">
+          </video>
+        </div>`,
+      choices: ['Next'],
+    };
 
-  // Slide E – Outcome: V loses, and P gains if applicable
-  const pGainedNote = pGained > 0
-    ? `<br>${pName} now has <strong>${pAfter}</strong> cookie${pAfter !== 1 ? 's' : ''}.`
-    : '';
-  const slideE = {
-    _debugLabel: `${trialLabel} — E: Outcome`,
-    type: jsPsychHtmlButtonResponse,
-    stimulus: `
-      <div style="padding-top:20px; display:flex; flex-direction:column; align-items:center; gap:24px;">
-        ${eventBoxHTML(scenario, false)}
-        <div class="harm-result-container">
-          <p class="harm-result-text">
+    // Slide E – Updated cookies (post-harm counts, no event box)
+    const pGainedNote = pGained > 0
+      ? `<br>${pName} now has <strong>${pAfter}</strong> cookie${pAfter !== 1 ? 's' : ''}.`
+      : '';
+    const slideE = {
+      _debugLabel: `${trialLabel} — E: Updated Cookies`,
+      type: jsPsychHtmlButtonResponse,
+      stimulus: `
+        <div style="display:flex; flex-direction:column; align-items:center; gap:20px; padding-top:20px;">
+          <p class="slide-instruction">
             Oh no, ${vName} lost ${scenario.harm_amount} cookie${scenario.harm_amount !== 1 ? 's' : ''}.<br>
             ${vName} now only has <strong>${scenario.v_after_harm}</strong>
             cookie${scenario.v_after_harm !== 1 ? 's' : ''} left.${pGainedNote}
           </p>
-          <div class="harm-result-chars">
-            <div class="harm-result-char">
-              <img src="img/${vImg}" class="char-img" alt="${vName}">
-              <p class="person-name">${vName}</p>
-              <div class="cookie-label">${vName} has ${scenario.v_after_harm} cookie${scenario.v_after_harm !== 1 ? 's' : ''}</div>
-              ${cookieGridHTML(scenario.v_after_harm, 5, 'large', false)}
+          ${twoPersonHTML({
+            pCookies: pAfter,
+            vCookies: scenario.v_after_harm,
+            pLabel: `${pName} has ${pAfter} cookie${pAfter !== 1 ? 's' : ''}`,
+            vLabel: `${vName} has ${scenario.v_after_harm} cookie${scenario.v_after_harm !== 1 ? 's' : ''}`,
+            showSlots: true, animate: false,
+            pName, vName, pImg, vImg
+          })}
+        </div>`,
+      choices: ['Next'],
+    };
+
+    slidesDE = [slideD, slideE];
+  } else {
+    // Slide D – Event description (text)
+    const slideD = {
+      _debugLabel: `${trialLabel} — D: Event`,
+      type: jsPsychHtmlButtonResponse,
+      stimulus: `
+        <div style="padding-top:20px; display:flex; justify-content:center;">
+          ${eventBoxHTML(scenario, false)}
+        </div>`,
+      choices: ['Next'],
+    };
+
+    // Slide E – Outcome with event box
+    const pGainedNote = pGained > 0
+      ? `<br>${pName} now has <strong>${pAfter}</strong> cookie${pAfter !== 1 ? 's' : ''}.`
+      : '';
+    const slideE = {
+      _debugLabel: `${trialLabel} — E: Outcome`,
+      type: jsPsychHtmlButtonResponse,
+      stimulus: `
+        <div style="padding-top:20px; display:flex; flex-direction:column; align-items:center; gap:24px;">
+          ${eventBoxHTML(scenario, false)}
+          <div class="harm-result-container">
+            <p class="harm-result-text">
+              Oh no, ${vName} lost ${scenario.harm_amount} cookie${scenario.harm_amount !== 1 ? 's' : ''}.<br>
+              ${vName} now only has <strong>${scenario.v_after_harm}</strong>
+              cookie${scenario.v_after_harm !== 1 ? 's' : ''} left.${pGainedNote}
+            </p>
+            <div class="harm-result-chars">
+              <div class="harm-result-char">
+                <img src="img/${vImg}" class="char-img" alt="${vName}">
+                <p class="person-name">${vName}</p>
+                <div class="cookie-label">${vName} has ${scenario.v_after_harm} cookie${scenario.v_after_harm !== 1 ? 's' : ''}</div>
+                ${cookieGridHTML(scenario.v_after_harm, 5, 'large', false)}
+              </div>
+              ${pGained > 0 ? `
+              <div class="harm-result-char">
+                <img src="img/${pImg}" class="char-img" alt="${pName}">
+                <p class="person-name">${pName}</p>
+                <div class="cookie-label">${pName} has ${pAfter} cookie${pAfter !== 1 ? 's' : ''}</div>
+                ${cookieGridHTML(pAfter, 5, 'large', false)}
+              </div>` : ''}
             </div>
-            ${pGained > 0 ? `
-            <div class="harm-result-char">
-              <img src="img/${pImg}" class="char-img" alt="${pName}">
-              <p class="person-name">${pName}</p>
-              <div class="cookie-label">${pName} has ${pAfter} cookie${pAfter !== 1 ? 's' : ''}</div>
-              ${cookieGridHTML(pAfter, 5, 'large', false)}
-            </div>` : ''}
+            <p class="decision-prompt">Please decide whether you would like to move some of ${pName}'s cookies.</p>
           </div>
-          <p class="decision-prompt">Please decide whether you would like to move some of ${pName}'s cookies.</p>
-        </div>
-      </div>`,
-    choices: ['Next'],
-  };
+        </div>`,
+      choices: ['Next'],
+    };
+
+    slidesDE = [slideD, slideE];
+  }
 
   // Slide F – Allocation task
   const slideF = {
@@ -511,7 +559,7 @@ function buildTestTrial(scenario, scenarioIdx, total) {
     harm_type: scenario.harm_type,
   };
 
-  return [slideA, slideB, slideC, slideD, slideE, slideF];
+  return [slideA, slideB, slideC, ...slidesDE, slideF];
 }
 
 /* ----------------------------------------------------------
