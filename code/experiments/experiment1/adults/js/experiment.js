@@ -7,6 +7,7 @@
    INITIALIZE jsPsych
    ---------------------------------------------------------- */
 const jsPsych = initJsPsych({
+  display_element: 'jspsych-target',
   show_progress_bar: true,
   on_finish: function () {
     // Collect trial data (replace with JATOS / server POST in deployment)
