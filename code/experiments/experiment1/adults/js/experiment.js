@@ -227,7 +227,8 @@ const warmupShowSlots = {
     ${twoPersonHTML({
       pCookies: 0, vCookies: 0,
       pLabel: 'Finn can carry 5 cookies', vLabel: 'Cleo can carry 5 cookies',
-      showSlots: true, animate: false
+      showSlots: true, animate: false,
+      pImg: 'finn_neutral.png', vImg: 'cleo_neutral.png'
     })}
     <div style="text-align:center; margin-top:10px;">
       <p class="slide-instruction">
@@ -244,7 +245,8 @@ const warmupFillCookies = {
     ${twoPersonHTML({
       pCookies: 3, vCookies: 3,
       pLabel: 'Finn has 3 cookies', vLabel: 'Cleo has 3 cookies',
-      showSlots: true, animate: true
+      showSlots: true, animate: true,
+      pImg: 'finn_neutral.png', vImg: 'cleo_neutral.png'
     })}
     <div style="text-align:center; margin-top:10px;">
       <p class="slide-instruction">
@@ -259,7 +261,7 @@ const warmupFillCookies = {
 const warmupLearnEvent = {
   type: jsPsychHtmlButtonResponse,
   stimulus: slideLayout(
-    twoPersonHTML({ pCookies: 3, vCookies: 3, pLabel: 'Finn has 3 cookies', vLabel: 'Cleo has 3 cookies', showSlots: true }),
+    twoPersonHTML({ pCookies: 3, vCookies: 3, pLabel: 'Finn has 3 cookies', vLabel: 'Cleo has 3 cookies', showSlots: true, pImg: 'finn_neutral.png', vImg: 'cleo_neutral.png' }),
     'You will then learn about something Finn does'
   ),
   choices: ['Next'],
@@ -272,7 +274,8 @@ const warmupVLoses = {
     twoPersonHTML({
       pCookies: 3, vCookies: 1,
       pLabel: 'Finn has 3 cookies', vLabel: 'Cleo has 1 cookie',
-      showSlots: true, animate: false
+      showSlots: true, animate: false,
+      pImg: 'finn_neutral.png', vImg: 'cleo_neutral.png'
     }),
     'After Finn does something, Cleo will lose some cookies.<br>Here Finn did something and Cleo lost 2 cookies'
   ),
@@ -286,7 +289,8 @@ const warmupDecide = {
     twoPersonHTML({
       pCookies: 3, vCookies: 1,
       pLabel: 'Finn has 3 cookies', vLabel: 'Cleo has 1 cookie',
-      showSlots: true
+      showSlots: true,
+      pImg: 'finn_neutral.png', vImg: 'cleo_neutral.png'
     }),
     'You will then decide what should happen'
   ),
@@ -318,6 +322,8 @@ const warmupPracticeV = {
   require_both: false,
   is_practice: true,
   scenario_id: 0,
+  p_name: 'Finn', v_name: 'Cleo',
+  p_img: 'finn_neutral.png', v_img: 'cleo_neutral.png',
 };
 
 // Slide 11 – Explain P→Trash option (static)
@@ -342,6 +348,8 @@ const warmupPracticeTrash = {
   require_both: false,
   is_practice: true,
   scenario_id: 0,
+  p_name: 'Finn', v_name: 'Cleo',
+  p_img: 'finn_neutral.png', v_img: 'cleo_neutral.png',
 };
 
 // Slide 13 – Explain both option
@@ -366,6 +374,8 @@ const warmupPracticeBoth = {
   require_both: true,
   is_practice: true,
   scenario_id: 0,
+  p_name: 'Finn', v_name: 'Cleo',
+  p_img: 'finn_neutral.png', v_img: 'cleo_neutral.png',
 };
 
 // Slide 15 – "Choice is yours"
