@@ -136,15 +136,6 @@ function eventBoxHTML(scenario, showHarm) {
 // Finn & Cleo scenarios (randomized block)
 const finnCleoScenarios = [
   {
-    id: 1,
-    p_name: 'Finn', v_name: 'Cleo', p_img: 'Finn.png', v_img: 'Cleo.png',
-    harm_type: 'intentional',
-    p_cookies: 3, p_after: 3,
-    v_initial: 3, v_after_harm: 1, harm_amount: 2,
-    event_text: 'Finn walks up to Cleo and deliberately kicks 2 of Cleo\'s cookies, destroying them.',
-    event_title: 'Finn Kicks Cleo\'s Cookies'
-  },
-  {
     id: 2,
     p_name: 'Finn', v_name: 'Cleo', p_img: 'Finn.png', v_img: 'Cleo.png',
     harm_type: 'negligent',
@@ -152,24 +143,6 @@ const finnCleoScenarios = [
     v_initial: 3, v_after_harm: 1, harm_amount: 2,
     event_text: 'Finn spills water and doesn\'t clean it up. Cleo slips on the wet floor and 2 of Cleo\'s cookies are destroyed.',
     event_title: 'Finn Spills Water — Cleo Slips'
-  },
-  {
-    id: 3,
-    p_name: 'Finn', v_name: 'Cleo', p_img: 'Finn.png', v_img: 'Cleo.png',
-    harm_type: 'negligent',
-    p_cookies: 3, p_after: 3,
-    v_initial: 3, v_after_harm: 1, harm_amount: 2,
-    event_text: 'Finn is looking at their phone while riding a bicycle. Not paying attention, Finn crashes into Cleo and 2 of Cleo\'s cookies are destroyed.',
-    event_title: 'Finn Crashes Into Cleo'
-  },
-  {
-    id: 4,
-    p_name: 'Finn', v_name: 'Cleo', p_img: 'Finn.png', v_img: 'Cleo.png',
-    harm_type: 'intentional',
-    p_cookies: 3, p_after: 3,
-    v_initial: 3, v_after_harm: 1, harm_amount: 2,
-    event_text: 'Finn picks up a rock and throws it at Cleo\'s cookies. The rock hits and destroys 2 of them.',
-    event_title: 'Finn Throws a Rock'
   }
 ];
 
