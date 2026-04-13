@@ -342,6 +342,11 @@ body {
   box-shadow: 0 0 0 3px rgba(230,140,30,0.25);
 }
 
+/* Strict liability: blue glow */
+.event-person.strict-liability .char-card.medium {
+  box-shadow: 0 0 0 3px rgba(80,140,220,0.25);
+}
+
 /* ============================================================
    HARM RESULT DISPLAY
    ============================================================ */

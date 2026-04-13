@@ -106,7 +106,9 @@ function slideLayout(mainHTML, instructionHTML) {
 function eventBoxHTML(scenario, showHarm) {
   const pName = scenario.p_name || 'Finn';
   const vName = scenario.v_name || 'Cleo';
-  const harmTypeLabel = scenario.harm_type === 'intentional' ? 'perpetrator' : 'negligent';
+  const harmTypeLabel = scenario.harm_type === 'intentional' ? 'perpetrator'
+                      : scenario.harm_type === 'negligent'   ? 'negligent'
+                      : 'strict-liability';
   const eventText = showHarm
     ? `<strong>Oh no!</strong> ${vName} lost ${scenario.harm_amount} cookie${scenario.harm_amount !== 1 ? 's' : ''} during this event.`
     : scenario.event_text;
@@ -171,8 +173,8 @@ const finnCleoScenarios = [
   }
 ];
 
-// Milo & Sasha scenarios (always after Finn & Cleo block)
-const miloSashaScenarios = [
+// Second block — always after Finn & Cleo, randomized among themselves
+const secondBlockScenarios = [
   {
     id: 5,
     p_name: 'Milo', v_name: 'Sasha', p_img: 'Milo.png', v_img: 'Sasha.png',
@@ -181,6 +183,33 @@ const miloSashaScenarios = [
     v_initial: 3, v_after_harm: 2, harm_amount: 1,
     event_text: 'Milo walks over to Sasha and steals one of her cookies and puts it in his own box.',
     event_title: 'Milo Steals Sasha\'s Cookie'
+  },
+  {
+    id: 6,
+    p_name: 'Rex', v_name: 'Zoe', p_img: 'rex.png', v_img: 'zoe.png',
+    harm_type: 'intentional',
+    p_cookies: 3, p_after: 3,
+    v_initial: 3, v_after_harm: 1, harm_amount: 2,
+    event_text: 'Rex wants Zoe to have fewer cookies. He deliberately knocks two of her cookies into the trash.',
+    event_title: 'Rex Knocks Zoe\'s Cookies Away'
+  },
+  {
+    id: 7,
+    p_name: 'Kai', v_name: 'Ruby', p_img: 'kai.png', v_img: 'Ruby.png',
+    harm_type: 'strict_liability',
+    p_cookies: 3, p_after: 3,
+    v_initial: 3, v_after_harm: 1, harm_amount: 2,
+    event_text: 'Kai sneezes suddenly and unexpectedly. The force of the sneeze knocks two of Ruby\'s cookies off the table. Kai could not have prevented this.',
+    event_title: 'Kai\'s Sneeze Knocks Ruby\'s Cookies'
+  },
+  {
+    id: 8,
+    p_name: 'Sam', v_name: 'Ella', p_img: 'sam.png', v_img: 'ella.png',
+    harm_type: 'strict_liability',
+    p_cookies: 3, p_after: 3,
+    v_initial: 3, v_after_harm: 2, harm_amount: 1,
+    event_text: 'Sam is carefully walking his dog on a leash. Even though Sam is holding the leash tightly and being very careful, the dog lunges toward Ella\'s cookies and eats one before Sam can stop it.',
+    event_title: 'Sam\'s Dog Eats Ella\'s Cookie'
   }
 ];
 
@@ -540,15 +569,15 @@ const warmupBlock = [
 
 // Finn & Cleo block — randomized order
 const shuffledFinnCleo = jsPsych.randomization.shuffle(finnCleoScenarios);
-const totalTrials = shuffledFinnCleo.length + miloSashaScenarios.length;
+// Second block — randomized among themselves, always after Finn & Cleo
+const shuffledSecondBlock = jsPsych.randomization.shuffle(secondBlockScenarios);
+const totalTrials = shuffledFinnCleo.length + shuffledSecondBlock.length;
 const testBlock = [];
 let trialIdx = 0;
 shuffledFinnCleo.forEach(scenario => {
   buildTestTrial(scenario, trialIdx++, totalTrials).forEach(t => testBlock.push(t));
 });
-
-// Milo & Sasha block — always after Finn & Cleo
-miloSashaScenarios.forEach(scenario => {
+shuffledSecondBlock.forEach(scenario => {
   buildTestTrial(scenario, trialIdx++, totalTrials).forEach(t => testBlock.push(t));
 });
 
