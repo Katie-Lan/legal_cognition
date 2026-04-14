@@ -423,7 +423,7 @@ body {
 .allocation-columns {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: stretch;
   justify-content: center;
   gap: 28px;
   margin: 0 auto;
