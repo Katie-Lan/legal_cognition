@@ -160,9 +160,6 @@ body {
   transform: scale(1.05);
 }
 
-.cookie-slot.dragging {
-  visibility: hidden;
-}
 
 /* Ghost cookie (follows cursor while dragging) */
 #drag-ghost {

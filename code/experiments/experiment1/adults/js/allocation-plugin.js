@@ -315,9 +315,9 @@ var jsPsychAllocation = (function (jspsych) {
           slotEl.classList.remove('empty');
           slotEl.classList.add('filled');
           slotEl.dataset.cookieId = String(cookieId);
+          // Slot is already grey (set in mousedown); ensure state is correct
           if (pEl) {
-            pEl.style.display = '';
-            pEl.classList.remove('dragging', 'filled');
+            pEl.classList.remove('filled');
             pEl.classList.add('empty');
             pEl.innerHTML = '';
           }
@@ -346,7 +346,10 @@ var jsPsychAllocation = (function (jspsych) {
 
         e.preventDefault();
         dragging = { cookieId };
-        cookieEl.classList.add('dragging');
+        // Immediately turn slot grey — no CSS class needed
+        cookieEl.classList.remove('filled');
+        cookieEl.classList.add('empty');
+        cookieEl.innerHTML = '';
         showGhost(e.clientX, e.clientY);
       });
 
@@ -376,7 +379,6 @@ var jsPsychAllocation = (function (jspsych) {
         hideGhost(); // hide and keep hidden — do NOT re-show
 
         const pEl = getCookieEl(cookieId);
-        if (pEl) pEl.classList.remove('dragging');
 
         // Ghost has pointer-events:none so document.elementFromPoint sees through it
         const target = document.elementFromPoint(e.clientX, e.clientY);
@@ -398,14 +400,14 @@ var jsPsychAllocation = (function (jspsych) {
 
         if (zone && slot) {
           if (zone === 'v' && countInZone('v') >= maxGiveV) {
-            // V is full – leave cookie in pool
-            if (pEl) pEl.style.opacity = '1';
+            // V is full – restore cookie to pool
+            if (pEl) { pEl.classList.remove('empty'); pEl.classList.add('filled'); pEl.innerHTML = '<span class="cookie-emoji">🍪</span>'; }
           } else {
             moveCookieTo(cookieId, zone, slot);
           }
         } else {
-          // Dropped outside any valid zone – return to pool
-          if (pEl) pEl.style.opacity = '1';
+          // Dropped outside any valid zone – restore cookie to pool
+          if (pEl) { pEl.classList.remove('empty'); pEl.classList.add('filled'); pEl.innerHTML = '<span class="cookie-emoji">🍪</span>'; }
         }
       }
 
