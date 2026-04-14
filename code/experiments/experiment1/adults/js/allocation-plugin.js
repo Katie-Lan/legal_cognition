@@ -304,14 +304,23 @@ var jsPsychAllocation = (function (jspsych) {
         const pEl = getCookieEl(cookieId);
         if (zone === 'pool') {
           cookieDest[cookieId] = 'pool';
-          if (pEl) { pEl.style.display = ''; pEl.classList.remove('dragging'); }
+          if (pEl) {
+            pEl.classList.remove('dragging', 'empty');
+            pEl.classList.add('filled');
+            pEl.innerHTML = '<span class="cookie-emoji">🍪</span>';
+          }
         } else {
           cookieDest[cookieId] = zone;
           slotEl.innerHTML = '<span class="cookie-emoji">🍪</span>';
           slotEl.classList.remove('empty');
           slotEl.classList.add('filled');
           slotEl.dataset.cookieId = String(cookieId);
-          if (pEl) { pEl.style.display = 'none'; pEl.classList.remove('dragging'); }
+          if (pEl) {
+            pEl.style.display = '';
+            pEl.classList.remove('dragging', 'filled');
+            pEl.classList.add('empty');
+            pEl.innerHTML = '';
+          }
         }
 
         updateConfirmBtn();
