@@ -161,7 +161,7 @@ body {
 }
 
 .cookie-slot.dragging {
-  opacity: 0.4;
+  visibility: hidden;
 }
 
 /* Ghost cookie (follows cursor while dragging) */
