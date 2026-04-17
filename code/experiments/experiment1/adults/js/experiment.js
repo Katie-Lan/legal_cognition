@@ -174,8 +174,8 @@ const secondBlockScenarios = [
     harm_type: 'strict_liability',
     p_cookies: 3, p_after: 3,
     v_initial: 3, v_after_harm: 1, harm_amount: 2,
-    event_text: 'Kai sneezes suddenly and unexpectedly. The force of the sneeze knocks two of Ruby\'s cookies off the table. Kai could not have prevented this.',
-    event_title: 'Kai\'s Sneeze Knocks Ruby\'s Cookies'
+    event_text: 'At a science fair, Kai is showing his volcano project. Ruby is standing nearby, holding her box of cookies and watching the project. Kai\'s volcano unexpectedly erupts and the eruption accidentally contaminates two of Ruby\'s cookies.',
+    event_title: 'Kai\'s Volcano Contaminates Ruby\'s Cookies'
   },
   {
     id: 8,
