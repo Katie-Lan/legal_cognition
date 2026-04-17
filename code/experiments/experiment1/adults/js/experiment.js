@@ -32,9 +32,18 @@ const jsPsych = initJsPsych({
 
 /* ----------------------------------------------------------
    PARTICIPANT-LEVEL RANDOMIZATION
+   sessionStorage keeps values stable across jump-reloads so the
+   researcher debug panel always lands on the correct slide.
    ---------------------------------------------------------- */
-// Trash panel position is fixed for the whole session
-const TRASH_ON_LEFT = Math.random() < 0.5;
+function sessionGet(key, generator) {
+  const stored = sessionStorage.getItem(key);
+  if (stored !== null) return JSON.parse(stored);
+  const val = generator();
+  sessionStorage.setItem(key, JSON.stringify(val));
+  return val;
+}
+
+const TRASH_ON_LEFT = sessionGet('exp1_trash', () => Math.random() < 0.5);
 
 /* ----------------------------------------------------------
    HELPERS
@@ -608,10 +617,14 @@ const warmupBlock = [
   warmupReady,
 ];
 
-// Finn & Cleo block — randomized order
-const shuffledFinnCleo = jsPsych.randomization.shuffle(finnCleoScenarios);
-// Second block — randomized among themselves, always after Finn & Cleo
-const shuffledSecondBlock = jsPsych.randomization.shuffle(secondBlockScenarios);
+// Finn & Cleo block — randomized order (stable across jump-reloads)
+const shuffledFinnCleo = sessionGet('exp1_shuffle_fc',
+  () => jsPsych.randomization.shuffle(finnCleoScenarios.map((_, i) => i))
+).map(i => finnCleoScenarios[i]);
+// Second block — randomized among themselves, always after Finn & Cleo (stable across jump-reloads)
+const shuffledSecondBlock = sessionGet('exp1_shuffle_sb',
+  () => jsPsych.randomization.shuffle(secondBlockScenarios.map((_, i) => i))
+).map(i => secondBlockScenarios[i]);
 const totalTrials = shuffledFinnCleo.length + shuffledSecondBlock.length;
 const testBlock = [];
 let trialIdx = 0;
@@ -692,7 +705,7 @@ const timeline = [
 
   document.getElementById('rdp-jump').addEventListener('click', () => {
     const idx = document.getElementById('rdp-select').value;
-    window.location.href = window.location.pathname + '?jumpTo=' + idx;
+    window.location.search = '?jumpTo=' + idx;
   });
 
   // Start experiment from the selected slide
