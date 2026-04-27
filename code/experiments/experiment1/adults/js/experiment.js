@@ -69,6 +69,17 @@ function cookieGridHTML(filled, total, size, animate) {
   return html;
 }
 
+/** Free-floating cookie icons — no slots, no grid */
+function freeCookiesHTML(count, animate) {
+  let html = '<div class="free-cookies-row">';
+  for (let i = 0; i < count; i++) {
+    const cls = animate ? ` animate-cookie-appear stagger-${i}` : '';
+    html += `<span class="free-cookie-emoji${cls}">🍪</span>`;
+  }
+  html += '</div>';
+  return html;
+}
+
 /** Single-person display for one-at-a-time introductions */
 function onePersonHTML(name, imgFile) {
   return `
@@ -80,8 +91,11 @@ function onePersonHTML(name, imgFile) {
     </div>`;
 }
 
-/** Two-person display (P left, V right) with optional cookies */
-function twoPersonHTML({ pCookies, vCookies, pLabel, vLabel, showSlots, animate,
+/** Two-person display (P left, V right) with optional cookies.
+ *  showSlots:   render the 3+2 slot grid (used in outcome slides)
+ *  showCookies: render free-floating emoji icons (used in intro slides)
+ */
+function twoPersonHTML({ pCookies, vCookies, pLabel, vLabel, showSlots, showCookies, animate,
                          pName = 'Finn', vName = 'Cleo',
                          pImg  = 'finn_neutral.png', vImg = 'cleo_neutral.png' }) {
   return `
@@ -89,14 +103,14 @@ function twoPersonHTML({ pCookies, vCookies, pLabel, vLabel, showSlots, animate,
       <div class="person-col">
         <img src="img/${pImg}" class="char-img" alt="${pName}">
         <p class="person-name">${pName}</p>
-        ${showSlots ? `<div class="cookie-label">${pLabel}</div>
-          ${cookieGridHTML(pCookies, 5, 'large', animate)}` : ''}
+        ${showSlots   ? `<div class="cookie-label">${pLabel}</div>${cookieGridHTML(pCookies, 5, 'large', animate)}` : ''}
+        ${showCookies ? `<div class="cookie-label">${pLabel}</div>${freeCookiesHTML(pCookies, animate)}` : ''}
       </div>
       <div class="person-col">
         <img src="img/${vImg}" class="char-img" alt="${vName}">
         <p class="person-name">${vName}</p>
-        ${showSlots ? `<div class="cookie-label">${vLabel}</div>
-          ${cookieGridHTML(vCookies, 5, 'large', animate)}` : ''}
+        ${showSlots   ? `<div class="cookie-label">${vLabel}</div>${cookieGridHTML(vCookies, 5, 'large', animate)}` : ''}
+        ${showCookies ? `<div class="cookie-label">${vLabel}</div>${freeCookiesHTML(vCookies, animate)}` : ''}
       </div>
     </div>`;
 }
@@ -163,10 +177,10 @@ const secondBlockScenarios = [
     id: 5,
     p_name: 'Milo', v_name: 'Sasha', p_img: 'Milo.png', v_img: 'Sasha.png',
     harm_type: 'intentional',
-    p_cookies: 3, p_after: 4,
+    p_cookies: 3, p_after: 3,
     v_initial: 3, v_after_harm: 2, harm_amount: 1,
-    event_text: 'Milo walks over to Sasha and steals one of her cookies and puts it in his own box.',
-    event_title: 'Milo Steals Sasha\'s Cookie'
+    event_text: 'Milo is angry at Sasha. He walks over and deliberately smashes one of Sasha\'s cookies, destroying it. The cookie is gone. Milo still has 3 cookies. Sasha now has 2 cookies.',
+    event_title: 'Milo Destroys Sasha\'s Cookie'
   },
   {
     id: 6,
@@ -182,9 +196,9 @@ const secondBlockScenarios = [
     p_name: 'Kai', v_name: 'Ruby', p_img: 'kai.png', v_img: 'Ruby.png',
     harm_type: 'strict_liability',
     p_cookies: 3, p_after: 3,
-    v_initial: 3, v_after_harm: 1, harm_amount: 2,
-    event_text: 'At a science fair, Kai is showing his volcano project. Ruby is standing nearby, holding her box of cookies and watching the project. Kai\'s volcano unexpectedly erupts and the eruption accidentally contaminates two of Ruby\'s cookies.',
-    event_title: 'Kai\'s Volcano Contaminates Ruby\'s Cookies'
+    v_initial: 3, v_after_harm: 2, harm_amount: 1,
+    event_text: 'Kai is carefully leading his pet wild wolf on a leash. He has taken all safety precautions and is being very careful. Despite this, the wolf suddenly lunges toward Ruby and eats one of her cookies before Kai can stop it. Kai looks horrified and apologetic. Ruby looks shocked and upset.',
+    event_title: 'Kai\'s Wolf Eats Ruby\'s Cookie'
   },
   {
     id: 8,
@@ -208,10 +222,9 @@ const welcomeScreen = {
   stimulus: `
     <div style="text-align:center; padding:60px 40px; max-width:700px; margin:0 auto; font-family:sans-serif; color:#333;">
       <p style="font-size:22px; line-height:1.6;">
-        You will be introduced to a problem and you will watch them interact.
-        You will see Finn and Cleo interacting.
-        Afterwards, Cleo will lose some cookies.
-        Your job will be to decide how to move around their cookies.
+        Welcome! In this game, you will watch two characters interact.
+        Your job is to decide how to move their cookies around.
+        Let's practice first!
       </p>
     </div>`,
   choices: ['Next'],
@@ -220,114 +233,43 @@ const welcomeScreen = {
 // Slide 1a – Introduce Finn
 const warmupIntroFinn = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: onePersonHTML('Finn', 'finn_neutral.png'),
+  stimulus: `
+    <div style="text-align:center; padding:30px 20px;">
+      <p class="slide-instruction">This is Finn</p>
+      <img src="img/finn_neutral.png" class="char-img intro-img" alt="Finn" style="margin:20px auto; display:block;">
+      <p class="slide-instruction" style="margin-top:16px;">Finn has 3 cookies</p>
+      <div style="display:flex; justify-content:center; margin-top:10px;">
+        ${freeCookiesHTML(3, false)}
+      </div>
+    </div>`,
   choices: ['Next'],
 };
 
 // Slide 1b – Introduce Cleo
 const warmupIntroCleo = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: onePersonHTML('Cleo', 'cleo_neutral.png'),
-  choices: ['Next'],
-};
-
-// Slide 3 – Show 5 empty slots
-const warmupShowSlots = {
-  type: jsPsychHtmlButtonResponse,
   stimulus: `
-    ${twoPersonHTML({
-      pCookies: 0, vCookies: 0,
-      pLabel: 'Finn can carry 5 cookies', vLabel: 'Cleo can carry 5 cookies',
-      showSlots: true, animate: false,
-      pImg: 'finn_neutral.png', vImg: 'cleo_neutral.png'
-    })}
-    <div style="text-align:center; margin-top:10px;">
-      <p class="slide-instruction">
-        Each person has 5 slots for carrying cookies
-      </p>
+    <div style="text-align:center; padding:30px 20px;">
+      <p class="slide-instruction">This is Cleo</p>
+      <img src="img/cleo_neutral.png" class="char-img intro-img" alt="Cleo" style="margin:20px auto; display:block;">
+      <p class="slide-instruction" style="margin-top:16px;">Cleo has 3 cookies</p>
+      <div style="display:flex; justify-content:center; margin-top:10px;">
+        ${freeCookiesHTML(3, false)}
+      </div>
     </div>`,
   choices: ['Next'],
 };
 
-// Slide 4 – Fill in P=3, V=3 (animated)
-const warmupFillCookies = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: `
-    ${twoPersonHTML({
-      pCookies: 3, vCookies: 3,
-      pLabel: 'Finn has 3 cookies', vLabel: 'Cleo has 3 cookies',
-      showSlots: true, animate: true,
-      pImg: 'finn_neutral.png', vImg: 'cleo_neutral.png'
-    })}
-    <div style="text-align:center; margin-top:10px;">
-      <p class="slide-instruction">
-        You will then learn about how many cookies each person has.<br>
-        Here Finn has 3 and Cleo has 3
-      </p>
-    </div>`,
-  choices: ['Next'],
-};
-
-// Slide 5 – "You will learn something P does"
-const warmupLearnEvent = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: slideLayout(
-    twoPersonHTML({ pCookies: 3, vCookies: 3, pLabel: 'Finn has 3 cookies', vLabel: 'Cleo has 3 cookies', showSlots: true, pImg: 'finn_neutral.png', vImg: 'cleo_neutral.png' }),
-    'You will then learn about something Finn does'
-  ),
-  choices: ['Next'],
-};
-
-// Slide 6 – V loses 2 cookies (V: 3→1)
-const warmupVLoses = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: slideLayout(
-    twoPersonHTML({
-      pCookies: 3, vCookies: 1,
-      pLabel: 'Finn has 3 cookies', vLabel: 'Cleo has 1 cookie',
-      showSlots: true, animate: false,
-      pImg: 'finn_neutral.png', vImg: 'cleo_neutral.png'
-    }),
-    'After Finn does something, Cleo will lose some cookies.<br>Here Finn did something and Cleo lost 2 cookies'
-  ),
-  choices: ['Next'],
-};
-
-// Slide 7 – "You will decide what should happen"
-const warmupDecide = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: slideLayout(
-    twoPersonHTML({
-      pCookies: 3, vCookies: 1,
-      pLabel: 'Finn has 3 cookies', vLabel: 'Cleo has 1 cookie',
-      showSlots: true,
-      pImg: 'finn_neutral.png', vImg: 'cleo_neutral.png'
-    }),
-    'You will then decide what should happen'
-  ),
-  choices: ['Next'],
-};
-
-// Slide 8 – Explain P→V option (static)
-const warmupExplainPtoV = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: slideLayout(
-    '',
-    'You can decide to take some cookies from Finn and give them to Cleo'
-  ),
-  choices: ['Next'],
-};
-
-// Slide 10 – Practice P→V (must move ≥1 to V)
+// Slide 2a – Practice: move a cookie to Cleo
 const warmupPracticeV = {
   type: jsPsychAllocation,
   p_cookies: 3,
-  v_cookies_current: 1,
+  v_cookies_current: 3,
   hud_p_cookies: 3,
   hud_v_cookies: 3,
   trash_on_left: TRASH_ON_LEFT,
   harm_text: '',
-  instruction_text: "Let's give it a try! Try moving cookies from Finn to Cleo",
+  instruction_text: "Try it out! Move one of Finn's cookies to Cleo's plate.",
   require_v: true,
   require_trash: false,
   require_both: false,
@@ -337,23 +279,16 @@ const warmupPracticeV = {
   p_img: 'finn_neutral.png', v_img: 'cleo_neutral.png',
 };
 
-// Slide 11 – Explain P→Trash option (static)
-const warmupExplainPtoTrash = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: slideLayout('', 'You can also decide to take some cookies from Finn and put them in the cookie jar'),
-  choices: ['Next'],
-};
-
-// Slide 12 – Practice P→Trash (must move ≥1 to Trash)
+// Slide 2b – Practice: move a cookie to the Cookie Jar
 const warmupPracticeTrash = {
   type: jsPsychAllocation,
   p_cookies: 3,
-  v_cookies_current: 1,
+  v_cookies_current: 3,
   hud_p_cookies: 3,
   hud_v_cookies: 3,
   trash_on_left: TRASH_ON_LEFT,
   harm_text: '',
-  instruction_text: "Let's give it a try! Try moving cookies from Finn to the cookie jar",
+  instruction_text: "Now move one of Finn's cookies to the Cookie Jar.",
   require_v: false,
   require_trash: true,
   require_both: false,
@@ -363,23 +298,16 @@ const warmupPracticeTrash = {
   p_img: 'finn_neutral.png', v_img: 'cleo_neutral.png',
 };
 
-// Slide 13 – Explain both option
-const warmupExplainBoth = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: slideLayout('', 'You can also decide to take cookies from Finn and put them in the cookie jar and give some to Cleo'),
-  choices: ['Next'],
-};
-
-// Slide 14 – Practice both
+// Slide 2c – Practice: move a cookie to both Cleo and the Cookie Jar
 const warmupPracticeBoth = {
   type: jsPsychAllocation,
   p_cookies: 3,
-  v_cookies_current: 1,
+  v_cookies_current: 3,
   hud_p_cookies: 3,
   hud_v_cookies: 3,
   trash_on_left: TRASH_ON_LEFT,
   harm_text: '',
-  instruction_text: "Let's give it a try! Try moving cookies from Finn to the cookie jar and to Cleo",
+  instruction_text: "Last one! Move at least one cookie to Cleo's plate AND at least one to the Cookie Jar.",
   require_v: false,
   require_trash: false,
   require_both: true,
@@ -389,17 +317,13 @@ const warmupPracticeBoth = {
   p_img: 'finn_neutral.png', v_img: 'cleo_neutral.png',
 };
 
-// Slide 15 – "Choice is yours"
-const warmupChoiceYours = {
+// Slide 3 – Practice confirmation
+const warmupDone = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: slideLayout('', "The choice is yours! You decide where you want to put Finn's cookies"),
-  choices: ['Next'],
-};
-
-// Slide 16 – "Ready to begin"
-const warmupReady = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: slideLayout('', "If you're ready to begin, please click next"),
+  stimulus: `
+    <div style="text-align:center; padding:80px 40px; max-width:700px; margin:0 auto;">
+      <p class="slide-instruction">Great job! Now let's begin.</p>
+    </div>`,
   choices: ['Begin'],
 };
 
@@ -425,21 +349,7 @@ function buildTestTrial(scenario, scenarioIdx, total) {
     _debugLabel: `${trialLabel} — A: Characters`,
   };
 
-  // Slide B – Show empty slots
-  const slideB = {
-    _debugLabel: `${trialLabel} — B: Empty Slots`,
-    type: jsPsychHtmlButtonResponse,
-    stimulus: twoPersonHTML({
-      pCookies: 0, vCookies: 0,
-      pLabel: `${pName} can carry 5 cookies`,
-      vLabel: `${vName} can carry 5 cookies`,
-      showSlots: true, animate: false,
-      pName, vName, pImg, vImg
-    }),
-    choices: ['Next'],
-  };
-
-  // Slide C – Fill in initial cookies (animated)
+  // Slide C – Show initial cookies as free-floating icons (animated)
   const slideC = {
     _debugLabel: `${trialLabel} — C: Initial Cookies`,
     type: jsPsychHtmlButtonResponse,
@@ -448,7 +358,7 @@ function buildTestTrial(scenario, scenarioIdx, total) {
       vCookies: scenario.v_initial,
       pLabel: `${pName} has ${scenario.p_cookies} cookies`,
       vLabel: `${vName} has ${scenario.v_initial} cookies`,
-      showSlots: true, animate: true,
+      showCookies: true, animate: true,
       pName, vName, pImg, vImg
     }),
     choices: ['Next'],
@@ -489,7 +399,7 @@ function buildTestTrial(scenario, scenarioIdx, total) {
             vCookies: scenario.v_after_harm,
             pLabel: `${pName} has ${pAfter} cookie${pAfter !== 1 ? 's' : ''}`,
             vLabel: `${vName} has ${scenario.v_after_harm} cookie${scenario.v_after_harm !== 1 ? 's' : ''}`,
-            showSlots: true, animate: false,
+            showCookies: true, animate: false,
             pName, vName, pImg, vImg
           })}
         </div>`,
@@ -530,14 +440,14 @@ function buildTestTrial(scenario, scenarioIdx, total) {
                 <img src="img/${vImg}" class="char-img" alt="${vName}">
                 <p class="person-name">${vName}</p>
                 <div class="cookie-label">${vName} has ${scenario.v_after_harm} cookie${scenario.v_after_harm !== 1 ? 's' : ''}</div>
-                ${cookieGridHTML(scenario.v_after_harm, 5, 'large', false)}
+                ${freeCookiesHTML(scenario.v_after_harm, false)}
               </div>
               ${pGained > 0 ? `
               <div class="harm-result-char">
                 <img src="img/${pImg}" class="char-img" alt="${pName}">
                 <p class="person-name">${pName}</p>
                 <div class="cookie-label">${pName} has ${pAfter} cookie${pAfter !== 1 ? 's' : ''}</div>
-                ${cookieGridHTML(pAfter, 5, 'large', false)}
+                ${freeCookiesHTML(pAfter, false)}
               </div>` : ''}
             </div>
             <p class="decision-prompt">Please decide whether you would like to move some of ${pName}'s cookies.</p>
@@ -569,7 +479,7 @@ function buildTestTrial(scenario, scenarioIdx, total) {
     harm_type: scenario.harm_type,
   };
 
-  return [slideA, slideB, slideC, ...slidesDE, slideF];
+  return [slideA, slideC, ...slidesDE, slideF];
 }
 
 /* ----------------------------------------------------------
@@ -602,19 +512,10 @@ const warmupBlock = [
   welcomeScreen,
   warmupIntroFinn,
   warmupIntroCleo,
-  warmupShowSlots,
-  warmupFillCookies,
-  warmupLearnEvent,
-  warmupVLoses,
-  warmupDecide,
-  warmupExplainPtoV,
   warmupPracticeV,
-  warmupExplainPtoTrash,
   warmupPracticeTrash,
-  warmupExplainBoth,
   warmupPracticeBoth,
-  warmupChoiceYours,
-  warmupReady,
+  warmupDone,
 ];
 
 // Finn & Cleo block — randomized order (stable across jump-reloads)
@@ -651,23 +552,14 @@ const endScreen = {
 /* ----------------------------------------------------------
    DEBUG LABELS (read by researcher panel — harmless in production)
    ---------------------------------------------------------- */
-welcomeScreen._debugLabel        = 'Welcome Screen';
-warmupIntroFinn._debugLabel      = 'Intro: Finn';
-warmupIntroCleo._debugLabel      = 'Intro: Cleo';
-warmupShowSlots._debugLabel      = 'Warmup: Show Slots';
-warmupFillCookies._debugLabel    = 'Warmup: Fill Cookies';
-warmupLearnEvent._debugLabel     = 'Warmup: Learn Event';
-warmupVLoses._debugLabel         = 'Warmup: Cleo Loses Cookies';
-warmupDecide._debugLabel         = 'Warmup: Decide';
-warmupExplainPtoV._debugLabel    = 'Warmup: Explain → Cleo';
-warmupPracticeV._debugLabel      = 'Warmup: Practice → Cleo';
-warmupExplainPtoTrash._debugLabel = 'Warmup: Explain → Jar';
-warmupPracticeTrash._debugLabel  = 'Warmup: Practice → Jar';
-warmupExplainBoth._debugLabel    = 'Warmup: Explain → Both';
-warmupPracticeBoth._debugLabel   = 'Warmup: Practice → Both';
-warmupChoiceYours._debugLabel    = 'Warmup: Choice Is Yours';
-warmupReady._debugLabel          = 'Warmup: Ready to Begin';
-endScreen._debugLabel            = 'End Screen';
+welcomeScreen._debugLabel   = 'Welcome Screen';
+warmupIntroFinn._debugLabel = 'Intro: Finn';
+warmupIntroCleo._debugLabel = 'Intro: Cleo';
+warmupPracticeV._debugLabel     = 'Warmup: Practice (Cleo)';
+warmupPracticeTrash._debugLabel = 'Warmup: Practice (Jar)';
+warmupPracticeBoth._debugLabel  = 'Warmup: Practice (Both)';
+warmupDone._debugLabel      = 'Warmup: Done';
+endScreen._debugLabel       = 'End Screen';
 
 /* ----------------------------------------------------------
    RUN
