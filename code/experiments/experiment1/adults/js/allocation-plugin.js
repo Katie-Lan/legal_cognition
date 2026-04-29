@@ -152,7 +152,7 @@ var jsPsychAllocation = (function (jspsych) {
           <div class="alloc-panel" id="trash-panel">
             <img src="img/cookie_jar.png" class="alloc-char-img" alt="The Cookie Jar">
             <p class="alloc-char-name">The Cookie Jar</p>
-            <div class="panel-name">Cookie Jar</div>
+            <div class="panel-name" style="visibility:hidden">Cookie Jar</div>
             <div class="cookie-plate" id="trash-plate"></div>
           </div>`;
       }
