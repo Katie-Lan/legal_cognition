@@ -206,7 +206,7 @@ const secondBlockScenarios = [
     harm_type: 'strict_liability',
     p_cookies: 3, p_after: 3,
     v_initial: 3, v_after_harm: 2, harm_amount: 1,
-    video: 'mp4/sam%20and%20ella.mp4',
+    slides: ['img/trailppt/sam_ella_1.png', 'img/trailppt/sam_ella_2.png', 'img/trailppt/sam_ella_3.png'],
     event_text: 'Sam is carefully walking his dog on a leash. Even though Sam is holding the leash tightly and being very careful, the dog lunges toward Ella\'s cookies and eats one before Sam can stop it.',
     event_title: 'Sam\'s Dog Eats Ella\'s Cookie'
   }
@@ -398,6 +398,74 @@ function buildTestTrial(scenario, scenarioIdx, total) {
           </video>
         </div>`,
       choices: ['Next'],
+    };
+
+    // Slide E – Updated cookies (post-harm counts, no event box)
+    const pGainedNote = pGained > 0
+      ? `<br>${pName} now has <strong>${pAfter}</strong> cookie${pAfter !== 1 ? 's' : ''}.`
+      : '';
+    const slideE = {
+      _debugLabel: `${trialLabel} — E: Updated Cookies`,
+      type: jsPsychHtmlButtonResponse,
+      stimulus: `
+        <div style="display:flex; flex-direction:column; align-items:center; gap:20px; padding-top:20px;">
+          <p class="slide-instruction">
+            Oh no, ${vName} lost ${scenario.harm_amount} cookie${scenario.harm_amount !== 1 ? 's' : ''}.<br>
+            ${vName} now only has <strong>${scenario.v_after_harm}</strong>
+            cookie${scenario.v_after_harm !== 1 ? 's' : ''} left.${pGainedNote}
+          </p>
+          ${twoPersonHTML({
+            pCookies: pAfter,
+            vCookies: scenario.v_after_harm,
+            pLabel: `${pName} has ${pAfter} cookie${pAfter !== 1 ? 's' : ''}`,
+            vLabel: `${vName} has ${scenario.v_after_harm} cookie${scenario.v_after_harm !== 1 ? 's' : ''}`,
+            showCookies: true, animate: false,
+            pName, vName, pImg, vImg
+          })}
+        </div>`,
+      choices: ['Next'],
+    };
+
+    slidesDE = [slideD, slideE];
+  } else if (scenario.slides) {
+    // Slide D – Image slideshow exported from PowerPoint
+    const _imgs = scenario.slides;
+    const slideD = {
+      _debugLabel: `${trialLabel} — D: Video`,
+      type: jsPsychHtmlButtonResponse,
+      stimulus: `
+        <div style="display:flex; flex-direction:column; align-items:center; gap:16px; padding-top:20px;">
+          <img id="pptx-img" src="${_imgs[0]}"
+               style="max-width:860px; width:100%; border-radius:8px;">
+          <div style="display:flex; align-items:center; gap:16px;">
+            <button id="pptx-prev"
+                    style="padding:8px 20px; font-size:15px; border-radius:6px; cursor:pointer;">
+              ◀ Prev
+            </button>
+            <span id="pptx-counter" style="font-size:15px; color:#555;">
+              1 / ${_imgs.length}
+            </span>
+            <button id="pptx-next"
+                    style="padding:8px 20px; font-size:15px; border-radius:6px; cursor:pointer;">
+              Next ▶
+            </button>
+          </div>
+        </div>`,
+      choices: ['Continue'],
+      on_load: function() {
+        const imgs = _imgs;
+        let cur = 0;
+        function update() {
+          document.getElementById('pptx-img').src = imgs[cur];
+          document.getElementById('pptx-counter').textContent = (cur + 1) + ' / ' + imgs.length;
+        }
+        document.getElementById('pptx-prev').addEventListener('click', () => {
+          if (cur > 0) { cur--; update(); }
+        });
+        document.getElementById('pptx-next').addEventListener('click', () => {
+          if (cur < imgs.length - 1) { cur++; update(); }
+        });
+      },
     };
 
     // Slide E – Updated cookies (post-harm counts, no event box)
