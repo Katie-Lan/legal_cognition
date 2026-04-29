@@ -467,7 +467,7 @@ body {
 /* Character image and name inside allocation panels / P pool */
 .alloc-char-img {
   width: 120px;
-  height: auto;
+  height: 140px;
   object-fit: contain;
 }
 
@@ -485,6 +485,8 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 14px;
+  padding-top: 20px;
+  width: 280px;
 }
 
 /* P pool cookie grid – medium sized, draggable */

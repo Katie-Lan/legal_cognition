@@ -317,6 +317,26 @@ const warmupPracticeBoth = {
   p_img: 'finn_neutral.png', v_img: 'cleo_neutral.png',
 };
 
+// Slide 2d – Practice: do nothing
+const warmupPracticeDoNothing = {
+  type: jsPsychAllocation,
+  p_cookies: 3,
+  v_cookies_current: 3,
+  hud_p_cookies: 3,
+  hud_v_cookies: 3,
+  trash_on_left: TRASH_ON_LEFT,
+  harm_text: '',
+  instruction_text: "You can also choose to do nothing and leave everything as is. Try clicking the 'Do Nothing' button.",
+  require_v: false,
+  require_trash: false,
+  require_both: false,
+  is_practice: true,
+  allow_do_nothing: true,
+  scenario_id: 0,
+  p_name: 'Finn', v_name: 'Cleo',
+  p_img: 'finn_neutral.png', v_img: 'cleo_neutral.png',
+};
+
 // Slide 3 – Practice confirmation
 const warmupDone = {
   type: jsPsychHtmlButtonResponse,
@@ -515,6 +535,7 @@ const warmupBlock = [
   warmupPracticeV,
   warmupPracticeTrash,
   warmupPracticeBoth,
+  warmupPracticeDoNothing,
   warmupDone,
 ];
 
@@ -555,10 +576,11 @@ const endScreen = {
 welcomeScreen._debugLabel   = 'Welcome Screen';
 warmupIntroFinn._debugLabel = 'Intro: Finn';
 warmupIntroCleo._debugLabel = 'Intro: Cleo';
-warmupPracticeV._debugLabel     = 'Warmup: Practice (Cleo)';
-warmupPracticeTrash._debugLabel = 'Warmup: Practice (Jar)';
-warmupPracticeBoth._debugLabel  = 'Warmup: Practice (Both)';
-warmupDone._debugLabel      = 'Warmup: Done';
+warmupPracticeV._debugLabel          = 'Warmup: Practice (Cleo)';
+warmupPracticeTrash._debugLabel      = 'Warmup: Practice (Jar)';
+warmupPracticeBoth._debugLabel       = 'Warmup: Practice (Both)';
+warmupPracticeDoNothing._debugLabel  = 'Warmup: Practice (Do Nothing)';
+warmupDone._debugLabel               = 'Warmup: Done';
 endScreen._debugLabel       = 'End Screen';
 
 /* ----------------------------------------------------------
