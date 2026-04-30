@@ -318,25 +318,6 @@ const warmupPracticeBoth = {
 };
 
 // Slide 2d – Practice: do nothing
-const warmupPracticeDoNothing = {
-  type: jsPsychAllocation,
-  p_cookies: 3,
-  v_cookies_current: 3,
-  hud_p_cookies: 3,
-  hud_v_cookies: 3,
-  trash_on_left: TRASH_ON_LEFT,
-  harm_text: '',
-  instruction_text: "You can also choose to do nothing and leave everything as is. Try clicking the 'Do Nothing' button.",
-  require_v: false,
-  require_trash: false,
-  require_both: false,
-  is_practice: true,
-  allow_do_nothing: true,
-  scenario_id: 0,
-  p_name: 'Finn', v_name: 'Cleo',
-  p_img: 'finn_neutral.png', v_img: 'cleo_neutral.png',
-};
-
 // Slide 3 – Practice confirmation
 const warmupDone = {
   type: jsPsychHtmlButtonResponse,
@@ -547,9 +528,26 @@ function buildTestTrial(scenario, scenarioIdx, total) {
     slidesDE = [slideD, slideE];
   }
 
-  // Slide F – Allocation task
+  // Slide F – Move-cookies gate (Yes / No)
   const slideF = {
-    _debugLabel: `${trialLabel} — F: Allocation`,
+    _debugLabel: `${trialLabel} — F: Move Decision`,
+    type: jsPsychHtmlButtonResponse,
+    stimulus: `
+      <div style="text-align:center; padding:60px 40px; max-width:700px; margin:0 auto;">
+        <p style="font-size:26px; font-weight:bold; margin-bottom:48px;">
+          Would you like to move some of ${pName}'s cookies?
+        </p>
+      </div>`,
+    choices: ['✓  Yes', '✗  No'],
+    button_html: [
+      '<button class="jspsych-btn" style="background:#22c55e;color:white;font-size:22px;padding:16px 52px;border:none;border-radius:12px;cursor:pointer;font-weight:bold;margin:0 20px;">%choice%</button>',
+      '<button class="jspsych-btn" style="background:#ef4444;color:white;font-size:22px;padding:16px 52px;border:none;border-radius:12px;cursor:pointer;font-weight:bold;margin:0 20px;">%choice%</button>',
+    ],
+  };
+
+  // Slide G – Allocation task (only shown when viewer chose Yes)
+  const slideG = {
+    _debugLabel: `${trialLabel} — G: Allocation`,
     type: jsPsychAllocation,
     p_cookies: pAfter,
     v_cookies_current: scenario.v_after_harm,
@@ -567,7 +565,15 @@ function buildTestTrial(scenario, scenarioIdx, total) {
     harm_type: scenario.harm_type,
   };
 
-  return [slideA, slideC, ...slidesDE, slideF];
+  const conditionalG = {
+    timeline: [slideG],
+    conditional_function: function() {
+      // response 0 = Yes (first button), 1 = No
+      return jsPsych.data.get().last(1).values()[0].response === 0;
+    },
+  };
+
+  return [slideA, slideC, ...slidesDE, slideF, conditionalG];
 }
 
 /* ----------------------------------------------------------
@@ -603,7 +609,6 @@ const warmupBlock = [
   warmupPracticeV,
   warmupPracticeTrash,
   warmupPracticeBoth,
-  warmupPracticeDoNothing,
   warmupDone,
 ];
 
