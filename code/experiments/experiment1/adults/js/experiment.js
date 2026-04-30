@@ -652,7 +652,6 @@ warmupIntroCleo._debugLabel = 'Intro: Cleo';
 warmupPracticeV._debugLabel          = 'Warmup: Practice (Cleo)';
 warmupPracticeTrash._debugLabel      = 'Warmup: Practice (Jar)';
 warmupPracticeBoth._debugLabel       = 'Warmup: Practice (Both)';
-warmupPracticeDoNothing._debugLabel  = 'Warmup: Practice (Do Nothing)';
 warmupDone._debugLabel               = 'Warmup: Done';
 endScreen._debugLabel       = 'End Screen';
 
