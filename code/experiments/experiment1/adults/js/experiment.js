@@ -372,9 +372,20 @@ function buildTestTrial(scenario, scenarioIdx, total) {
     on_load: function() {
       const imgs = _storyImgs;
       let cur = 0;
+      const continueBtn = document.querySelector('.jspsych-btn');
+      if (imgs.length > 1) {
+        continueBtn.disabled = true;
+        continueBtn.style.opacity = '0.4';
+        continueBtn.style.cursor = 'not-allowed';
+      }
       function update() {
         document.getElementById('story-img').src = imgs[cur];
         document.getElementById('story-counter').textContent = (cur + 1) + ' / ' + imgs.length;
+        if (cur === imgs.length - 1) {
+          continueBtn.disabled = false;
+          continueBtn.style.opacity = '1';
+          continueBtn.style.cursor = 'pointer';
+        }
       }
       document.getElementById('story-prev').addEventListener('click', () => {
         if (cur > 0) { cur--; update(); }
