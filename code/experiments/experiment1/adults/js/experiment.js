@@ -212,6 +212,16 @@ const secondBlockScenarios = [
     event_text: 'Sam is walking his dog on a leash when the dog breaks free and eats 2 of Ella\'s cookies.',
     event_title: 'Sam\'s Dog Eats Ella\'s Cookies',
     story_slides: ['img/trailppt/sam_ella/sam_ella_1.png','img/trailppt/sam_ella/sam_ella_2.png','img/trailppt/sam_ella/sam_ella_3.png','img/trailppt/sam_ella/sam_ella_4.png','img/trailppt/sam_ella/sam_ella_5.png','img/trailppt/sam_ella/sam_ella_6.png','img/trailppt/sam_ella/sam_ella_7.png','img/trailppt/sam_ella/sam_ella_8.png','img/trailppt/sam_ella/sam_ella_9.png','img/trailppt/sam_ella/sam_ella_10.png']
+  },
+  {
+    id: 9,
+    p_name: 'Catherine', v_name: 'Andy', p_img: 'catherine.png', v_img: 'andy.png',
+    harm_type: 'strict_liability',
+    p_cookies: 5, p_after: 5,
+    v_initial: 3, v_after_harm: 2, harm_amount: 1,
+    event_text: 'Andy and Catherine bumped into each other accidentally. Catherine\'s wolf ate 1 of Andy\'s cookies.',
+    event_title: 'Catherine\'s Wolf Eats Andy\'s Cookie',
+    story_slides: ['img/trailppt/andy_catherine/andy_catherine_1.png','img/trailppt/andy_catherine/andy_catherine_2.png','img/trailppt/andy_catherine/andy_catherine_3.png','img/trailppt/andy_catherine/andy_catherine_4.png','img/trailppt/andy_catherine/andy_catherine_5.png','img/trailppt/andy_catherine/andy_catherine_6.png','img/trailppt/andy_catherine/andy_catherine_7.png','img/trailppt/andy_catherine/andy_catherine_8.png','img/trailppt/andy_catherine/andy_catherine_9.png']
   }
 ];
 
