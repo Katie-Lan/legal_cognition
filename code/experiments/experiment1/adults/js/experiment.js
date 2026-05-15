@@ -483,8 +483,10 @@ let trialIdx = 0;
 shuffledFinnCleo.forEach(scenario => {
   buildTestTrial(scenario, trialIdx++, totalTrials).forEach(t => testBlock.push(t));
 });
-shuffledSecondBlock.forEach(scenario => {
-  buildTestTrial(scenario, trialIdx++, totalTrials).forEach(t => testBlock.push(t));
+shuffledSecondBlock.forEach((scenario, idx) => {
+  const slides = buildTestTrial(scenario, trialIdx++, totalTrials);
+  const isLast = idx === shuffledSecondBlock.length - 1;
+  (isLast ? slides.slice(0, -1) : slides).forEach(t => testBlock.push(t));
 });
 
 // Final screen
