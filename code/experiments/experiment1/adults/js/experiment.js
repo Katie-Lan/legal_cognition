@@ -362,7 +362,7 @@ function buildTestTrial(scenario, scenarioIdx, total) {
     stimulus: `
       <div style="display:flex; flex-direction:column; align-items:center; gap:16px; padding-top:20px;">
         <img id="story-img" src="${_storyImgs[0]}"
-             style="max-width:860px; width:100%; border-radius:8px;">
+             style="max-width:860px; width:100%; max-height:62vh; object-fit:contain; border-radius:8px;">
         <div style="display:flex; align-items:center; gap:16px;">
           <button id="story-prev"
                   style="padding:8px 20px; font-size:15px; border-radius:6px; cursor:pointer;">
