@@ -45,8 +45,6 @@ var jsPsychAllocation = (function (jspsych) {
       v_name: { type: jspsych.ParameterType.STRING, default: 'Cleo' },
       p_img:  { type: jspsych.ParameterType.STRING, default: 'finn_neutral.png' },
       v_img:  { type: jspsych.ParameterType.STRING, default: 'cleo_neutral.png' },
-      /** Show "Do Nothing" button even on practice trials */
-      allow_do_nothing: { type: jspsych.ParameterType.BOOL, default: false },
     }
   };
 
@@ -165,7 +163,7 @@ var jsPsychAllocation = (function (jspsych) {
       const confirmLabel = trial.is_practice ? 'Done' : 'Confirm';
 
       function needsDisabled() {
-        return trial.require_v || trial.require_trash || trial.require_both;
+        return true; // always start disabled; updateConfirmBtn enables when conditions are met
       }
 
       const html = `
@@ -182,10 +180,9 @@ var jsPsychAllocation = (function (jspsych) {
             </div>
             ${rightPanel}
           </div>
-          ${needsDisabled() ? `<div id="alloc-hint" class="alloc-hint-hidden"></div>` : ''}
+          <div id="alloc-hint" class="alloc-hint-hidden"></div>
           <div class="allocation-btn-row">
-            <button id="confirm-btn" ${needsDisabled() ? 'disabled' : ''}>${confirmLabel}</button>
-            ${(!trial.is_practice || trial.allow_do_nothing) ? `<button id="do-nothing-btn">Do Nothing</button>` : ''}
+            <button id="confirm-btn" disabled>${confirmLabel}</button>
           </div>
         </div>
         <div id="drag-ghost">🍪</div>
@@ -213,6 +210,7 @@ var jsPsychAllocation = (function (jspsych) {
           else if (inTrash < 1)       { ok = false; hintMsg = '⚠️ Don\'t forget to move a cookie to the Cookie Jar too.'; }
         } else if (trial.require_v     && inV < 1)     { ok = false; hintMsg = '⚠️ Move at least one cookie to Cleo\'s plate to continue.'; }
         else if   (trial.require_trash && inTrash < 1) { ok = false; hintMsg = '⚠️ Move at least one cookie to the Cookie Jar to continue.'; }
+        else if   (inV + inTrash < 1)                  { ok = false; }
 
         btn.disabled = !ok;
         if (hintEl) {
@@ -345,25 +343,21 @@ var jsPsychAllocation = (function (jspsych) {
       }
 
       /* -------------------------------------------------------
-         CONFIRM / DO NOTHING BUTTONS
+         CONFIRM BUTTON
       ------------------------------------------------------- */
-      function finishAllocation(doNothing) {
+      function finishAllocation() {
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup',   onMouseUp);
-
-        const inV     = doNothing ? 0 : countInZone('v');
-        const inTrash = doNothing ? 0 : countInZone('trash');
-        const inPool  = doNothing ? trial.p_cookies : countInZone('pool');
 
         this.jsPsych.finishTrial({
           scenario_id:       trial.scenario_id,
           harm_type:         trial.harm_type,
           v_initial:         trial.hud_v_cookies,
           v_after_harm:      trial.v_cookies_current,
-          cookies_to_v:      inV,
-          cookies_to_trash:  inTrash,
-          cookies_kept_by_p: inPool,
-          do_nothing:        doNothing,
+          cookies_to_v:      countInZone('v'),
+          cookies_to_trash:  countInZone('trash'),
+          cookies_kept_by_p: countInZone('pool'),
+          do_nothing:        false,
           trash_on_left:     trial.trash_on_left,
           is_practice:       trial.is_practice,
           rt:                Math.round(performance.now() - startTime),
@@ -371,15 +365,8 @@ var jsPsychAllocation = (function (jspsych) {
       }
 
       display_element.querySelector('#confirm-btn').addEventListener('click', () => {
-        finishAllocation.call(this, false);
+        finishAllocation.call(this);
       });
-
-      const doNothingBtn = display_element.querySelector('#do-nothing-btn');
-      if (doNothingBtn) {
-        doNothingBtn.addEventListener('click', () => {
-          finishAllocation.call(this, true);
-        });
-      }
     } // end trial()
   } // end class
 
