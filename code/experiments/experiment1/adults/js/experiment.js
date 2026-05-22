@@ -354,8 +354,8 @@ function buildTestTrial(scenario, scenarioIdx, total) {
 
   const trialLabel = `${pName} & ${vName}`;
 
-  // Story slide – PowerPoint slideshow (replaces slides A, C, D, E)
-  const _storyImgs = scenario.story_slides;
+  // Story slide – all slides except the last ("Please decide…") one
+  const _storyImgs = scenario.story_slides.slice(0, -1);
   const storySlide = {
     _debugLabel: `${trialLabel} — Story`,
     type: jsPsychHtmlButtonResponse,
@@ -432,7 +432,7 @@ function buildTestTrial(scenario, scenarioIdx, total) {
     hud_p_cookies: scenario.p_cookies,
     hud_v_cookies: scenario.v_initial,
     trash_on_left: TRASH_ON_LEFT,
-    header_img: scenario.story_slides[scenario.story_slides.length - 1],
+    header_img: scenario.story_slides[scenario.story_slides.length - 2],
     harm_text: '',
     instruction_text: '',
     p_name: pName, v_name: vName, p_img: pImg, v_img: vImg,
@@ -505,10 +505,8 @@ let trialIdx = 0;
 shuffledFinnCleo.forEach(scenario => {
   buildTestTrial(scenario, trialIdx++, totalTrials).forEach(t => testBlock.push(t));
 });
-shuffledSecondBlock.forEach((scenario, idx) => {
-  const slides = buildTestTrial(scenario, trialIdx++, totalTrials);
-  const isLast = idx === shuffledSecondBlock.length - 1;
-  (isLast ? slides.slice(0, -1) : slides).forEach(t => testBlock.push(t));
+shuffledSecondBlock.forEach(scenario => {
+  buildTestTrial(scenario, trialIdx++, totalTrials).forEach(t => testBlock.push(t));
 });
 
 // Final screen
