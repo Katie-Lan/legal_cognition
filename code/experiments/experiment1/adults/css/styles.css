@@ -421,6 +421,14 @@ body {
   box-sizing: border-box;
 }
 
+.allocation-header-img {
+  display: block;
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto 16px auto;
+  border-radius: 8px;
+}
+
 .allocation-harm-text {
   font-size: 20px;
   color: #555;
