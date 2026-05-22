@@ -67,8 +67,8 @@ var jsPsychAllocation = (function (jspsych) {
       /* -------------------------------------------------------
          PLATE GEOMETRY
       ------------------------------------------------------- */
-      const PLATE_D  = 220;      // diameter of each plate (px)
-      const PLATE_R  = PLATE_D / 2;  // 110
+      const PLATE_D  = 200;      // diameter of each plate (px)
+      const PLATE_R  = PLATE_D / 2;  // 100
       const COOKIE_R = 24;       // half of cookie element size, used for clamping
 
       // Preset scatter positions for cookies (offsets from plate center).
