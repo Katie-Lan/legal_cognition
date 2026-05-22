@@ -406,24 +406,7 @@ function buildTestTrial(scenario, scenarioIdx, total) {
     },
   };
 
-  // Slide F – Move-cookies gate (Yes / No)
-  const slideF = {
-    _debugLabel: `${trialLabel} — F: Move Decision`,
-    type: jsPsychHtmlButtonResponse,
-    stimulus: `
-      <div style="text-align:center; padding:60px 40px; max-width:700px; margin:0 auto;">
-        <p style="font-size:26px; font-weight:bold; margin-bottom:48px;">
-          Would you like to move some of ${pName}'s cookies?
-        </p>
-      </div>`,
-    choices: ['✓  Yes', '✗  No'],
-    button_html: [
-      '<button class="jspsych-btn" style="background:#22c55e;color:white;font-size:22px;padding:16px 52px;border:none;border-radius:12px;cursor:pointer;font-weight:bold;margin:0 20px;">%choice%</button>',
-      '<button class="jspsych-btn" style="background:#ef4444;color:white;font-size:22px;padding:16px 52px;border:none;border-radius:12px;cursor:pointer;font-weight:bold;margin:0 20px;">%choice%</button>',
-    ],
-  };
-
-  // Slide G – Allocation task (only shown when viewer chose Yes)
+  // Slide G – Allocation task
   const slideG = {
     _debugLabel: `${trialLabel} — G: Allocation`,
     type: jsPsychAllocation,
@@ -444,15 +427,7 @@ function buildTestTrial(scenario, scenarioIdx, total) {
     harm_type: scenario.harm_type,
   };
 
-  const conditionalG = {
-    timeline: [slideG],
-    conditional_function: function() {
-      // response 0 = Yes (first button), 1 = No
-      return jsPsych.data.get().last(1).values()[0].response === 0;
-    },
-  };
-
-  return [storySlide, slideF, conditionalG];
+  return [storySlide, slideG];
 }
 
 /* ----------------------------------------------------------
