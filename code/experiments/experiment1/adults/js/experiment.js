@@ -243,14 +243,14 @@ const welcomeScreen = {
   choices: ['Next'],
 };
 
-// Slide 1a – Introduce Finn
+// Slide 1a – Introduce Michael
 const warmupIntroFinn = {
   type: jsPsychHtmlButtonResponse,
   stimulus: `
     <div style="text-align:center; padding:30px 20px;">
-      <p class="slide-instruction">This is Finn</p>
-      <img src="img/finn_neutral.png" class="char-img intro-img" alt="Finn" style="margin:20px auto; display:block;">
-      <p class="slide-instruction" style="margin-top:16px;">Finn has 3 cookies</p>
+      <p class="slide-instruction">This is Michael</p>
+      <img src="img/michael.png" class="char-img intro-img" alt="Michael" style="margin:20px auto; display:block;">
+      <p class="slide-instruction" style="margin-top:16px;">Michael has 3 cookies</p>
       <div style="display:flex; justify-content:center; margin-top:10px;">
         ${freeCookiesHTML(3, false)}
       </div>
@@ -258,14 +258,14 @@ const warmupIntroFinn = {
   choices: ['Next'],
 };
 
-// Slide 1b – Introduce Cleo
+// Slide 1b – Introduce Claire
 const warmupIntroCleo = {
   type: jsPsychHtmlButtonResponse,
   stimulus: `
     <div style="text-align:center; padding:30px 20px;">
-      <p class="slide-instruction">This is Cleo</p>
-      <img src="img/cleo_neutral.png" class="char-img intro-img" alt="Cleo" style="margin:20px auto; display:block;">
-      <p class="slide-instruction" style="margin-top:16px;">Cleo has 3 cookies</p>
+      <p class="slide-instruction">This is Claire</p>
+      <img src="img/claire.png" class="char-img intro-img" alt="Claire" style="margin:20px auto; display:block;">
+      <p class="slide-instruction" style="margin-top:16px;">Claire has 3 cookies</p>
       <div style="display:flex; justify-content:center; margin-top:10px;">
         ${freeCookiesHTML(3, false)}
       </div>
@@ -273,7 +273,7 @@ const warmupIntroCleo = {
   choices: ['Next'],
 };
 
-// Slide 2a – Practice: move a cookie to Cleo
+// Slide 2a – Practice: move a cookie to Claire
 const warmupPracticeV = {
   type: jsPsychAllocation,
   p_cookies: 3,
@@ -282,14 +282,14 @@ const warmupPracticeV = {
   hud_v_cookies: 3,
   trash_on_left: TRASH_ON_LEFT,
   harm_text: '',
-  instruction_text: "Try it out! Move one of Finn's cookies to Cleo's plate.",
+  instruction_text: "Try it out! Move one of Michael's cookies to Claire's plate.",
   require_v: true,
   require_trash: false,
   require_both: false,
   is_practice: true,
   scenario_id: 0,
-  p_name: 'Finn', v_name: 'Cleo',
-  p_img: 'finn_neutral.png', v_img: 'cleo_neutral.png',
+  p_name: 'Michael', v_name: 'Claire',
+  p_img: 'michael.png', v_img: 'claire.png',
 };
 
 // Slide 2b – Practice: move a cookie to the Cookie Jar
@@ -301,17 +301,17 @@ const warmupPracticeTrash = {
   hud_v_cookies: 3,
   trash_on_left: TRASH_ON_LEFT,
   harm_text: '',
-  instruction_text: "Now move one of Finn's cookies to the Cookie Jar.",
+  instruction_text: "Now move one of Michael's cookies to the Cookie Jar.",
   require_v: false,
   require_trash: true,
   require_both: false,
   is_practice: true,
   scenario_id: 0,
-  p_name: 'Finn', v_name: 'Cleo',
-  p_img: 'finn_neutral.png', v_img: 'cleo_neutral.png',
+  p_name: 'Michael', v_name: 'Claire',
+  p_img: 'michael.png', v_img: 'claire.png',
 };
 
-// Slide 2c – Practice: move a cookie to both Cleo and the Cookie Jar
+// Slide 2c – Practice: move a cookie to both Claire and the Cookie Jar
 const warmupPracticeBoth = {
   type: jsPsychAllocation,
   p_cookies: 3,
@@ -320,14 +320,14 @@ const warmupPracticeBoth = {
   hud_v_cookies: 3,
   trash_on_left: TRASH_ON_LEFT,
   harm_text: '',
-  instruction_text: "Last one! Move at least one cookie to Cleo's plate AND at least one to the Cookie Jar.",
+  instruction_text: "Last one! Move at least one cookie to Claire's plate AND at least one to the Cookie Jar.",
   require_v: false,
   require_trash: false,
   require_both: true,
   is_practice: true,
   scenario_id: 0,
-  p_name: 'Finn', v_name: 'Cleo',
-  p_img: 'finn_neutral.png', v_img: 'cleo_neutral.png',
+  p_name: 'Michael', v_name: 'Claire',
+  p_img: 'michael.png', v_img: 'claire.png',
 };
 
 // Slide 2d – Practice: do nothing
@@ -501,9 +501,9 @@ const endScreen = {
    DEBUG LABELS (read by researcher panel — harmless in production)
    ---------------------------------------------------------- */
 welcomeScreen._debugLabel   = 'Welcome Screen';
-warmupIntroFinn._debugLabel = 'Intro: Finn';
-warmupIntroCleo._debugLabel = 'Intro: Cleo';
-warmupPracticeV._debugLabel          = 'Warmup: Practice (Cleo)';
+warmupIntroFinn._debugLabel = 'Intro: Michael';
+warmupIntroCleo._debugLabel = 'Intro: Claire';
+warmupPracticeV._debugLabel          = 'Warmup: Practice (Claire)';
 warmupPracticeTrash._debugLabel      = 'Warmup: Practice (Jar)';
 warmupPracticeBoth._debugLabel       = 'Warmup: Practice (Both)';
 warmupDone._debugLabel               = 'Warmup: Done';

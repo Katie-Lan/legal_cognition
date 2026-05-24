@@ -208,10 +208,10 @@ var jsPsychAllocation = (function (jspsych) {
         let hintMsg = '';
 
         if (trial.require_both) {
-          if (inV < 1 && inTrash < 1) { ok = false; hintMsg = '⚠️ Move at least one cookie to Cleo\'s plate and at least one to the Cookie Jar.'; }
-          else if (inV < 1)           { ok = false; hintMsg = '⚠️ Don\'t forget to move a cookie to Cleo\'s plate too.'; }
+          if (inV < 1 && inTrash < 1) { ok = false; hintMsg = `⚠️ Move at least one cookie to ${trial.v_name}'s plate and at least one to the Cookie Jar.`; }
+          else if (inV < 1)           { ok = false; hintMsg = `⚠️ Don't forget to move a cookie to ${trial.v_name}'s plate too.`; }
           else if (inTrash < 1)       { ok = false; hintMsg = '⚠️ Don\'t forget to move a cookie to the Cookie Jar too.'; }
-        } else if (trial.require_v     && inV < 1)     { ok = false; hintMsg = '⚠️ Move at least one cookie to Cleo\'s plate to continue.'; }
+        } else if (trial.require_v     && inV < 1)     { ok = false; hintMsg = `⚠️ Move at least one cookie to ${trial.v_name}'s plate to continue.`; }
         else if   (trial.require_trash && inTrash < 1) { ok = false; hintMsg = '⚠️ Move at least one cookie to the Cookie Jar to continue.'; }
         else if   (inV + inTrash < 1)                  { ok = false; }
 
