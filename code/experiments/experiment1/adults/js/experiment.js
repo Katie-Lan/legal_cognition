@@ -408,27 +408,12 @@ function buildTestTrial(scenario, scenarioIdx, total) {
 
   // Decision question slide
   const headerImg = scenario.story_slides[scenario.story_slides.length - 2];
-  const cookieRow = (n) => `<span style="font-size:22px; letter-spacing:3px;">${'🍪'.repeat(n)}</span>`;
   const questionSlide = {
     _debugLabel: `${trialLabel} — Decision Question`,
     type: jsPsychHtmlButtonResponse,
     stimulus: `
       <div style="text-align:center; padding:10px 20px;">
         <img src="${headerImg}" class="allocation-header-img" alt="">
-        <div style="display:flex; justify-content:center; gap:60px; margin:16px 0;">
-          <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
-            <img src="img/${pImg}" class="alloc-char-img" alt="${pName}">
-            <p class="alloc-char-name">${pName}</p>
-            <div class="panel-name">${pName} has ${pAfter} cookie${pAfter !== 1 ? 's' : ''}</div>
-            ${cookieRow(pAfter)}
-          </div>
-          <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
-            <img src="img/${vImg}" class="alloc-char-img" alt="${vName}">
-            <p class="alloc-char-name">${vName}</p>
-            <div class="panel-name">${vName} has ${scenario.v_after_harm} cookie${scenario.v_after_harm !== 1 ? 's' : ''}</div>
-            ${cookieRow(scenario.v_after_harm)}
-          </div>
-        </div>
         <p style="font-size:20px; font-weight:600; margin:24px 0 8px;">Do you want to move any of the cookies?</p>
       </div>`,
     choices: ['No', 'Yes'],
