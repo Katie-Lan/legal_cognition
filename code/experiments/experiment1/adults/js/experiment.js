@@ -416,7 +416,7 @@ function buildTestTrial(scenario, scenarioIdx, total) {
         <img src="${headerImg}" class="allocation-header-img" alt="">
         <p style="font-size:20px; font-weight:600; margin:24px 0 8px;">Do you want to move any of the cookies?</p>
       </div>`,
-    choices: ['No', 'Yes'],
+    choices: ['Yes', 'No'],
   };
 
   // Slide G – Allocation task (only shown if viewer clicks Yes)
@@ -443,7 +443,7 @@ function buildTestTrial(scenario, scenarioIdx, total) {
   const conditionalAlloc = {
     timeline: [slideG],
     conditional_function: function() {
-      return jsPsych.data.get().last(1).values()[0].response === 1;
+      return jsPsych.data.get().last(1).values()[0].response === 0;
     },
   };
 
