@@ -1,10 +1,10 @@
 /**
  * jsPsych Allocation Plugin — Plate Edition
  *
- * P's cookies sit on an open circular plate in the center.
- * Participants drag them freely onto V's plate or the Trash panel.
- * Cookies land where dropped (no slot snapping). No capacity cap on V's plate.
- * Records cookies_to_v, cookies_to_trash, cookies_kept_by_p, rt.
+ * Both P's and V's cookies are draggable.
+ * P's cookies start on P's plate; V's cookies start on V's plate.
+ * Any cookie can be moved to any plate or the Cookie Jar.
+ * Records full allocation for both characters.
  *
  * Requires: jsPsych 7
  */
@@ -16,7 +16,7 @@ var jsPsychAllocation = (function (jspsych) {
     parameters: {
       /** How many cookies P currently has (all draggable) */
       p_cookies:         { type: jspsych.ParameterType.INT,         default: 5 },
-      /** How many cookies V has AFTER harm (shown on V's plate, non-draggable) */
+      /** How many cookies V has AFTER harm (shown on V's plate, draggable) */
       v_cookies_current: { type: jspsych.ParameterType.INT,         default: 2 },
       /** P's initial cookie count shown in the HUD */
       hud_p_cookies:     { type: jspsych.ParameterType.INT,         default: 5 },
@@ -60,19 +60,19 @@ var jsPsychAllocation = (function (jspsych) {
 
       /* -------------------------------------------------------
          STATE
+         cookieDest[i]  — current zone of P's cookie i: 'pool' | 'v' | 'trash'
+         vCookieDest[i] — current zone of V's cookie i: 'v'   | 'p' | 'trash'
       ------------------------------------------------------- */
-      // 'pool' | 'v' | 'trash'
-      const cookieDest = Array.from({ length: trial.p_cookies }, () => 'pool');
+      const cookieDest  = Array.from({ length: trial.p_cookies         }, () => 'pool');
+      const vCookieDest = Array.from({ length: trial.v_cookies_current }, () => 'v');
 
       /* -------------------------------------------------------
          PLATE GEOMETRY
       ------------------------------------------------------- */
-      const PLATE_D  = 200;      // diameter of each plate (px)
-      const PLATE_R  = PLATE_D / 2;  // 100
-      const COOKIE_R = 24;       // half of cookie element size, used for clamping
+      const PLATE_D  = 200;
+      const PLATE_R  = PLATE_D / 2;
+      const COOKIE_R = 24;
 
-      // Preset scatter positions for cookies (offsets from plate center).
-      // Distances all < PLATE_R - COOKIE_R = 86, so cookies stay fully on plate.
       const OFFSETS = [
         { x: -48, y: -36 },
         { x:  30, y: -52 },
@@ -82,20 +82,14 @@ var jsPsychAllocation = (function (jspsych) {
         { x:  46, y: -26 },
       ];
 
-      // Convert an offset to absolute left/top within the plate element
       function offsetToPlatePos(i) {
         const o = OFFSETS[i % OFFSETS.length];
         return { left: PLATE_R + o.x, top: PLATE_R + o.y };
       }
 
-      // Home positions for P's cookies on P's plate (used when returning)
-      const homePositions   = Array.from({ length: trial.p_cookies        }, (_, i) => offsetToPlatePos(i));
-      // Fixed positions for V's non-draggable existing cookies
-      const vFixedPositions = Array.from({ length: trial.v_cookies_current }, (_, i) => offsetToPlatePos(i));
+      const homePositions  = Array.from({ length: trial.p_cookies         }, (_, i) => offsetToPlatePos(i));
+      const vHomePositions = Array.from({ length: trial.v_cookies_current }, (_, i) => offsetToPlatePos(i));
 
-      /* Clamp a cursor point to within the usable area of a circular plate.
-         Returns { left, top } as px from plate element's top-left corner.
-         The cookie CENTER will be placed at (left, top). */
       function clampToPlate(plateEl, clientX, clientY) {
         const rect = plateEl.getBoundingClientRect();
         const cx = rect.left + PLATE_R, cy = rect.top + PLATE_R;
@@ -106,8 +100,6 @@ var jsPsychAllocation = (function (jspsych) {
         return { left: PLATE_R + dx, top: PLATE_R + dy };
       }
 
-      /* Clamp a cursor point to within a rectangular element.
-         Returns { left, top } relative to element's top-left corner. */
       function clampToRect(el, clientX, clientY) {
         const rect = el.getBoundingClientRect();
         return {
@@ -132,8 +124,8 @@ var jsPsychAllocation = (function (jspsych) {
       function vPanelHTML() {
         let plateHTML = `<div class="cookie-plate" id="v-plate">`;
         for (let i = 0; i < trial.v_cookies_current; i++) {
-          const { left, top } = vFixedPositions[i];
-          plateHTML += `<div class="plate-cookie" id="v-existing-${i}" style="left:${left}px;top:${top}px;"><span class="cookie-emoji">🍪</span></div>`;
+          const { left, top } = vHomePositions[i];
+          plateHTML += `<div class="plate-cookie draggable" id="v-existing-${i}" data-v-cookie-id="${i}" style="left:${left}px;top:${top}px;"><span class="cookie-emoji">🍪</span></div>`;
         }
         plateHTML += `</div>`;
 
@@ -163,10 +155,6 @@ var jsPsychAllocation = (function (jspsych) {
       const leftPanel  = trial.trash_on_left ? trashPanelHTML() : vPanelHTML();
       const rightPanel = trial.trash_on_left ? vPanelHTML()     : trashPanelHTML();
       const confirmLabel = trial.is_practice ? 'Done' : 'Confirm';
-
-      function needsDisabled() {
-        return true; // always start disabled; updateConfirmBtn enables when conditions are met
-      }
 
       const html = `
         <div class="allocation-screen">
@@ -199,11 +187,15 @@ var jsPsychAllocation = (function (jspsych) {
       function countInZone(zone) {
         return cookieDest.filter(d => d === zone).length;
       }
+      function countVInZone(zone) {
+        return vCookieDest.filter(d => d === zone).length;
+      }
 
       function updateConfirmBtn() {
-        const btn     = display_element.querySelector('#confirm-btn');
-        const hintEl  = display_element.querySelector('#alloc-hint');
-        const inV     = countInZone('v'), inTrash = countInZone('trash');
+        const btn    = display_element.querySelector('#confirm-btn');
+        const hintEl = display_element.querySelector('#alloc-hint');
+        const inV     = countInZone('v'),    inTrash  = countInZone('trash');
+        const vToP    = countVInZone('p'),   vToTrash = countVInZone('trash');
         let ok = true;
         let hintMsg = '';
 
@@ -213,7 +205,7 @@ var jsPsychAllocation = (function (jspsych) {
           else if (inTrash < 1)       { ok = false; hintMsg = '⚠️ Don\'t forget to move a cookie to the Cookie Jar too.'; }
         } else if (trial.require_v     && inV < 1)     { ok = false; hintMsg = `⚠️ Move at least one cookie to ${trial.v_name}'s plate to continue.`; }
         else if   (trial.require_trash && inTrash < 1) { ok = false; hintMsg = '⚠️ Move at least one cookie to the Cookie Jar to continue.'; }
-        else if   (inV + inTrash < 1)                  { ok = false; }
+        else if   (inV + inTrash + vToP + vToTrash < 1) { ok = false; }
 
         btn.disabled = !ok;
         if (hintEl) {
@@ -222,32 +214,43 @@ var jsPsychAllocation = (function (jspsych) {
         }
       }
 
-      function getCookieEl(id) {
-        return display_element.querySelector(`#p-cookie-${id}`);
-      }
+      function getPCookieEl(id) { return display_element.querySelector(`#p-cookie-${id}`); }
+      function getVCookieEl(id) { return display_element.querySelector(`#v-existing-${id}`); }
 
-      // Move a cookie element to a new container at (left, top) within that container.
-      // left/top are the desired CENTER position of the cookie within containerEl.
-      function placeCookie(cookieEl, containerEl, left, top, zone, cookieId) {
+      function placePCookie(cookieEl, containerEl, left, top, zone, id) {
         containerEl.appendChild(cookieEl);
         cookieEl.style.left    = left + 'px';
         cookieEl.style.top     = top  + 'px';
         cookieEl.style.opacity = '1';
-        cookieDest[cookieId]   = zone;
+        cookieDest[id] = zone;
         updateConfirmBtn();
       }
 
-      // Return a P cookie to its home position on P's plate.
-      function returnToPool(cookieId) {
-        const cookieEl = getCookieEl(cookieId);
-        const pPlate   = display_element.querySelector('#p-plate');
-        const { left, top } = homePositions[cookieId];
-        placeCookie(cookieEl, pPlate, left, top, 'pool', cookieId);
+      function placeVCookie(cookieEl, containerEl, left, top, zone, id) {
+        containerEl.appendChild(cookieEl);
+        cookieEl.style.left    = left + 'px';
+        cookieEl.style.top     = top  + 'px';
+        cookieEl.style.opacity = '1';
+        vCookieDest[id] = zone;
+        updateConfirmBtn();
+      }
+
+      function returnToPool(id) {
+        const pPlate = display_element.querySelector('#p-plate');
+        const { left, top } = homePositions[id];
+        placePCookie(getPCookieEl(id), pPlate, left, top, 'pool', id);
+      }
+
+      function returnVToHome(id) {
+        const vPlate = display_element.querySelector('#v-plate');
+        const { left, top } = vHomePositions[id];
+        placeVCookie(getVCookieEl(id), vPlate, left, top, 'v', id);
       }
 
       /* -------------------------------------------------------
          DRAG AND DROP
       ------------------------------------------------------- */
+      // dragging: { type: 'p'|'v', id: number } | null
       let dragging = null;
       const ghostEl = display_element.querySelector('#drag-ghost');
 
@@ -257,34 +260,34 @@ var jsPsychAllocation = (function (jspsych) {
         ghostEl.style.top     = (y - 22) + 'px';
       }
 
-      function hideGhost() {
-        ghostEl.style.display = 'none';
-      }
+      function hideGhost() { ghostEl.style.display = 'none'; }
 
       function clearDropHovers() {
         display_element.querySelectorAll('.drop-hover').forEach(el => el.classList.remove('drop-hover'));
       }
 
-      // Start drag on any draggable plate-cookie (pool, v, or trash)
       display_element.addEventListener('mousedown', (e) => {
         const cookieEl = e.target.closest('.plate-cookie.draggable');
         if (!cookieEl) return;
-        const cookieId = parseInt(cookieEl.dataset.cookieId);
-        if (isNaN(cookieId)) return;
-
+        const pId = parseInt(cookieEl.dataset.cookieId);
+        const vId = parseInt(cookieEl.dataset.vCookieId);
+        if (!isNaN(pId))      { dragging = { type: 'p', id: pId }; }
+        else if (!isNaN(vId)) { dragging = { type: 'v', id: vId }; }
+        else return;
         e.preventDefault();
-        dragging = { cookieId };
         cookieEl.style.opacity = '0';
         showGhost(e.clientX, e.clientY);
       });
 
-      // Click a cookie that is NOT in the pool → return it to P's plate
+      // Click a displaced cookie to return it home
       display_element.addEventListener('click', (e) => {
         if (dragging) return;
         const cookieEl = e.target.closest('.plate-cookie.draggable');
         if (!cookieEl) return;
-        const cid = parseInt(cookieEl.dataset.cookieId);
-        if (!isNaN(cid) && cookieDest[cid] !== 'pool') returnToPool(cid);
+        const pId = parseInt(cookieEl.dataset.cookieId);
+        const vId = parseInt(cookieEl.dataset.vCookieId);
+        if (!isNaN(pId) && cookieDest[pId]  !== 'pool') returnToPool(pId);
+        if (!isNaN(vId) && vCookieDest[vId] !== 'v')    returnVToHome(vId);
       });
 
       document.addEventListener('mousemove', onMouseMove);
@@ -293,13 +296,10 @@ var jsPsychAllocation = (function (jspsych) {
       function onMouseMove(e) {
         if (!dragging) return;
         showGhost(e.clientX, e.clientY);
-
-        // Highlight the plate the cursor is over
         const target     = document.elementFromPoint(e.clientX, e.clientY);
         const vPlate     = display_element.querySelector('#v-plate');
         const pPlate     = display_element.querySelector('#p-plate');
         const trashPlate = display_element.querySelector('#trash-plate');
-
         clearDropHovers();
         if      (target?.closest('#v-panel'))     vPlate.classList.add('drop-hover');
         else if (target?.closest('#trash-panel')) trashPlate.classList.add('drop-hover');
@@ -308,40 +308,44 @@ var jsPsychAllocation = (function (jspsych) {
 
       function onMouseUp(e) {
         if (!dragging) return;
-        const { cookieId } = dragging;
+        const { type, id } = dragging;
         dragging = null;
         hideGhost();
         clearDropHovers();
 
-        const cookieEl   = getCookieEl(cookieId);
         const target     = document.elementFromPoint(e.clientX, e.clientY);
         const vPlate     = display_element.querySelector('#v-plate');
         const pPlate     = display_element.querySelector('#p-plate');
         const trashPlate = display_element.querySelector('#trash-plate');
 
-        if (target?.closest('#v-panel')) {
-          // Drop onto V's panel → land on V's plate at cursor position
-          const pos = clampToPlate(vPlate, e.clientX, e.clientY);
-          placeCookie(cookieEl, vPlate, pos.left, pos.top, 'v', cookieId);
-
-        } else if (target?.closest('#trash-panel')) {
-          // Drop onto trash panel → land on trash plate at cursor position
-          const pos = clampToPlate(trashPlate, e.clientX, e.clientY);
-          placeCookie(cookieEl, trashPlate, pos.left, pos.top, 'trash', cookieId);
-
-        } else if (target?.closest('.p-pool-col')) {
-          // Drop onto P's panel → return to plate at cursor position if on plate,
-          // else snap to home
-          if (target?.closest('#p-plate')) {
+        if (type === 'p') {
+          const cookieEl = getPCookieEl(id);
+          if (target?.closest('#v-panel')) {
+            const pos = clampToPlate(vPlate, e.clientX, e.clientY);
+            placePCookie(cookieEl, vPlate, pos.left, pos.top, 'v', id);
+          } else if (target?.closest('#trash-panel')) {
+            const pos = clampToPlate(trashPlate, e.clientX, e.clientY);
+            placePCookie(cookieEl, trashPlate, pos.left, pos.top, 'trash', id);
+          } else if (target?.closest('#p-plate')) {
             const pos = clampToPlate(pPlate, e.clientX, e.clientY);
-            placeCookie(cookieEl, pPlate, pos.left, pos.top, 'pool', cookieId);
+            placePCookie(cookieEl, pPlate, pos.left, pos.top, 'pool', id);
           } else {
-            returnToPool(cookieId);
+            returnToPool(id);
           }
-
         } else {
-          // Dropped outside any valid target → return to home
-          returnToPool(cookieId);
+          const cookieEl = getVCookieEl(id);
+          if (target?.closest('.p-pool-col')) {
+            const pos = clampToPlate(pPlate, e.clientX, e.clientY);
+            placeVCookie(cookieEl, pPlate, pos.left, pos.top, 'p', id);
+          } else if (target?.closest('#trash-panel')) {
+            const pos = clampToPlate(trashPlate, e.clientX, e.clientY);
+            placeVCookie(cookieEl, trashPlate, pos.left, pos.top, 'trash', id);
+          } else if (target?.closest('#v-panel')) {
+            const pos = clampToPlate(vPlate, e.clientX, e.clientY);
+            placeVCookie(cookieEl, vPlate, pos.left, pos.top, 'v', id);
+          } else {
+            returnVToHome(id);
+          }
         }
       }
 
@@ -353,17 +357,22 @@ var jsPsychAllocation = (function (jspsych) {
         document.removeEventListener('mouseup',   onMouseUp);
 
         this.jsPsych.finishTrial({
-          scenario_id:       trial.scenario_id,
-          harm_type:         trial.harm_type,
-          v_initial:         trial.hud_v_cookies,
-          v_after_harm:      trial.v_cookies_current,
-          cookies_to_v:      countInZone('v'),
-          cookies_to_trash:  countInZone('trash'),
-          cookies_kept_by_p: countInZone('pool'),
-          do_nothing:        false,
-          trash_on_left:     trial.trash_on_left,
-          is_practice:       trial.is_practice,
-          rt:                Math.round(performance.now() - startTime),
+          scenario_id:            trial.scenario_id,
+          harm_type:              trial.harm_type,
+          v_initial:              trial.hud_v_cookies,
+          v_after_harm:           trial.v_cookies_current,
+          // P cookie allocations
+          p_cookies_to_v:         countInZone('v'),
+          p_cookies_to_trash:     countInZone('trash'),
+          p_cookies_kept:         countInZone('pool'),
+          // V cookie allocations
+          v_cookies_to_p:         countVInZone('p'),
+          v_cookies_to_trash:     countVInZone('trash'),
+          v_cookies_kept:         countVInZone('v'),
+          do_nothing:             false,
+          trash_on_left:          trial.trash_on_left,
+          is_practice:            trial.is_practice,
+          rt:                     Math.round(performance.now() - startTime),
         });
       }
 
