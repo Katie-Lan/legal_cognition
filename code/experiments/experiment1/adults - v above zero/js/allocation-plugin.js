@@ -34,6 +34,8 @@ var jsPsychAllocation = (function (jspsych) {
       require_trash:     { type: jspsych.ParameterType.BOOL,        default: false },
       /** Require ≥1 cookie in both V AND Trash before submission (practice) */
       require_both:      { type: jspsych.ParameterType.BOOL,        default: false },
+      /** Require ≥1 of V's cookies moved to P's plate before submission (practice) */
+      require_from_v:    { type: jspsych.ParameterType.BOOL,        default: false },
       /** Whether this is a practice trial (changes button label) */
       is_practice:       { type: jspsych.ParameterType.BOOL,        default: false },
       /** Scenario identifier stored in data */
@@ -203,7 +205,8 @@ var jsPsychAllocation = (function (jspsych) {
           if (inV < 1 && inTrash < 1) { ok = false; hintMsg = `⚠️ Move at least one cookie to ${trial.v_name}'s plate and at least one to the Cookie Jar.`; }
           else if (inV < 1)           { ok = false; hintMsg = `⚠️ Don't forget to move a cookie to ${trial.v_name}'s plate too.`; }
           else if (inTrash < 1)       { ok = false; hintMsg = '⚠️ Don\'t forget to move a cookie to the Cookie Jar too.'; }
-        } else if (trial.require_v     && inV < 1)     { ok = false; hintMsg = `⚠️ Move at least one cookie to ${trial.v_name}'s plate to continue.`; }
+        } else if (trial.require_from_v && vToP < 1)   { ok = false; hintMsg = `⚠️ Move at least one of ${trial.v_name}'s cookies to ${trial.p_name}'s plate to continue.`; }
+        else if   (trial.require_v     && inV < 1)     { ok = false; hintMsg = `⚠️ Move at least one cookie to ${trial.v_name}'s plate to continue.`; }
         else if   (trial.require_trash && inTrash < 1) { ok = false; hintMsg = '⚠️ Move at least one cookie to the Cookie Jar to continue.'; }
         else if   (inV + inTrash + vToP + vToTrash < 1) { ok = false; }
 

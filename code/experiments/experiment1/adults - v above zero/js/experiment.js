@@ -330,7 +330,26 @@ const warmupPracticeBoth = {
   p_img: 'michael.png', v_img: 'claire.png',
 };
 
-// Slide 2d – Practice: do nothing
+// Slide 2d – Practice: move a cookie FROM Claire to Michael
+const warmupPracticeFromV = {
+  type: jsPsychAllocation,
+  p_cookies: 3,
+  v_cookies_current: 3,
+  hud_p_cookies: 3,
+  hud_v_cookies: 3,
+  trash_on_left: TRASH_ON_LEFT,
+  harm_text: '',
+  instruction_text: "Now try the other direction! Move one of Claire's cookies to Michael's plate.",
+  require_v: false,
+  require_trash: false,
+  require_both: false,
+  require_from_v: true,
+  is_practice: true,
+  scenario_id: 0,
+  p_name: 'Michael', v_name: 'Claire',
+  p_img: 'michael.png', v_img: 'claire.png',
+};
+
 // Slide 3 – Practice confirmation
 const warmupDone = {
   type: jsPsychHtmlButtonResponse,
@@ -484,6 +503,7 @@ const warmupBlock = [
   warmupPracticeV,
   warmupPracticeTrash,
   warmupPracticeBoth,
+  warmupPracticeFromV,
   warmupDone,
 ];
 
@@ -527,6 +547,7 @@ warmupIntroCleo._debugLabel = 'Intro: Claire';
 warmupPracticeV._debugLabel          = 'Warmup: Practice (Claire)';
 warmupPracticeTrash._debugLabel      = 'Warmup: Practice (Jar)';
 warmupPracticeBoth._debugLabel       = 'Warmup: Practice (Both)';
+warmupPracticeFromV._debugLabel      = 'Warmup: Practice (move from Claire)';
 warmupDone._debugLabel               = 'Warmup: Done';
 endScreen._debugLabel       = 'End Screen';
 
