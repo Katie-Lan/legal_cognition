@@ -441,7 +441,7 @@ function buildTestTrial(scenario, scenarioIdx, total) {
   };
 
   const conditionalAlloc = {
-    _debugLabel: `${trialLabel} — Allocation (shown only if Yes)`,
+    _debugLabel: `${trialLabel} — Allocation [to test: jump to Decision Q above, click Yes]`,
     timeline: [slideG],
     conditional_function: function() {
       return jsPsych.data.get().last(1).values()[0].response === 0;
