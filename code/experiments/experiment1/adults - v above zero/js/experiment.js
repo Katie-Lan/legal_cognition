@@ -208,7 +208,7 @@ const secondBlockScenarios = [
     p_name: 'Sam', v_name: 'Ella', p_img: 'sam.png', v_img: 'ella.png',
     harm_type: 'strict_liability',
     p_cookies: 5, p_after: 5,
-    v_initial: 3, v_after_harm: 1, harm_amount: 2,
+    v_initial: 5, v_after_harm: 3, harm_amount: 2,
     event_text: 'Sam is walking his dog on a leash when the dog breaks free and eats 2 of Ella\'s cookies.',
     event_title: 'Sam\'s Dog Eats Ella\'s Cookies',
     story_slides: ['img/trailppt/sam_ella/sam_ella_1.png','img/trailppt/sam_ella/sam_ella_2.png','img/trailppt/sam_ella/sam_ella_3.png','img/trailppt/sam_ella/sam_ella_4.png','img/trailppt/sam_ella/sam_ella_5.png','img/trailppt/sam_ella/sam_ella_6.png','img/trailppt/sam_ella/sam_ella_7.png','img/trailppt/sam_ella/sam_ella_8.png','img/trailppt/sam_ella/sam_ella_9.png']
