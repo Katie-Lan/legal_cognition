@@ -339,7 +339,7 @@ const warmupPracticeFromV = {
   hud_v_cookies: 3,
   trash_on_left: TRASH_ON_LEFT,
   harm_text: '',
-  instruction_text: "Now try the other direction! Move one of Claire's cookies to Michael's plate.",
+  instruction_text: "Now try the other direction! Move one of Claire's cookies to the Cookie Jar.",
   require_v: false,
   require_trash: false,
   require_both: false,
