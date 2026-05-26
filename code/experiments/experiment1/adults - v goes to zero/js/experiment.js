@@ -354,8 +354,8 @@ function buildTestTrial(scenario, scenarioIdx, total) {
 
   const trialLabel = `${pName} & ${vName}`;
 
-  // Story slide – all slides except the last ("Please decide…") one
-  const _storyImgs = scenario.story_slides.slice(0, -1);
+  // Story slide – all slides
+  const _storyImgs = scenario.story_slides;
   const storySlide = {
     _debugLabel: `${trialLabel} — Story`,
     type: jsPsychHtmlButtonResponse,
@@ -407,7 +407,7 @@ function buildTestTrial(scenario, scenarioIdx, total) {
   };
 
   // Decision question slide
-  const headerImg = scenario.story_slides[scenario.story_slides.length - 2];
+  const headerImg = scenario.story_slides[scenario.story_slides.length - 1];
   const questionSlide = {
     _debugLabel: `${trialLabel} — Decision Question`,
     type: jsPsychHtmlButtonResponse,
