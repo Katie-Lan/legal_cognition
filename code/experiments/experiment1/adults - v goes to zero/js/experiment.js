@@ -441,6 +441,7 @@ function buildTestTrial(scenario, scenarioIdx, total) {
   };
 
   const conditionalAlloc = {
+    _debugLabel: `${trialLabel} — Allocation (shown only if Yes)`,
     timeline: [slideG],
     conditional_function: function() {
       return jsPsych.data.get().last(1).values()[0].response === 0;
