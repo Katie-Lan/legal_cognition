@@ -80,6 +80,7 @@ var jsPsychAllocation = (function (jspsych) {
         { x: -60, y:  24 },
         { x:   6, y:  56 },
         { x:  46, y: -26 },
+        { x:   0, y:   0 },
       ];
 
       function offsetToPlatePos(i) {
