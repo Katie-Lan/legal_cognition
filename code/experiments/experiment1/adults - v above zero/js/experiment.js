@@ -222,6 +222,26 @@ const secondBlockScenarios = [
     event_text: 'Andy and Catherine bumped into each other accidentally. Catherine\'s wolf ate 2 of Andy\'s cookies.',
     event_title: 'Catherine\'s Wolf Eats Andy\'s Cookies',
     story_slides: ['img/trailppt/andy_catherine/andy_catherine_1.png','img/trailppt/andy_catherine/andy_catherine_2.png','img/trailppt/andy_catherine/andy_catherine_3.png','img/trailppt/andy_catherine/andy_catherine_4.png','img/trailppt/andy_catherine/andy_catherine_5.png','img/trailppt/andy_catherine/andy_catherine_6.png','img/trailppt/andy_catherine/andy_catherine_7.png','img/trailppt/andy_catherine/andy_catherine_8.png']
+  },
+  {
+    id: 10,
+    p_name: 'Tony', v_name: 'Katie', p_img: 'tony.png', v_img: 'katie.png',
+    harm_type: 'strict_liability',
+    p_cookies: 5, p_after: 5,
+    v_initial: 5, v_after_harm: 3, harm_amount: 2,
+    event_text: 'Katie and Tony are having a picnic when a gust of wind blows 2 of Katie\'s cookies away.',
+    event_title: 'Wind Blows Away Katie\'s Cookies',
+    story_slides: ['img/trailppt/harry_katie/harry_katie_1.png','img/trailppt/harry_katie/harry_katie_2.png','img/trailppt/harry_katie/harry_katie_3.png','img/trailppt/harry_katie/harry_katie_4.png','img/trailppt/harry_katie/harry_katie_5.png','img/trailppt/harry_katie/harry_katie_6.png','img/trailppt/harry_katie/harry_katie_7.png','img/trailppt/harry_katie/harry_katie_8.png']
+  },
+  {
+    id: 11,
+    p_name: 'Nora', v_name: 'Eric', p_img: 'nora.png', v_img: 'eric.png',
+    harm_type: 'strict_liability',
+    p_cookies: 7, p_after: 7,
+    v_initial: 7, v_after_harm: 5, harm_amount: 2,
+    event_text: 'While Eric is tying his shoelaces, a squirrel eats 2 of Eric\'s cookies.',
+    event_title: 'Squirrel Eats Eric\'s Cookies',
+    story_slides: ['img/trailppt/nora_eric/nora_eric_1.png','img/trailppt/nora_eric/nora_eric_2.png','img/trailppt/nora_eric/nora_eric_3.png','img/trailppt/nora_eric/nora_eric_4.png','img/trailppt/nora_eric/nora_eric_5.png','img/trailppt/nora_eric/nora_eric_6.png','img/trailppt/nora_eric/nora_eric_7.png']
   }
 ];
 
