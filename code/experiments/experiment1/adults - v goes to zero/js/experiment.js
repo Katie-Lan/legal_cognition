@@ -670,9 +670,18 @@ const timeline = [
 
 /* ============================================================
    RESEARCHER DEBUG PANEL — JUMP TO ANY SCREEN
-   *** DELETE THIS ENTIRE BLOCK BEFORE GIVING TO PARTICIPANTS ***
+   Hidden by default for public / participant deployment.
+   To reveal it (researcher use only), set SHOW_DEBUG_PANEL = true.
    ============================================================ */
+const SHOW_DEBUG_PANEL = false;   // ← change to true to show the Jump-to-Screen panel
+
 (function () {
+  // Public deployment: panel stays hidden — just run the experiment normally.
+  if (!SHOW_DEBUG_PANEL) {
+    jsPsych.run(timeline);
+    return;
+  }
+
   const DATA_KEY = 'exp1_debug_data';
 
   // Read jump target from URL param (?jumpTo=N)
