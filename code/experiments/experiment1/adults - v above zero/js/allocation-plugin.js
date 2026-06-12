@@ -42,6 +42,8 @@ var jsPsychAllocation = (function (jspsych) {
       scenario_id:       { type: jspsych.ParameterType.INT,         default: 0 },
       /** harm type stored in data */
       harm_type:         { type: jspsych.ParameterType.STRING,      default: '' },
+      /** Human-readable scenario label stored in data (e.g. "Sam's Dog Eats Ella's Cookie") */
+      event_title:       { type: jspsych.ParameterType.STRING,      default: '' },
       /** Character names and images (overridable per scenario) */
       p_name: { type: jspsych.ParameterType.STRING, default: 'Finn' },
       v_name: { type: jspsych.ParameterType.STRING, default: 'Cleo' },
@@ -360,23 +362,32 @@ var jsPsychAllocation = (function (jspsych) {
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup',   onMouseUp);
 
+        const prevTrials = this.jsPsych.data.get().last(1).values();
+        const gate_rt = (prevTrials.length > 0 && prevTrials[0].trial_type === 'html-button-response')
+          ? prevTrials[0].rt
+          : null;
+
         this.jsPsych.finishTrial({
           scenario_id:            trial.scenario_id,
           harm_type:              trial.harm_type,
+          event_title:            trial.event_title,
+          p_name:                 trial.p_name,
+          v_name:                 trial.v_name,
           v_initial:              trial.hud_v_cookies,
           v_after_harm:           trial.v_cookies_current,
           // P cookie allocations
-          p_cookies_to_v:         countInZone('v'),
-          p_cookies_to_trash:     countInZone('trash'),
-          p_cookies_kept:         countInZone('pool'),
+          cookies_from_p_to_v:    countInZone('v'),
+          cookies_from_p_to_c:    countInZone('trash'),
+          cookies_kept_by_p:      countInZone('pool'),
           // V cookie allocations
-          v_cookies_to_p:         countVInZone('p'),
-          v_cookies_to_trash:     countVInZone('trash'),
-          v_cookies_kept:         countVInZone('v'),
+          cookies_from_v_to_p:    countVInZone('p'),
+          cookies_from_v_to_c:    countVInZone('trash'),
+          cookies_kept_by_v:      countVInZone('v'),
           do_nothing:             false,
           trash_on_left:          trial.trash_on_left,
           is_practice:            trial.is_practice,
-          rt:                     Math.round(performance.now() - startTime),
+          gate_rt:                gate_rt,
+          allocation_rt:          Math.round(performance.now() - startTime),
         });
       }
 

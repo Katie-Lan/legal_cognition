@@ -477,13 +477,16 @@ function buildTestTrial(scenario, scenarioIdx, total) {
     is_practice: false,
     scenario_id: scenario.id,
     harm_type: scenario.harm_type,
+    event_title: scenario.event_title || '',
   };
 
   const conditionalAlloc = {
     _debugLabel: `${trialLabel} — Allocation [to test: jump to Decision Q above, click Yes]`,
     timeline: [slideG],
     conditional_function: function() {
-      return jsPsych.data.get().last(1).values()[0].response === 0;
+      const last = jsPsych.data.get().last(1).values();
+      if (last.length === 0) return true;
+      return last[0].response === 0;
     },
   };
 
@@ -585,9 +588,20 @@ const timeline = [
    *** DELETE THIS ENTIRE BLOCK BEFORE GIVING TO PARTICIPANTS ***
    ============================================================ */
 (function () {
+  const DATA_KEY = 'exp1_debug_data';
+
   // Read jump target from URL param (?jumpTo=N)
   const params  = new URLSearchParams(window.location.search);
   const jumpTo  = parseInt(params.get('jumpTo') || '0');
+
+  // Restore any data saved from previous jump sessions so accumulated
+  // trial responses survive page reloads.
+  const savedData = sessionStorage.getItem(DATA_KEY);
+  if (savedData) {
+    try {
+      JSON.parse(savedData).forEach(row => jsPsych.data.write(row));
+    } catch(e) { /* ignore corrupt cache */ }
+  }
 
   // Build dropdown: one option per timeline slide
   const options = timeline.map((trial, i) => {
@@ -602,12 +616,20 @@ const timeline = [
     <div id="rdp-title">🔬 Researcher: Jump to Screen</div>
     <select id="rdp-select">${options}</select>
     <button id="rdp-jump">▶ Jump</button>
+    <button id="rdp-clear" title="Clear saved trial data">🗑 Clear data</button>
   `;
   document.body.appendChild(panel);
 
   document.getElementById('rdp-jump').addEventListener('click', () => {
+    // Save current data before reloading so it survives the jump.
+    sessionStorage.setItem(DATA_KEY, jsPsych.data.get().json());
     const idx = document.getElementById('rdp-select').value;
     window.location.search = '?jumpTo=' + idx;
+  });
+
+  document.getElementById('rdp-clear').addEventListener('click', () => {
+    sessionStorage.removeItem(DATA_KEY);
+    location.reload();
   });
 
   // Start experiment from the selected slide
