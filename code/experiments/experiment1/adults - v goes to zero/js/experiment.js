@@ -161,11 +161,11 @@ const finnCleoScenarios = [
     id: 2,
     p_name: 'Finn', v_name: 'Cleo', p_img: 'finn_neutral.png', v_img: 'cleo_neutral.png',
     harm_type: 'negligent',
-    p_cookies: 3, p_after: 3,
-    v_initial: 3, v_after_harm: 1, harm_amount: 2,
-    video: 'mp4/finn%20and%20cleo.mp4',
+    p_cookies: 5, p_after: 5,
+    v_initial: 2, v_after_harm: 0, harm_amount: 2,
     event_text: 'Finn spills water and doesn\'t clean it up. Cleo slips on the wet floor and 2 of Cleo\'s cookies are destroyed.',
-    event_title: 'Finn Spills Water — Cleo Slips'
+    event_title: 'Finn Spills Water — Cleo Slips',
+    story_slides: ['img/trailppt/finn_cleo/finn_cleo_1.png','img/trailppt/finn_cleo/finn_cleo_2.png','img/trailppt/finn_cleo/finn_cleo_3.png','img/trailppt/finn_cleo/finn_cleo_4.png','img/trailppt/finn_cleo/finn_cleo_5.png','img/trailppt/finn_cleo/finn_cleo_6.png','img/trailppt/finn_cleo/finn_cleo_7.png','img/trailppt/finn_cleo/finn_cleo_8.png','img/trailppt/finn_cleo/finn_cleo_9.png','img/trailppt/finn_cleo/finn_cleo_10.png','img/trailppt/finn_cleo/finn_cleo_11.png']
   }
 ];
 
@@ -175,38 +175,71 @@ const secondBlockScenarios = [
     id: 5,
     p_name: 'Milo', v_name: 'Sasha', p_img: 'Milo.png', v_img: 'Sasha.png',
     harm_type: 'intentional',
-    p_cookies: 3, p_after: 3,
-    v_initial: 3, v_after_harm: 2, harm_amount: 1,
-    event_text: 'Milo is angry at Sasha. He walks over and deliberately smashes one of Sasha\'s cookies, destroying it. The cookie is gone. Milo still has 3 cookies. Sasha now has 2 cookies.',
-    event_title: 'Milo Destroys Sasha\'s Cookie'
+    p_cookies: 5, p_after: 5,
+    v_initial: 2, v_after_harm: 0, harm_amount: 2,
+    event_text: 'Milo is angry at Sasha. He walks over and deliberately knocks off 2 of Sasha\'s cookies.',
+    event_title: 'Milo Knocks Sasha\'s Cookies',
+    story_slides: ['img/trailppt/milo_sasha/milo_sasha_1.png','img/trailppt/milo_sasha/milo_sasha_2.png','img/trailppt/milo_sasha/milo_sasha_3.png','img/trailppt/milo_sasha/milo_sasha_4.png','img/trailppt/milo_sasha/milo_sasha_5.png','img/trailppt/milo_sasha/milo_sasha_6.png','img/trailppt/milo_sasha/milo_sasha_7.png','img/trailppt/milo_sasha/milo_sasha_8.png']
   },
   {
     id: 6,
-    p_name: 'Rex', v_name: 'Zoe', p_img: 'rex.png', v_img: 'zoe.png',
+    p_name: 'Zoe', v_name: 'Rex', p_img: 'zoe.png', v_img: 'rex.png',
     harm_type: 'intentional',
-    p_cookies: 3, p_after: 3,
-    v_initial: 3, v_after_harm: 1, harm_amount: 2,
-    event_text: 'Rex wants Zoe to have fewer cookies. He deliberately knocks two of her cookies into the trash.',
-    event_title: 'Rex Knocks Zoe\'s Cookies Away'
+    p_cookies: 7, p_after: 7,
+    v_initial: 2, v_after_harm: 0, harm_amount: 2,
+    event_text: 'Zoe wants Rex to have fewer cookies. She deliberately throws away 2 of Rex\'s cookies.',
+    event_title: 'Zoe Throws Rex\'s Cookies Away',
+    story_slides: ['img/trailppt/rex_zoe/rex_zoe_1.png','img/trailppt/rex_zoe/rex_zoe_2.png','img/trailppt/rex_zoe/rex_zoe_3.png','img/trailppt/rex_zoe/rex_zoe_4.png','img/trailppt/rex_zoe/rex_zoe_5.png','img/trailppt/rex_zoe/rex_zoe_6.png','img/trailppt/rex_zoe/rex_zoe_7.png']
   },
   {
     id: 7,
     p_name: 'Kai', v_name: 'Ruby', p_img: 'kai.png', v_img: 'Ruby.png',
-    harm_type: 'strict_liability',
-    p_cookies: 3, p_after: 3,
-    v_initial: 3, v_after_harm: 2, harm_amount: 1,
-    event_text: 'Kai is carefully leading his pet wild wolf on a leash. He has taken all safety precautions and is being very careful. Despite this, the wolf suddenly lunges toward Ruby and eats one of her cookies before Kai can stop it. Kai looks horrified and apologetic. Ruby looks shocked and upset.',
-    event_title: 'Kai\'s Wolf Eats Ruby\'s Cookie'
+    harm_type: 'negligent',
+    p_cookies: 7, p_after: 7,
+    v_initial: 2, v_after_harm: 0, harm_amount: 2,
+    event_text: 'Kai walks without looking where he is going and bumps into Ruby. 2 of Ruby\'s cookies fall off.',
+    event_title: 'Kai Bumps Into Ruby',
+    story_slides: ['img/trailppt/kai_ruby/kai_ruby_1.png','img/trailppt/kai_ruby/kai_ruby_2.png','img/trailppt/kai_ruby/kai_ruby_3.png','img/trailppt/kai_ruby/kai_ruby_4.png','img/trailppt/kai_ruby/kai_ruby_5.png','img/trailppt/kai_ruby/kai_ruby_6.png','img/trailppt/kai_ruby/kai_ruby_7.png','img/trailppt/kai_ruby/kai_ruby_8.png','img/trailppt/kai_ruby/kai_ruby_9.png']
   },
   {
     id: 8,
     p_name: 'Sam', v_name: 'Ella', p_img: 'sam.png', v_img: 'ella.png',
     harm_type: 'strict_liability',
-    p_cookies: 3, p_after: 3,
-    v_initial: 3, v_after_harm: 2, harm_amount: 1,
-    slides: ['img/trailppt/sam_ella_1.png', 'img/trailppt/sam_ella_2.png', 'img/trailppt/sam_ella_3.png'],
-    event_text: 'Sam is carefully walking his dog on a leash. Even though Sam is holding the leash tightly and being very careful, the dog lunges toward Ella\'s cookies and eats one before Sam can stop it.',
-    event_title: 'Sam\'s Dog Eats Ella\'s Cookie'
+    p_cookies: 5, p_after: 5,
+    v_initial: 2, v_after_harm: 0, harm_amount: 2,
+    event_text: 'Sam is walking his dog on a leash when the dog breaks free and eats 2 of Ella\'s cookies.',
+    event_title: 'Sam\'s Dog Eats Ella\'s Cookies',
+    story_slides: ['img/trailppt/sam_ella/sam_ella_1.png','img/trailppt/sam_ella/sam_ella_2.png','img/trailppt/sam_ella/sam_ella_3.png','img/trailppt/sam_ella/sam_ella_4.png','img/trailppt/sam_ella/sam_ella_5.png','img/trailppt/sam_ella/sam_ella_6.png','img/trailppt/sam_ella/sam_ella_7.png','img/trailppt/sam_ella/sam_ella_8.png','img/trailppt/sam_ella/sam_ella_9.png']
+  },
+  {
+    id: 9,
+    p_name: 'Catherine', v_name: 'Andy', p_img: 'catherine.png', v_img: 'andy.png',
+    harm_type: 'strict_liability',
+    p_cookies: 7, p_after: 7,
+    v_initial: 2, v_after_harm: 0, harm_amount: 2,
+    event_text: 'Andy and Catherine bumped into each other accidentally. Catherine\'s wolf ate 2 of Andy\'s cookies.',
+    event_title: 'Catherine\'s Wolf Eats Andy\'s Cookies',
+    story_slides: ['img/trailppt/andy_catherine/andy_catherine_1.png','img/trailppt/andy_catherine/andy_catherine_2.png','img/trailppt/andy_catherine/andy_catherine_3.png','img/trailppt/andy_catherine/andy_catherine_4.png','img/trailppt/andy_catherine/andy_catherine_5.png','img/trailppt/andy_catherine/andy_catherine_6.png','img/trailppt/andy_catherine/andy_catherine_7.png','img/trailppt/andy_catherine/andy_catherine_8.png']
+  },
+  {
+    id: 10,
+    p_name: 'Tony', v_name: 'Katie', p_img: 'tony.png', v_img: 'katie.png',
+    harm_type: 'strict_liability',
+    p_cookies: 5, p_after: 5,
+    v_initial: 2, v_after_harm: 0, harm_amount: 2,
+    event_text: 'Katie and Tony are having a picnic when a gust of wind blows 2 of Katie\'s cookies away.',
+    event_title: 'Wind Blows Away Katie\'s Cookies',
+    story_slides: ['img/trailppt/harry_katie/harry_katie_1.png','img/trailppt/harry_katie/harry_katie_2.png','img/trailppt/harry_katie/harry_katie_3.png','img/trailppt/harry_katie/harry_katie_4.png','img/trailppt/harry_katie/harry_katie_5.png','img/trailppt/harry_katie/harry_katie_6.png','img/trailppt/harry_katie/harry_katie_7.png','img/trailppt/harry_katie/harry_katie_8.png']
+  },
+  {
+    id: 11,
+    p_name: 'Nora', v_name: 'Eric', p_img: 'nora.png', v_img: 'eric.png',
+    harm_type: 'strict_liability',
+    p_cookies: 7, p_after: 7,
+    v_initial: 2, v_after_harm: 0, harm_amount: 2,
+    event_text: 'While Eric is tying his shoelaces, a squirrel eats 2 of Eric\'s cookies.',
+    event_title: 'Squirrel Eats Eric\'s Cookies',
+    story_slides: ['img/trailppt/nora_eric/nora_eric_1.png','img/trailppt/nora_eric/nora_eric_2.png','img/trailppt/nora_eric/nora_eric_3.png','img/trailppt/nora_eric/nora_eric_4.png','img/trailppt/nora_eric/nora_eric_5.png','img/trailppt/nora_eric/nora_eric_6.png','img/trailppt/nora_eric/nora_eric_7.png']
   }
 ];
 
@@ -228,14 +261,14 @@ const welcomeScreen = {
   choices: ['Next'],
 };
 
-// Slide 1a – Introduce Finn
+// Slide 1a – Introduce Michael
 const warmupIntroFinn = {
   type: jsPsychHtmlButtonResponse,
   stimulus: `
     <div style="text-align:center; padding:30px 20px;">
-      <p class="slide-instruction">This is Finn</p>
-      <img src="img/finn_neutral.png" class="char-img intro-img" alt="Finn" style="margin:20px auto; display:block;">
-      <p class="slide-instruction" style="margin-top:16px;">Finn has 3 cookies</p>
+      <p class="slide-instruction">This is Michael</p>
+      <img src="img/michael.png" class="char-img intro-img" alt="Michael" style="margin:20px auto; display:block;">
+      <p class="slide-instruction" style="margin-top:16px;">Michael has 3 cookies</p>
       <div style="display:flex; justify-content:center; margin-top:10px;">
         ${freeCookiesHTML(3, false)}
       </div>
@@ -243,14 +276,14 @@ const warmupIntroFinn = {
   choices: ['Next'],
 };
 
-// Slide 1b – Introduce Cleo
+// Slide 1b – Introduce Claire
 const warmupIntroCleo = {
   type: jsPsychHtmlButtonResponse,
   stimulus: `
     <div style="text-align:center; padding:30px 20px;">
-      <p class="slide-instruction">This is Cleo</p>
-      <img src="img/cleo_neutral.png" class="char-img intro-img" alt="Cleo" style="margin:20px auto; display:block;">
-      <p class="slide-instruction" style="margin-top:16px;">Cleo has 3 cookies</p>
+      <p class="slide-instruction">This is Claire</p>
+      <img src="img/claire.png" class="char-img intro-img" alt="Claire" style="margin:20px auto; display:block;">
+      <p class="slide-instruction" style="margin-top:16px;">Claire has 3 cookies</p>
       <div style="display:flex; justify-content:center; margin-top:10px;">
         ${freeCookiesHTML(3, false)}
       </div>
@@ -258,7 +291,7 @@ const warmupIntroCleo = {
   choices: ['Next'],
 };
 
-// Slide 2a – Practice: move a cookie to Cleo
+// Slide 2a – Practice: move a cookie to Claire
 const warmupPracticeV = {
   type: jsPsychAllocation,
   p_cookies: 3,
@@ -267,14 +300,14 @@ const warmupPracticeV = {
   hud_v_cookies: 3,
   trash_on_left: TRASH_ON_LEFT,
   harm_text: '',
-  instruction_text: "Try it out! Move one of Finn's cookies to Cleo's plate.",
+  instruction_text: "Try it out! Move one of Michael's cookies to Claire's plate.",
   require_v: true,
   require_trash: false,
   require_both: false,
   is_practice: true,
   scenario_id: 0,
-  p_name: 'Finn', v_name: 'Cleo',
-  p_img: 'finn_neutral.png', v_img: 'cleo_neutral.png',
+  p_name: 'Michael', v_name: 'Claire',
+  p_img: 'michael.png', v_img: 'claire.png',
 };
 
 // Slide 2b – Practice: move a cookie to the Cookie Jar
@@ -286,17 +319,17 @@ const warmupPracticeTrash = {
   hud_v_cookies: 3,
   trash_on_left: TRASH_ON_LEFT,
   harm_text: '',
-  instruction_text: "Now move one of Finn's cookies to the Cookie Jar.",
+  instruction_text: "Now move one of Michael's cookies to the Cookie Jar.",
   require_v: false,
   require_trash: true,
   require_both: false,
   is_practice: true,
   scenario_id: 0,
-  p_name: 'Finn', v_name: 'Cleo',
-  p_img: 'finn_neutral.png', v_img: 'cleo_neutral.png',
+  p_name: 'Michael', v_name: 'Claire',
+  p_img: 'michael.png', v_img: 'claire.png',
 };
 
-// Slide 2c – Practice: move a cookie to both Cleo and the Cookie Jar
+// Slide 2c – Practice: move a cookie to both Claire and the Cookie Jar
 const warmupPracticeBoth = {
   type: jsPsychAllocation,
   p_cookies: 3,
@@ -305,17 +338,36 @@ const warmupPracticeBoth = {
   hud_v_cookies: 3,
   trash_on_left: TRASH_ON_LEFT,
   harm_text: '',
-  instruction_text: "Last one! Move at least one cookie to Cleo's plate AND at least one to the Cookie Jar.",
+  instruction_text: "Last one! Move at least one cookie to Claire's plate AND at least one to the Cookie Jar.",
   require_v: false,
   require_trash: false,
   require_both: true,
   is_practice: true,
   scenario_id: 0,
-  p_name: 'Finn', v_name: 'Cleo',
-  p_img: 'finn_neutral.png', v_img: 'cleo_neutral.png',
+  p_name: 'Michael', v_name: 'Claire',
+  p_img: 'michael.png', v_img: 'claire.png',
 };
 
-// Slide 2d – Practice: do nothing
+// Slide 2d – Practice: move a cookie FROM Claire to Michael
+const warmupPracticeFromV = {
+  type: jsPsychAllocation,
+  p_cookies: 3,
+  v_cookies_current: 3,
+  hud_p_cookies: 3,
+  hud_v_cookies: 3,
+  trash_on_left: TRASH_ON_LEFT,
+  harm_text: '',
+  instruction_text: "Now try the other direction! Move one of Claire's cookies to the Cookie Jar.",
+  require_v: false,
+  require_trash: false,
+  require_both: false,
+  require_from_v: true,
+  is_practice: true,
+  scenario_id: 0,
+  p_name: 'Michael', v_name: 'Claire',
+  p_img: 'michael.png', v_img: 'claire.png',
+};
+
 // Slide 3 – Practice confirmation
 const warmupDone = {
   type: jsPsychHtmlButtonResponse,
@@ -339,211 +391,72 @@ function buildTestTrial(scenario, scenarioIdx, total) {
 
   const trialLabel = `${pName} & ${vName}`;
 
-  // Slide A – characters (blank)
-  const slideA = {
-    type: jsPsychHtmlButtonResponse,
-    stimulus: twoPersonHTML({ showSlots: false, pName, vName, pImg, vImg }),
-    choices: ['Next'],
-    on_start: function() { updateProgressBar(scenarioIdx, total); },
-    _debugLabel: `${trialLabel} — A: Characters`,
-  };
-
-  // Slide C – Show initial cookies as free-floating icons (animated)
-  const slideC = {
-    _debugLabel: `${trialLabel} — C: Initial Cookies`,
-    type: jsPsychHtmlButtonResponse,
-    stimulus: twoPersonHTML({
-      pCookies: scenario.p_cookies,
-      vCookies: scenario.v_initial,
-      pLabel: `${pName} has ${scenario.p_cookies} cookies`,
-      vLabel: `${vName} has ${scenario.v_initial} cookies`,
-      showCookies: true, animate: true,
-      pName, vName, pImg, vImg
-    }),
-    choices: ['Next'],
-  };
-
-  // Slides D & E — video path present: replace text event + outcome with video + updated-cookies
-  let slidesDE;
-  if (scenario.video) {
-    // Slide D – Video
-    const slideD = {
-      _debugLabel: `${trialLabel} — D: Video`,
-      type: jsPsychHtmlButtonResponse,
-      stimulus: `
-        <div style="display:flex; flex-direction:column; align-items:center; gap:16px; padding-top:20px;">
-          <video width="640" controls style="border-radius:8px; max-width:100%;">
-            <source src="${scenario.video}" type="video/mp4">
-          </video>
-        </div>`,
-      choices: ['Next'],
-    };
-
-    // Slide E – Updated cookies (post-harm counts, no event box)
-    const pGainedNote = pGained > 0
-      ? `<br>${pName} now has <strong>${pAfter}</strong> cookie${pAfter !== 1 ? 's' : ''}.`
-      : '';
-    const slideE = {
-      _debugLabel: `${trialLabel} — E: Updated Cookies`,
-      type: jsPsychHtmlButtonResponse,
-      stimulus: `
-        <div style="display:flex; flex-direction:column; align-items:center; gap:20px; padding-top:20px;">
-          <p class="slide-instruction">
-            Oh no, ${vName} lost ${scenario.harm_amount} cookie${scenario.harm_amount !== 1 ? 's' : ''}.<br>
-            ${vName} now only has <strong>${scenario.v_after_harm}</strong>
-            cookie${scenario.v_after_harm !== 1 ? 's' : ''} left.${pGainedNote}
-          </p>
-          ${twoPersonHTML({
-            pCookies: pAfter,
-            vCookies: scenario.v_after_harm,
-            pLabel: `${pName} has ${pAfter} cookie${pAfter !== 1 ? 's' : ''}`,
-            vLabel: `${vName} has ${scenario.v_after_harm} cookie${scenario.v_after_harm !== 1 ? 's' : ''}`,
-            showCookies: true, animate: false,
-            pName, vName, pImg, vImg
-          })}
-        </div>`,
-      choices: ['Next'],
-    };
-
-    slidesDE = [slideD, slideE];
-  } else if (scenario.slides) {
-    // Slide D – Image slideshow exported from PowerPoint
-    const _imgs = scenario.slides;
-    const slideD = {
-      _debugLabel: `${trialLabel} — D: Video`,
-      type: jsPsychHtmlButtonResponse,
-      stimulus: `
-        <div style="display:flex; flex-direction:column; align-items:center; gap:16px; padding-top:20px;">
-          <img id="pptx-img" src="${_imgs[0]}"
-               style="max-width:860px; width:100%; border-radius:8px;">
-          <div style="display:flex; align-items:center; gap:16px;">
-            <button id="pptx-prev"
-                    style="padding:8px 20px; font-size:15px; border-radius:6px; cursor:pointer;">
-              ◀ Prev
-            </button>
-            <span id="pptx-counter" style="font-size:15px; color:#555;">
-              1 / ${_imgs.length}
-            </span>
-            <button id="pptx-next"
-                    style="padding:8px 20px; font-size:15px; border-radius:6px; cursor:pointer;">
-              Next ▶
-            </button>
-          </div>
-        </div>`,
-      choices: ['Continue'],
-      on_load: function() {
-        const imgs = _imgs;
-        let cur = 0;
-        function update() {
-          document.getElementById('pptx-img').src = imgs[cur];
-          document.getElementById('pptx-counter').textContent = (cur + 1) + ' / ' + imgs.length;
-        }
-        document.getElementById('pptx-prev').addEventListener('click', () => {
-          if (cur > 0) { cur--; update(); }
-        });
-        document.getElementById('pptx-next').addEventListener('click', () => {
-          if (cur < imgs.length - 1) { cur++; update(); }
-        });
-      },
-    };
-
-    // Slide E – Updated cookies (post-harm counts, no event box)
-    const pGainedNote = pGained > 0
-      ? `<br>${pName} now has <strong>${pAfter}</strong> cookie${pAfter !== 1 ? 's' : ''}.`
-      : '';
-    const slideE = {
-      _debugLabel: `${trialLabel} — E: Updated Cookies`,
-      type: jsPsychHtmlButtonResponse,
-      stimulus: `
-        <div style="display:flex; flex-direction:column; align-items:center; gap:20px; padding-top:20px;">
-          <p class="slide-instruction">
-            Oh no, ${vName} lost ${scenario.harm_amount} cookie${scenario.harm_amount !== 1 ? 's' : ''}.<br>
-            ${vName} now only has <strong>${scenario.v_after_harm}</strong>
-            cookie${scenario.v_after_harm !== 1 ? 's' : ''} left.${pGainedNote}
-          </p>
-          ${twoPersonHTML({
-            pCookies: pAfter,
-            vCookies: scenario.v_after_harm,
-            pLabel: `${pName} has ${pAfter} cookie${pAfter !== 1 ? 's' : ''}`,
-            vLabel: `${vName} has ${scenario.v_after_harm} cookie${scenario.v_after_harm !== 1 ? 's' : ''}`,
-            showCookies: true, animate: false,
-            pName, vName, pImg, vImg
-          })}
-        </div>`,
-      choices: ['Next'],
-    };
-
-    slidesDE = [slideD, slideE];
-  } else {
-    // Slide D – Event description (text)
-    const slideD = {
-      _debugLabel: `${trialLabel} — D: Event`,
-      type: jsPsychHtmlButtonResponse,
-      stimulus: `
-        <div style="padding-top:20px; display:flex; justify-content:center;">
-          ${eventBoxHTML(scenario, false)}
-        </div>`,
-      choices: ['Next'],
-    };
-
-    // Slide E – Outcome with event box
-    const pGainedNote = pGained > 0
-      ? `<br>${pName} now has <strong>${pAfter}</strong> cookie${pAfter !== 1 ? 's' : ''}.`
-      : '';
-    const slideE = {
-      _debugLabel: `${trialLabel} — E: Outcome`,
-      type: jsPsychHtmlButtonResponse,
-      stimulus: `
-        <div style="padding-top:20px; display:flex; flex-direction:column; align-items:center; gap:24px;">
-          ${eventBoxHTML(scenario, false)}
-          <div class="harm-result-container">
-            <p class="harm-result-text">
-              Oh no, ${vName} lost ${scenario.harm_amount} cookie${scenario.harm_amount !== 1 ? 's' : ''}.<br>
-              ${vName} now only has <strong>${scenario.v_after_harm}</strong>
-              cookie${scenario.v_after_harm !== 1 ? 's' : ''} left.${pGainedNote}
-            </p>
-            <div class="harm-result-chars">
-              <div class="harm-result-char">
-                <img src="img/${vImg}" class="char-img" alt="${vName}">
-                <p class="person-name">${vName}</p>
-                <div class="cookie-label">${vName} has ${scenario.v_after_harm} cookie${scenario.v_after_harm !== 1 ? 's' : ''}</div>
-                ${freeCookiesHTML(scenario.v_after_harm, false)}
-              </div>
-              ${pGained > 0 ? `
-              <div class="harm-result-char">
-                <img src="img/${pImg}" class="char-img" alt="${pName}">
-                <p class="person-name">${pName}</p>
-                <div class="cookie-label">${pName} has ${pAfter} cookie${pAfter !== 1 ? 's' : ''}</div>
-                ${freeCookiesHTML(pAfter, false)}
-              </div>` : ''}
-            </div>
-            <p class="decision-prompt">Please decide whether you would like to move some of ${pName}'s cookies.</p>
-          </div>
-        </div>`,
-      choices: ['Next'],
-    };
-
-    slidesDE = [slideD, slideE];
-  }
-
-  // Slide F – Move-cookies gate (Yes / No)
-  const slideF = {
-    _debugLabel: `${trialLabel} — F: Move Decision`,
+  // Story slide – all slides
+  const _storyImgs = scenario.story_slides;
+  const storySlide = {
+    _debugLabel: `${trialLabel} — Story`,
     type: jsPsychHtmlButtonResponse,
     stimulus: `
-      <div style="text-align:center; padding:60px 40px; max-width:700px; margin:0 auto;">
-        <p style="font-size:26px; font-weight:bold; margin-bottom:48px;">
-          Would you like to move some of ${pName}'s cookies?
-        </p>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:16px; padding-top:20px;">
+        <img id="story-img" src="${_storyImgs[0]}"
+             style="max-width:860px; width:100%; max-height:62vh; object-fit:contain; border-radius:8px;">
+        <div style="display:flex; align-items:center; gap:16px;">
+          <button id="story-prev"
+                  style="padding:8px 20px; font-size:15px; border-radius:6px; cursor:pointer;">
+            ◀ Prev
+          </button>
+          <span id="story-counter" style="font-size:15px; color:#555;">
+            1 / ${_storyImgs.length}
+          </span>
+          <button id="story-next"
+                  style="padding:8px 20px; font-size:15px; border-radius:6px; cursor:pointer;">
+            Next ▶
+          </button>
+        </div>
       </div>`,
-    choices: ['✓  Yes', '✗  No'],
-    button_html: [
-      '<button class="jspsych-btn" style="background:#22c55e;color:white;font-size:22px;padding:16px 52px;border:none;border-radius:12px;cursor:pointer;font-weight:bold;margin:0 20px;">%choice%</button>',
-      '<button class="jspsych-btn" style="background:#ef4444;color:white;font-size:22px;padding:16px 52px;border:none;border-radius:12px;cursor:pointer;font-weight:bold;margin:0 20px;">%choice%</button>',
-    ],
+    choices: ['Continue'],
+    on_start: function() { updateProgressBar(scenarioIdx, total); },
+    on_load: function() {
+      const imgs = _storyImgs;
+      let cur = 0;
+      const continueBtn = document.querySelector('.jspsych-btn');
+      if (imgs.length > 1) {
+        continueBtn.disabled = true;
+        continueBtn.style.opacity = '0.4';
+        continueBtn.style.cursor = 'not-allowed';
+      }
+      function update() {
+        document.getElementById('story-img').src = imgs[cur];
+        document.getElementById('story-counter').textContent = (cur + 1) + ' / ' + imgs.length;
+        if (cur === imgs.length - 1) {
+          continueBtn.disabled = false;
+          continueBtn.style.opacity = '1';
+          continueBtn.style.cursor = 'pointer';
+        }
+      }
+      document.getElementById('story-prev').addEventListener('click', () => {
+        if (cur > 0) { cur--; update(); }
+      });
+      document.getElementById('story-next').addEventListener('click', () => {
+        if (cur < imgs.length - 1) { cur++; update(); }
+      });
+    },
   };
 
-  // Slide G – Allocation task (only shown when viewer chose Yes)
+  // Decision question slide
+  const headerImg = scenario.story_slides[scenario.story_slides.length - 1];
+  const questionSlide = {
+    _debugLabel: `${trialLabel} — Decision Question`,
+    type: jsPsychHtmlButtonResponse,
+    stimulus: `
+      <div style="text-align:center; padding:10px 20px;">
+        <img src="${headerImg}" class="allocation-header-img" alt="">
+        <p style="font-size:20px; font-weight:600; margin:24px 0 8px;">Do you want to move any of the cookies?</p>
+      </div>`,
+    choices: ['Yes', 'No'],
+  };
+
+  // Slide G – Allocation task (only shown if viewer clicks Yes)
   const slideG = {
     _debugLabel: `${trialLabel} — G: Allocation`,
     type: jsPsychAllocation,
@@ -552,8 +465,9 @@ function buildTestTrial(scenario, scenarioIdx, total) {
     hud_p_cookies: scenario.p_cookies,
     hud_v_cookies: scenario.v_initial,
     trash_on_left: TRASH_ON_LEFT,
-    harm_text: `Oh no, ${vName} lost ${scenario.harm_amount} cookie${scenario.harm_amount !== 1 ? 's' : ''}. ${vName} now only has ${scenario.v_after_harm} cookie${scenario.v_after_harm !== 1 ? 's' : ''} left.`,
-    instruction_text: `Please decide whether you would like to move some of ${pName}'s cookies.`,
+    header_img: headerImg,
+    harm_text: '',
+    instruction_text: '',
     p_name: pName, v_name: vName, p_img: pImg, v_img: vImg,
     require_v: false,
     require_trash: false,
@@ -564,18 +478,17 @@ function buildTestTrial(scenario, scenarioIdx, total) {
     event_title: scenario.event_title || '',
   };
 
-  const conditionalG = {
+  const conditionalAlloc = {
+    _debugLabel: `${trialLabel} — Allocation [to test: jump to Decision Q above, click Yes]`,
     timeline: [slideG],
     conditional_function: function() {
-      // response 0 = Yes (first button), 1 = No.
-      // Fall back to showing allocation when jumped here directly (no prior F-slide data).
       const last = jsPsych.data.get().last(1).values();
       if (last.length === 0) return true;
       return last[0].response === 0;
     },
   };
 
-  return [slideA, slideC, ...slidesDE, slideF, conditionalG];
+  return [storySlide, questionSlide, conditionalAlloc];
 }
 
 /* ----------------------------------------------------------
@@ -649,11 +562,12 @@ const endScreen = {
    DEBUG LABELS (read by researcher panel — harmless in production)
    ---------------------------------------------------------- */
 welcomeScreen._debugLabel   = 'Welcome Screen';
-warmupIntroFinn._debugLabel = 'Intro: Finn';
-warmupIntroCleo._debugLabel = 'Intro: Cleo';
-warmupPracticeV._debugLabel          = 'Warmup: Practice (Cleo)';
+warmupIntroFinn._debugLabel = 'Intro: Michael';
+warmupIntroCleo._debugLabel = 'Intro: Claire';
+warmupPracticeV._debugLabel          = 'Warmup: Practice (Claire)';
 warmupPracticeTrash._debugLabel      = 'Warmup: Practice (Jar)';
 warmupPracticeBoth._debugLabel       = 'Warmup: Practice (Both)';
+warmupPracticeFromV._debugLabel      = 'Warmup: Practice (move from Claire)';
 warmupDone._debugLabel               = 'Warmup: Done';
 endScreen._debugLabel       = 'End Screen';
 
