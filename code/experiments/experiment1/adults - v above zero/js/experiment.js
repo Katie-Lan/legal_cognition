@@ -10,23 +10,21 @@ const jsPsych = initJsPsych({
   display_element: 'jspsych-target',
   show_progress_bar: true,
   on_finish: function () {
-    // Collect trial data (replace with JATOS / server POST in deployment)
-    const json = jsPsych.data.get().filter({ is_practice: false }).json();
-    console.table(jsPsych.data.get().filter({ is_practice: false }).values());
-    document.body.innerHTML = `
-      <div style="text-align:center; padding:80px; font-family:sans-serif;">
-        <h2>Thank you for participating!</h2>
-        <p>Your responses have been recorded.</p>
-        <button id="view-data-btn" style="padding:10px 24px; font-size:16px; cursor:pointer;">
-          View data
-        </button>
-        <pre id="data-display" style="display:none; text-align:left; max-height:400px;
-          overflow:auto; background:#f5f5f5; padding:20px; font-size:13px;
-          border-radius:8px; margin-top:24px;">${json}</pre>
-      </div>`;
-    document.getElementById('view-data-btn').addEventListener('click', function () {
-      document.getElementById('data-display').style.display = 'block';
-    });
+    // Send all non-practice trial data to proliferate for storage.
+    // Upload status is shown to the participant in the #thanks element.
+    const trials = jsPsych.data.get().filter({ is_practice: false }).values();
+    if (typeof proliferate !== 'undefined') {
+      proliferate.submit({ "trials": trials });
+    } else {
+      // Fallback when not launched through proliferate (e.g. local preview):
+      // log the data and show a simple thank-you screen so nothing appears broken.
+      console.table(trials);
+      document.body.innerHTML = `
+        <div style="text-align:center; padding:80px; font-family:sans-serif;">
+          <h2>Thank you for participating!</h2>
+          <p>Your responses have been recorded.</p>
+        </div>`;
+    }
   }
 });
 
