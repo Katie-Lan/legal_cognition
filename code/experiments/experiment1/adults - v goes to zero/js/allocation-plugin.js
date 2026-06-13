@@ -390,7 +390,7 @@ var jsPsychAllocation = (function (jspsych) {
       }
 
       /* -------------------------------------------------------
-         CONFIRM / DO NOTHING BUTTONS
+         CONFIRM BUTTON
       ------------------------------------------------------- */
       function finishAllocation(doNothing) {
         document.removeEventListener('mousemove', onMouseMove);
