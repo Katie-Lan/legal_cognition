@@ -47,8 +47,6 @@ var jsPsychAllocation = (function (jspsych) {
       v_name: { type: jspsych.ParameterType.STRING, default: 'Cleo' },
       p_img:  { type: jspsych.ParameterType.STRING, default: 'finn_neutral.png' },
       v_img:  { type: jspsych.ParameterType.STRING, default: 'cleo_neutral.png' },
-      /** Show "Do Nothing" button even on practice trials */
-      allow_do_nothing: { type: jspsych.ParameterType.BOOL, default: false },
     }
   };
 
@@ -190,7 +188,6 @@ var jsPsychAllocation = (function (jspsych) {
           ${needsDisabled() ? `<div id="alloc-hint" class="alloc-hint-hidden"></div>` : ''}
           <div class="allocation-btn-row">
             <button id="confirm-btn" ${needsDisabled() ? 'disabled' : ''}>${confirmLabel}</button>
-            ${(!trial.is_practice || trial.allow_do_nothing) ? `<button id="do-nothing-btn">Do Nothing</button>` : ''}
           </div>
         </div>
         <div id="drag-ghost">🍪</div>
@@ -435,12 +432,6 @@ var jsPsychAllocation = (function (jspsych) {
         finishAllocation.call(this, false);
       });
 
-      const doNothingBtn = display_element.querySelector('#do-nothing-btn');
-      if (doNothingBtn) {
-        doNothingBtn.addEventListener('click', () => {
-          finishAllocation.call(this, true);
-        });
-      }
     } // end trial()
   } // end class
 
