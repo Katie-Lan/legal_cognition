@@ -186,7 +186,7 @@ var jsPsychAllocation = (function (jspsych) {
         const confirmRow = display_element.querySelector('.allocation-btn-row');
 
         display_element.querySelector('#gate-yes').addEventListener('click', () => {
-          gate_rt        = Math.round(performance.now() - startTime);
+          gate_rt        = Math.round(performance.now() - startTime) / 1000;
           allocStartTime = performance.now();
           display_element.querySelectorAll('.plate-cookie').forEach(el => el.classList.add('draggable'));
           gateEl.style.display     = 'none';
@@ -195,7 +195,7 @@ var jsPsychAllocation = (function (jspsych) {
         });
 
         display_element.querySelector('#gate-no').addEventListener('click', () => {
-          gate_rt = Math.round(performance.now() - startTime);
+          gate_rt = Math.round(performance.now() - startTime) / 1000;
           finishAllocation.call(this, true);
         });
       }
@@ -377,11 +377,11 @@ var jsPsychAllocation = (function (jspsych) {
           ? gate_rt
           : (() => {
               const prev = this.jsPsych.data.get().last(1).values();
-              return (prev.length > 0 && prev[0].trial_type === 'html-button-response') ? prev[0].rt : null;
+              return (prev.length > 0 && prev[0].trial_type === 'html-button-response') ? prev[0].rt / 1000 : null;
             })();
         const finalAllocRt = trial.show_gate_question
-          ? (allocStartTime ? Math.round(performance.now() - allocStartTime) : null)
-          : Math.round(performance.now() - startTime);
+          ? (allocStartTime ? Math.round(performance.now() - allocStartTime) / 1000 : null)
+          : Math.round(performance.now() - startTime) / 1000;
 
         this.jsPsych.finishTrial({
           scenario_id:            trial.scenario_id,
