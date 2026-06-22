@@ -665,7 +665,7 @@ const demographicsScreen = {
     const eSel = document.querySelector('input[name="ethnicity"]:checked');
     data.ethnicity = eSel ? eSel.value : '';
   },
-  data: { is_demographic: true },
+  data: { is_demographic: true, is_practice: false },
   _debugLabel: 'Demographics',
 };
 
@@ -684,7 +684,7 @@ const feedbackScreen = {
     const el = document.getElementById('feedback-input');
     data.feedback = el ? el.value : '';
   },
-  data: { is_demographic: true, demographic_type: 'feedback' },
+  data: { is_demographic: true, demographic_type: 'feedback', is_practice: false },
   _debugLabel: 'Feedback',
 };
 
