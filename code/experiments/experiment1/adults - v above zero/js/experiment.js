@@ -6,10 +6,20 @@
 /* ----------------------------------------------------------
    INITIALIZE jsPsych
    ---------------------------------------------------------- */
+var participantConsented = false;
+
 const jsPsych = initJsPsych({
   display_element: 'jspsych-target',
   show_progress_bar: true,
   on_finish: function () {
+    if (!participantConsented) {
+      document.getElementById('jspsych-target').innerHTML = `
+        <div style="text-align:center; padding:80px 40px; max-width:700px; margin:0 auto; font-family:sans-serif; color:#333;">
+          <p style="font-size:20px;">You have chosen not to participate in this study.</p>
+          <p style="font-size:18px; color:#666; margin-top:16px;">You may close this browser window.</p>
+        </div>`;
+      return;
+    }
     // Send all non-practice trial data to proliferate for storage.
     // Upload status is shown to the participant in the #thanks element.
     const trials = jsPsych.data.get().filter({ is_practice: false }).values();
@@ -257,7 +267,14 @@ const consentScreen = {
       <p>Taking part in this study is voluntary. You can stop at any time. Withdrawal or refusal to participate will not result in any penalty. You do not waive any legal rights or release any agent from liability for negligence by consenting to participate.</p>
       <p style="margin-top:24px; font-weight:600;">If you consent to take part in this survey, please indicate so below:</p>
     </div>`,
-  choices: ['I agree to participate'],
+  choices: ['I agree to participate', 'I do not wish to participate'],
+  on_finish: function(data) {
+    if (data.response === 0) {
+      participantConsented = true;
+    } else {
+      jsPsych.abortCurrentTimeline();
+    }
+  },
   _debugLabel: 'Consent Form',
 };
 
