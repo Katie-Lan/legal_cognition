@@ -47,6 +47,8 @@ var jsPsychAllocation = (function (jspsych) {
       v_name: { type: jspsych.ParameterType.STRING, default: 'Cleo' },
       p_img:  { type: jspsych.ParameterType.STRING, default: 'finn_neutral.png' },
       v_img:  { type: jspsych.ParameterType.STRING, default: 'cleo_neutral.png' },
+      /** Last story image shown above the allocation UI */
+      header_img: { type: jspsych.ParameterType.STRING, default: '' },
     }
   };
 
@@ -173,6 +175,7 @@ var jsPsychAllocation = (function (jspsych) {
 
       const html = `
         <div class="allocation-screen">
+          ${trial.header_img ? `<div class="allocation-header-img-wrap"><img src="${trial.header_img}" alt="" style="max-width:100%; max-height:260px; display:block; margin:0 auto 16px auto; border-radius:4px;"></div>` : ''}
           ${trial.harm_text       ? `<div class="allocation-harm-text">${trial.harm_text}</div>`        : ''}
           ${trial.instruction_text ? `<div class="allocation-instruction">${trial.instruction_text}</div>` : ''}
           <div class="allocation-columns">
