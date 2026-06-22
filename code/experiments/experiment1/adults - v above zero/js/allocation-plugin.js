@@ -14,43 +14,28 @@ var jsPsychAllocation = (function (jspsych) {
     name: 'allocation',
     version: '1.0.0',
     parameters: {
-      /** How many cookies P currently has (all draggable) */
-      p_cookies:         { type: jspsych.ParameterType.INT,         default: 5 },
-      /** How many cookies V has AFTER harm (shown on V's plate, draggable) */
-      v_cookies_current: { type: jspsych.ParameterType.INT,         default: 2 },
-      /** P's initial cookie count shown in the HUD */
-      hud_p_cookies:     { type: jspsych.ParameterType.INT,         default: 5 },
-      /** V's initial cookie count shown in the HUD */
-      hud_v_cookies:     { type: jspsych.ParameterType.INT,         default: 5 },
-      /** Whether to put the Trash panel on the left (true) or right (false) */
-      trash_on_left:     { type: jspsych.ParameterType.BOOL,        default: true },
-      /** Harm description shown above the allocation columns */
-      harm_text:         { type: jspsych.ParameterType.HTML_STRING, default: '' },
-      /** Instruction overlay text (for practice trials) */
-      instruction_text:  { type: jspsych.ParameterType.HTML_STRING, default: '' },
-      /** Require ≥1 cookie given to V before submission (practice) */
-      require_v:         { type: jspsych.ParameterType.BOOL,        default: false },
-      /** Require ≥1 cookie put in Trash before submission (practice) */
-      require_trash:     { type: jspsych.ParameterType.BOOL,        default: false },
-      /** Require ≥1 cookie in both V AND Trash before submission (practice) */
-      require_both:      { type: jspsych.ParameterType.BOOL,        default: false },
-      /** Require ≥1 of V's cookies moved to P's plate before submission (practice) */
-      require_from_v:    { type: jspsych.ParameterType.BOOL,        default: false },
-      /** Whether this is a practice trial (changes button label) */
-      is_practice:       { type: jspsych.ParameterType.BOOL,        default: false },
-      /** Scenario identifier stored in data */
-      scenario_id:       { type: jspsych.ParameterType.INT,         default: 0 },
-      /** harm type stored in data */
-      harm_type:         { type: jspsych.ParameterType.STRING,      default: '' },
-      /** Human-readable scenario label stored in data (e.g. "Sam's Dog Eats Ella's Cookie") */
-      event_title:       { type: jspsych.ParameterType.STRING,      default: '' },
-      /** Character names and images (overridable per scenario) */
+      p_cookies:          { type: jspsych.ParameterType.INT,         default: 5 },
+      v_cookies_current:  { type: jspsych.ParameterType.INT,         default: 2 },
+      hud_p_cookies:      { type: jspsych.ParameterType.INT,         default: 5 },
+      hud_v_cookies:      { type: jspsych.ParameterType.INT,         default: 5 },
+      trash_on_left:      { type: jspsych.ParameterType.BOOL,        default: true },
+      harm_text:          { type: jspsych.ParameterType.HTML_STRING, default: '' },
+      instruction_text:   { type: jspsych.ParameterType.HTML_STRING, default: '' },
+      require_v:          { type: jspsych.ParameterType.BOOL,        default: false },
+      require_trash:      { type: jspsych.ParameterType.BOOL,        default: false },
+      require_both:       { type: jspsych.ParameterType.BOOL,        default: false },
+      require_from_v:     { type: jspsych.ParameterType.BOOL,        default: false },
+      is_practice:        { type: jspsych.ParameterType.BOOL,        default: false },
+      scenario_id:        { type: jspsych.ParameterType.INT,         default: 0 },
+      harm_type:          { type: jspsych.ParameterType.STRING,      default: '' },
+      event_title:        { type: jspsych.ParameterType.STRING,      default: '' },
       p_name: { type: jspsych.ParameterType.STRING, default: 'Finn' },
       v_name: { type: jspsych.ParameterType.STRING, default: 'Cleo' },
       p_img:  { type: jspsych.ParameterType.STRING, default: 'finn_neutral.png' },
       v_img:  { type: jspsych.ParameterType.STRING, default: 'cleo_neutral.png' },
-      /** Optional image shown above the allocation columns (replaces harm/instruction text) */
-      header_img: { type: jspsych.ParameterType.STRING, default: '' },
+      header_img:         { type: jspsych.ParameterType.STRING,      default: '' },
+      /** Show yes/no gate question on the allocation screen before cookies are movable */
+      show_gate_question: { type: jspsych.ParameterType.BOOL,        default: false },
     }
   };
 
@@ -61,6 +46,8 @@ var jsPsychAllocation = (function (jspsych) {
 
     trial(display_element, trial) {
       const startTime = performance.now();
+      let gate_rt      = null;
+      let allocStartTime = null;
 
       /* -------------------------------------------------------
          STATE
@@ -105,32 +92,26 @@ var jsPsychAllocation = (function (jspsych) {
         return { left: PLATE_R + dx, top: PLATE_R + dy };
       }
 
-      function clampToRect(el, clientX, clientY) {
-        const rect = el.getBoundingClientRect();
-        return {
-          left: Math.max(COOKIE_R, Math.min(clientX - rect.left, rect.width  - COOKIE_R)),
-          top:  Math.max(COOKIE_R, Math.min(clientY - rect.top,  rect.height - COOKIE_R)),
-        };
-      }
-
       /* -------------------------------------------------------
          HTML BUILDERS
       ------------------------------------------------------- */
       function pPlateHTML() {
+        const draggable = trial.show_gate_question ? '' : ' draggable';
         let html = `<div class="cookie-plate" id="p-plate">`;
         for (let i = 0; i < trial.p_cookies; i++) {
           const { left, top } = homePositions[i];
-          html += `<div class="plate-cookie draggable" id="p-cookie-${i}" data-cookie-id="${i}" style="left:${left}px;top:${top}px;"><span class="cookie-emoji">🍪</span></div>`;
+          html += `<div class="plate-cookie${draggable}" id="p-cookie-${i}" data-cookie-id="${i}" style="left:${left}px;top:${top}px;"><span class="cookie-emoji">🍪</span></div>`;
         }
         html += `</div>`;
         return html;
       }
 
       function vPanelHTML() {
+        const draggable = trial.show_gate_question ? '' : ' draggable';
         let plateHTML = `<div class="cookie-plate" id="v-plate">`;
         for (let i = 0; i < trial.v_cookies_current; i++) {
           const { left, top } = vHomePositions[i];
-          plateHTML += `<div class="plate-cookie draggable" id="v-existing-${i}" data-v-cookie-id="${i}" style="left:${left}px;top:${top}px;"><span class="cookie-emoji">🍪</span></div>`;
+          plateHTML += `<div class="plate-cookie${draggable}" id="v-existing-${i}" data-v-cookie-id="${i}" style="left:${left}px;top:${top}px;"><span class="cookie-emoji">🍪</span></div>`;
         }
         plateHTML += `</div>`;
 
@@ -157,8 +138,8 @@ var jsPsychAllocation = (function (jspsych) {
       /* -------------------------------------------------------
          BUILD FULL SCREEN HTML
       ------------------------------------------------------- */
-      const leftPanel  = trial.trash_on_left ? trashPanelHTML() : vPanelHTML();
-      const rightPanel = trial.trash_on_left ? vPanelHTML()     : trashPanelHTML();
+      const leftPanel    = trial.trash_on_left ? trashPanelHTML() : vPanelHTML();
+      const rightPanel   = trial.trash_on_left ? vPanelHTML()     : trashPanelHTML();
       const confirmLabel = trial.is_practice ? 'Done' : 'Confirm';
 
       const html = `
@@ -166,6 +147,16 @@ var jsPsychAllocation = (function (jspsych) {
           ${trial.header_img      ? `<img src="${trial.header_img}" class="allocation-header-img" alt="">` : ''}
           ${trial.harm_text       ? `<div class="allocation-harm-text">${trial.harm_text}</div>`        : ''}
           ${trial.instruction_text ? `<div class="allocation-instruction">${trial.instruction_text}</div>` : ''}
+          ${trial.show_gate_question ? `
+            <div id="gate-question" style="text-align:center; margin:0 0 18px 0;">
+              <p style="font-size:18px; font-weight:600; margin:0 0 14px 0;">Now that you saw what happened, do you want to move any cookies?</p>
+              <div style="display:flex; gap:20px; justify-content:center;">
+                <button id="gate-yes" class="jspsych-btn" style="padding:8px 28px; font-size:15px;">Yes</button>
+                <button id="gate-no"  class="jspsych-btn" style="padding:8px 28px; font-size:15px;">No</button>
+              </div>
+            </div>
+            <p id="move-instruction" style="display:none; text-align:center; font-size:18px; font-weight:600; margin:0 0 18px 0;">Please move cookies wherever you'd like.</p>
+          ` : ''}
           <div class="allocation-columns">
             ${leftPanel}
             <div class="p-pool-col">
@@ -177,7 +168,7 @@ var jsPsychAllocation = (function (jspsych) {
             ${rightPanel}
           </div>
           <div id="alloc-hint" class="alloc-hint-hidden"></div>
-          <div class="allocation-btn-row">
+          <div class="allocation-btn-row"${trial.show_gate_question ? ' style="display:none"' : ''}>
             <button id="confirm-btn" disabled>${confirmLabel}</button>
           </div>
         </div>
@@ -185,6 +176,29 @@ var jsPsychAllocation = (function (jspsych) {
       `;
 
       display_element.innerHTML = html;
+
+      /* -------------------------------------------------------
+         GATE QUESTION LISTENERS
+      ------------------------------------------------------- */
+      if (trial.show_gate_question) {
+        const gateEl     = display_element.querySelector('#gate-question');
+        const moveInstr  = display_element.querySelector('#move-instruction');
+        const confirmRow = display_element.querySelector('.allocation-btn-row');
+
+        display_element.querySelector('#gate-yes').addEventListener('click', () => {
+          gate_rt        = Math.round(performance.now() - startTime);
+          allocStartTime = performance.now();
+          display_element.querySelectorAll('.plate-cookie').forEach(el => el.classList.add('draggable'));
+          gateEl.style.display     = 'none';
+          moveInstr.style.display  = 'block';
+          confirmRow.style.display = '';
+        });
+
+        display_element.querySelector('#gate-no').addEventListener('click', () => {
+          gate_rt = Math.round(performance.now() - startTime);
+          finishAllocation.call(this, true);
+        });
+      }
 
       /* -------------------------------------------------------
          HELPERS
@@ -207,10 +221,10 @@ var jsPsychAllocation = (function (jspsych) {
         if (trial.require_both) {
           if (inV < 1 && inTrash < 1) { ok = false; hintMsg = `⚠️ Move at least one cookie to ${trial.v_name}'s plate and at least one to the Cookie Jar.`; }
           else if (inV < 1)           { ok = false; hintMsg = `⚠️ Don't forget to move a cookie to ${trial.v_name}'s plate too.`; }
-          else if (inTrash < 1)       { ok = false; hintMsg = '⚠️ Don\'t forget to move a cookie to the Cookie Jar too.'; }
+          else if (inTrash < 1)       { ok = false; hintMsg = "⚠️ Don't forget to move a cookie to the Cookie Jar too."; }
         } else if (trial.require_from_v && vToTrash < 1) { ok = false; hintMsg = `⚠️ Move at least one of ${trial.v_name}'s cookies to the Cookie Jar to continue.`; }
         else if   (trial.require_v     && inV < 1)     { ok = false; hintMsg = `⚠️ Move at least one cookie to ${trial.v_name}'s plate to continue.`; }
-        else if   (trial.require_trash && inTrash < 1) { ok = false; hintMsg = '⚠️ Move at least one cookie to the Cookie Jar to continue.'; }
+        else if   (trial.require_trash && inTrash < 1) { ok = false; hintMsg = "⚠️ Move at least one cookie to the Cookie Jar to continue."; }
         else if   (inV + inTrash + vToP + vToTrash < 1) { ok = false; }
 
         btn.disabled = !ok;
@@ -256,7 +270,6 @@ var jsPsychAllocation = (function (jspsych) {
       /* -------------------------------------------------------
          DRAG AND DROP
       ------------------------------------------------------- */
-      // dragging: { type: 'p'|'v', id: number } | null
       let dragging = null;
       const ghostEl = display_element.querySelector('#drag-ghost');
 
@@ -265,7 +278,6 @@ var jsPsychAllocation = (function (jspsych) {
         ghostEl.style.left    = (x - 22) + 'px';
         ghostEl.style.top     = (y - 22) + 'px';
       }
-
       function hideGhost() { ghostEl.style.display = 'none'; }
 
       function clearDropHovers() {
@@ -285,7 +297,6 @@ var jsPsychAllocation = (function (jspsych) {
         showGhost(e.clientX, e.clientY);
       });
 
-      // Click a displaced cookie to return it home
       display_element.addEventListener('click', (e) => {
         if (dragging) return;
         const cookieEl = e.target.closest('.plate-cookie.draggable');
@@ -358,14 +369,19 @@ var jsPsychAllocation = (function (jspsych) {
       /* -------------------------------------------------------
          CONFIRM BUTTON
       ------------------------------------------------------- */
-      function finishAllocation() {
+      function finishAllocation(doNothing) {
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup',   onMouseUp);
 
-        const prevTrials = this.jsPsych.data.get().last(1).values();
-        const gate_rt = (prevTrials.length > 0 && prevTrials[0].trial_type === 'html-button-response')
-          ? prevTrials[0].rt
-          : null;
+        const finalGateRt = trial.show_gate_question
+          ? gate_rt
+          : (() => {
+              const prev = this.jsPsych.data.get().last(1).values();
+              return (prev.length > 0 && prev[0].trial_type === 'html-button-response') ? prev[0].rt : null;
+            })();
+        const finalAllocRt = trial.show_gate_question
+          ? (allocStartTime ? Math.round(performance.now() - allocStartTime) : null)
+          : Math.round(performance.now() - startTime);
 
         this.jsPsych.finishTrial({
           scenario_id:            trial.scenario_id,
@@ -375,25 +391,24 @@ var jsPsychAllocation = (function (jspsych) {
           v_name:                 trial.v_name,
           v_initial:              trial.hud_v_cookies,
           v_after_harm:           trial.v_cookies_current,
-          // P cookie allocations
-          cookies_from_p_to_v:    countInZone('v'),
-          cookies_from_p_to_c:    countInZone('trash'),
-          cookies_kept_by_p:      countInZone('pool'),
-          // V cookie allocations
-          cookies_from_v_to_p:    countVInZone('p'),
-          cookies_from_v_to_c:    countVInZone('trash'),
-          cookies_kept_by_v:      countVInZone('v'),
-          do_nothing:             false,
+          cookies_from_p_to_v:    doNothing ? 0 : countInZone('v'),
+          cookies_from_p_to_c:    doNothing ? 0 : countInZone('trash'),
+          cookies_kept_by_p:      doNothing ? trial.p_cookies : countInZone('pool'),
+          cookies_from_v_to_p:    doNothing ? 0 : countVInZone('p'),
+          cookies_from_v_to_c:    doNothing ? 0 : countVInZone('trash'),
+          cookies_kept_by_v:      doNothing ? trial.v_cookies_current : countVInZone('v'),
+          do_nothing:             !!doNothing,
           trash_on_left:          trial.trash_on_left,
           is_practice:            trial.is_practice,
-          gate_rt:                gate_rt,
-          allocation_rt:          Math.round(performance.now() - startTime),
+          gate_rt:                finalGateRt,
+          allocation_rt:          finalAllocRt,
         });
       }
 
       display_element.querySelector('#confirm-btn').addEventListener('click', () => {
-        finishAllocation.call(this);
+        finishAllocation.call(this, false);
       });
+
     } // end trial()
   } // end class
 

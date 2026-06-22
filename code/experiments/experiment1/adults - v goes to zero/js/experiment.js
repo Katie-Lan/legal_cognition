@@ -481,22 +481,10 @@ function buildTestTrial(scenario, scenarioIdx, total) {
     },
   };
 
-  // Decision question slide
+  // Allocation screen with gate question integrated
   const headerImg = scenario.story_slides[scenario.story_slides.length - 1];
-  const questionSlide = {
-    _debugLabel: `${trialLabel} — Decision Question`,
-    type: jsPsychHtmlButtonResponse,
-    stimulus: `
-      <div style="text-align:center; padding:10px 20px;">
-        <img src="${headerImg}" class="allocation-header-img" alt="">
-        <p style="font-size:20px; font-weight:600; margin:24px 0 8px;">Do you want to move any of the cookies?</p>
-      </div>`,
-    choices: ['Yes', 'No'],
-  };
-
-  // Slide G – Allocation task (only shown if viewer clicks Yes)
   const slideG = {
-    _debugLabel: `${trialLabel} — G: Allocation`,
+    _debugLabel: `${trialLabel} — Allocation`,
     type: jsPsychAllocation,
     p_cookies: pAfter,
     v_cookies_current: scenario.v_after_harm,
@@ -514,62 +502,10 @@ function buildTestTrial(scenario, scenarioIdx, total) {
     scenario_id: scenario.id,
     harm_type: scenario.harm_type,
     event_title: scenario.event_title || '',
+    show_gate_question: true,
   };
 
-  const conditionalAlloc = {
-    _debugLabel: `${trialLabel} — Allocation [to test: jump to Decision Q above, click Yes]`,
-    timeline: [slideG],
-    conditional_function: function() {
-      const last = jsPsych.data.get().last(1).values();
-      if (last.length === 0) return true;
-      return last[0].response === 0;
-    },
-  };
-
-  // No-Move record — when the viewer clicks "No", log a do_nothing row so that
-  // EVERY scenario produces exactly one data row (uniform rows per participant)
-  // and the "do nothing" decisions are captured rather than dropped.
-  const noMoveTrial = {
-    _debugLabel: `${trialLabel} — No-Move (do nothing)`,
-    type: jsPsychCallFunction,
-    func: function() {},
-    data: {
-      scenario_id: scenario.id,
-      harm_type: scenario.harm_type,
-      event_title: scenario.event_title || '',
-      p_name: pName,
-      v_name: vName,
-      v_initial: scenario.v_initial,
-      v_after_harm: scenario.v_after_harm,
-      cookies_from_p_to_v: 0,
-      cookies_from_p_to_c: 0,
-      cookies_kept_by_p: pAfter,
-      cookies_from_v_to_p: 0,
-      cookies_from_v_to_c: 0,
-      cookies_kept_by_v: scenario.v_after_harm,
-      do_nothing: true,
-      trash_on_left: TRASH_ON_LEFT,
-      is_practice: false,
-    },
-    on_finish: function(data) {
-      // gate_rt = time spent on the Yes/No decision (the trial two back)
-      const prev = jsPsych.data.get().last(2).values()[0];
-      data.gate_rt = prev ? prev.rt : null;
-      data.allocation_rt = null;
-    },
-  };
-
-  const conditionalNoMove = {
-    _debugLabel: `${trialLabel} — No-Move record [runs when "No" is chosen]`,
-    timeline: [noMoveTrial],
-    conditional_function: function() {
-      const last = jsPsych.data.get().last(1).values();
-      if (last.length === 0) return false;
-      return last[0].response === 1;
-    },
-  };
-
-  return [storySlide, questionSlide, conditionalAlloc, conditionalNoMove];
+  return [storySlide, slideG];
 }
 
 /* ----------------------------------------------------------
