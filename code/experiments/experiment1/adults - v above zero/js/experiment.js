@@ -244,6 +244,24 @@ const secondBlockScenarios = [
 ];
 
 /* ----------------------------------------------------------
+   CONSENT SCREEN (first page of study)
+   ---------------------------------------------------------- */
+const consentScreen = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <div style="max-width:750px; margin:0 auto; padding:40px 30px; font-family:sans-serif; color:#333; font-size:15px; line-height:1.7; text-align:left;">
+      <p>Thank you for agreeing to take part in this study. We appreciate your time and effort. In this study, we will present you with a fictional scenario, and then we will ask you to answer a brief series of questions about that scenario. The questions have no right or wrong answers-- we're just exploring features of human psychology in this research. You will be paid $0.45 for your time and efforts. We do not anticipate any risks from participating in this research. While you will not directly benefit from taking part in this research study, we hope society and the scientific community will benefit from the knowledge gained about human psychology and judgment.</p>
+      <p>Your involvement should take about 5 minutes. Your participation is voluntary and you can stop at any time. If you consent to take part in this survey, please indicate so below, and then click the arrow to advance. If not, simply close your browser window.</p>
+      <p>The research data will be collected anonymously. We will not ask you to provide any personally identifiable information (such as an email-address, name, etc.) and will not be able to link your response to you. We anticipate that your participation in this survey presents no greater risk than everyday use of the Internet. Of course, please note that there is always the possible risk of intrusion by outside agents (i.e. hacking) whenever information shared over the Internet. In order to keep your identifying information and data from this study separate, we will host the survey on an unaffiliated platform, Qualtrics. Thus, Prolific will not have access to the data you provide us. Additionally, we will not ask for directly or indirectly identifiable information in the survey.</p>
+      <p>If you have any questions about the research study, please contact Shaun Nichols (sbn44@cornell.edu) at Cornell University. If you have any questions or concerns regarding your rights as a subject in this study, you may contact the Institutional Review Board (IRB) for Human Participants at 607-255-5138 or access their website at <a href="http://www.irb.cornell.edu" target="_blank">http://www.irb.cornell.edu</a>. You may also report your concerns or complaints anonymously through Ethicspoint online at <a href="http://www.hotline.cornell.edu" target="_blank">www.hotline.cornell.edu</a> or by calling toll free at 1-866-293-3077. Ethicspoint is an independent organization that serves as a liaison between the University and the person bringing the complaint so that anonymity can be ensured.</p>
+      <p>Taking part in this study is voluntary. You can stop at any time. Withdrawal or refusal to participate will not result in any penalty. You do not waive any legal rights or release any agent from liability for negligence by consenting to participate.</p>
+      <p style="margin-top:24px; font-weight:600;">If you consent to take part in this survey, please indicate so below:</p>
+    </div>`,
+  choices: ['I agree to participate'],
+  _debugLabel: 'Consent Form',
+};
+
+/* ----------------------------------------------------------
    WARMUP TIMELINE
    ---------------------------------------------------------- */
 
@@ -589,6 +607,94 @@ shuffledSecondBlock.forEach(scenario => {
   buildTestTrial(scenario, trialIdx++, totalTrials).forEach(t => testBlock.push(t));
 });
 
+/* ----------------------------------------------------------
+   DEMOGRAPHIC & FEEDBACK SCREENS
+   ---------------------------------------------------------- */
+const demoAge = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <div style="text-align:center; padding:60px 40px; max-width:600px; margin:0 auto; font-family:sans-serif;">
+      <p style="font-size:22px; margin-bottom:28px;">What is your age?</p>
+      <input type="number" id="demo-age" min="18" max="120" placeholder="Enter your age"
+        style="font-size:20px; padding:10px 16px; width:160px; text-align:center;
+               border:2px solid #ccc; border-radius:8px; outline:none;">
+    </div>`,
+  choices: ['Next'],
+  on_finish: function(data) {
+    const el = document.getElementById('demo-age');
+    data.age = el ? el.value : '';
+  },
+  data: { is_demographic: true, demographic_type: 'age' },
+  _debugLabel: 'Demographics: Age',
+};
+
+const demoGender = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <div style="text-align:center; padding:60px 40px; max-width:600px; margin:0 auto; font-family:sans-serif;">
+      <p style="font-size:22px; margin-bottom:12px;">What is your gender?</p>
+    </div>`,
+  choices: ['Male', 'Female', 'Non-binary / third gender', 'Prefer to self-describe', 'Prefer not to say'],
+  data: { is_demographic: true, demographic_type: 'gender' },
+  _debugLabel: 'Demographics: Gender',
+};
+
+const demoRace = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <div style="text-align:center; padding:40px; max-width:650px; margin:0 auto; font-family:sans-serif;">
+      <p style="font-size:22px; margin-bottom:20px;">What is your race or ethnicity?</p>
+      <div style="text-align:left; display:inline-block;">
+        ${['American Indian or Alaska Native', 'Asian or Asian American', 'Black or African American',
+           'Hispanic or Latino/a', 'Middle Eastern or North African',
+           'Native Hawaiian or Other Pacific Islander', 'White or European American',
+           'Multiracial', 'Prefer to self-describe', 'Prefer not to say']
+          .map(opt => `<label style="display:block; margin:8px 0; font-size:17px; cursor:pointer;">
+            <input type="radio" name="race" value="${opt}" style="margin-right:10px;">${opt}
+          </label>`).join('')}
+      </div>
+    </div>`,
+  choices: ['Next'],
+  on_finish: function(data) {
+    const sel = document.querySelector('input[name="race"]:checked');
+    data.race = sel ? sel.value : '';
+  },
+  data: { is_demographic: true, demographic_type: 'race' },
+  _debugLabel: 'Demographics: Race/Ethnicity',
+};
+
+const demoEducation = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <div style="text-align:center; padding:60px 40px; max-width:600px; margin:0 auto; font-family:sans-serif;">
+      <p style="font-size:22px; margin-bottom:12px;">What is the highest level of education you have completed?</p>
+    </div>`,
+  choices: ['Less than high school', 'High school / GED', 'Some college',
+            "Associate's degree", "Bachelor's degree", "Master's degree",
+            'Doctoral degree', 'Prefer not to say'],
+  data: { is_demographic: true, demographic_type: 'education' },
+  _debugLabel: 'Demographics: Education',
+};
+
+const feedbackScreen = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <div style="text-align:center; padding:40px; max-width:700px; margin:0 auto; font-family:sans-serif;">
+      <p style="font-size:20px; margin-bottom:20px;">Was anything confusing, or do you have any feedback about any part of this study?</p>
+      <textarea id="feedback-input" rows="6"
+        style="width:100%; font-size:16px; padding:12px; border:2px solid #ccc;
+               border-radius:8px; resize:vertical; font-family:inherit;"
+        placeholder="Your feedback here (optional)..."></textarea>
+    </div>`,
+  choices: ['Submit'],
+  on_finish: function(data) {
+    const el = document.getElementById('feedback-input');
+    data.feedback = el ? el.value : '';
+  },
+  data: { is_demographic: true, demographic_type: 'feedback' },
+  _debugLabel: 'Feedback',
+};
+
 // Final screen
 const endScreen = {
   type: jsPsychHtmlButtonResponse,
@@ -605,6 +711,7 @@ const endScreen = {
 /* ----------------------------------------------------------
    DEBUG LABELS (read by researcher panel — harmless in production)
    ---------------------------------------------------------- */
+consentScreen._debugLabel   = 'Consent Form';
 welcomeScreen._debugLabel   = 'Welcome Screen';
 warmupIntroFinn._debugLabel = 'Intro: Michael';
 warmupIntroCleo._debugLabel = 'Intro: Claire';
@@ -613,14 +720,25 @@ warmupPracticeTrash._debugLabel      = 'Warmup: Practice (Jar)';
 warmupPracticeBoth._debugLabel       = 'Warmup: Practice (Both)';
 warmupPracticeFromV._debugLabel      = 'Warmup: Practice (move from Claire)';
 warmupDone._debugLabel               = 'Warmup: Done';
+demoAge._debugLabel       = 'Demographics: Age';
+demoGender._debugLabel    = 'Demographics: Gender';
+demoRace._debugLabel      = 'Demographics: Race/Ethnicity';
+demoEducation._debugLabel = 'Demographics: Education';
+feedbackScreen._debugLabel = 'Feedback';
 endScreen._debugLabel       = 'End Screen';
 
 /* ----------------------------------------------------------
    RUN
    ---------------------------------------------------------- */
 const timeline = [
+  consentScreen,
   ...warmupBlock,
   ...testBlock,
+  demoAge,
+  demoGender,
+  demoRace,
+  demoEducation,
+  feedbackScreen,
   endScreen,
 ];
 
