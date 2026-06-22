@@ -798,7 +798,7 @@ const timeline = [
    Hidden by default for public / participant deployment.
    To reveal it (researcher use only), set SHOW_DEBUG_PANEL = true.
    ============================================================ */
-const SHOW_DEBUG_PANEL = true;   // ← change to true to show the Jump-to-Screen panel
+const SHOW_DEBUG_PANEL = false;   // ← change to true to show the Jump-to-Screen panel
 
 (function () {
   // Public deployment: panel stays hidden — just run the experiment normally.
