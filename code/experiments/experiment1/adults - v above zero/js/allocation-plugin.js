@@ -148,14 +148,14 @@ var jsPsychAllocation = (function (jspsych) {
           ${trial.harm_text       ? `<div class="allocation-harm-text">${trial.harm_text}</div>`        : ''}
           ${trial.instruction_text ? `<div class="allocation-instruction">${trial.instruction_text}</div>` : ''}
           ${trial.show_gate_question ? `
-            <div id="gate-question" style="text-align:center; margin:0 0 18px 0;">
-              <p style="font-size:18px; font-weight:600; margin:0 0 14px 0;">Now that you saw what happened, do you want to move any cookies?</p>
+            <div id="gate-question" style="text-align:center; margin:0 0 6px 0;">
+              <p style="font-size:18px; font-weight:600; margin:0 0 6px 0;">Now that you saw what happened, do you want to move any cookies?</p>
               <div style="display:flex; gap:20px; justify-content:center;">
-                <button id="gate-yes" class="jspsych-btn" style="padding:8px 28px; font-size:15px;">Yes</button>
-                <button id="gate-no"  class="jspsych-btn" style="padding:8px 28px; font-size:15px;">No</button>
+                <button id="gate-yes" class="jspsych-btn" style="padding:8px 28px; font-size:15px; margin-top:8px;">Yes</button>
+                <button id="gate-no"  class="jspsych-btn" style="padding:8px 28px; font-size:15px; margin-top:8px;">No</button>
               </div>
             </div>
-            <p id="move-instruction" style="display:none; text-align:center; font-size:18px; font-weight:600; margin:0 0 18px 0;">Please move cookies wherever you'd like.</p>
+            <p id="move-instruction" style="display:none; text-align:center; font-size:18px; font-weight:600; margin:0 0 6px 0;">Please move cookies wherever you'd like.</p>
           ` : ''}
           <div class="allocation-columns">
             ${leftPanel}
