@@ -20,15 +20,17 @@ const jsPsych = initJsPsych({
         </div>`;
       return;
     }
-    // Send all non-practice trial data to proliferate for storage.
+    // Send trial and demographic data to proliferate for storage.
     // Upload status is shown to the participant in the #thanks element.
-    const trials = jsPsych.data.get().filter({ is_practice: false }).values();
+    const trials      = jsPsych.data.get().filter(row => row.is_practice === false && !row.is_demographic).values();
+    const demographics = jsPsych.data.get().filter({ is_demographic: true }).values();
     if (typeof proliferate !== 'undefined') {
-      proliferate.submit({ "trials": trials });
+      proliferate.submit({ "trials": trials, "demographics": demographics });
     } else {
       // Fallback when not launched through proliferate (e.g. local preview):
       // log the data and show a simple thank-you screen so nothing appears broken.
       console.table(trials);
+      console.table(demographics);
       document.body.innerHTML = `
         <div style="text-align:center; padding:80px; font-family:sans-serif;">
           <h2>Thank you for participating!</h2>
