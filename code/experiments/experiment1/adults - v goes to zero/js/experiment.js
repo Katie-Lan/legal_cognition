@@ -23,7 +23,7 @@ const jsPsych = initJsPsych({
     }
     // Send trial and demographic data to proliferate for storage.
     // Upload status is shown to the participant in the #thanks element.
-    const trials      = jsPsych.data.get().filter(row => row.is_practice === false && !row.is_demographic).values().sort((a, b) => a.scenario_id - b.scenario_id);
+    const trials      = jsPsych.data.get().values().filter(row => row.is_practice === false && !row.is_demographic).sort((a, b) => a.scenario_id - b.scenario_id);
     const demographics = jsPsych.data.get().filter({ is_demographic: true }).values();
     if (typeof proliferate !== 'undefined') {
       proliferate.submit({ "trials": trials, "demographics": demographics });
