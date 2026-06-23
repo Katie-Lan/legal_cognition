@@ -629,30 +629,54 @@ const demographicsScreen = {
     </div>`,
   choices: ['Submit'],
   on_load: function() {
+    // Update _demoData live as the participant fills in fields so the values
+    // are always ready when on_finish runs (no race with jsPsych's click handler).
+    document.getElementById('demo-age')?.addEventListener('input', function() {
+      _demoData.age = this.value.trim();
+    });
+    document.querySelectorAll('input[name="gender"]').forEach(function(el) {
+      el.addEventListener('change', function() {
+        _demoData.gender = this.value === '__other__'
+          ? 'Other: ' + (document.getElementById('gender-other')?.value || '')
+          : this.value;
+      });
+    });
+    document.getElementById('gender-other')?.addEventListener('input', function() {
+      if (document.querySelector('input[name="gender"]:checked')?.value === '__other__') {
+        _demoData.gender = 'Other: ' + this.value;
+      }
+    });
+    document.querySelectorAll('input[name="race"]').forEach(function(el) {
+      el.addEventListener('change', function() {
+        _demoData.race = this.value === '__other__'
+          ? 'Other: ' + (document.getElementById('race-other')?.value || '')
+          : this.value;
+      });
+    });
+    document.getElementById('race-other')?.addEventListener('input', function() {
+      if (document.querySelector('input[name="race"]:checked')?.value === '__other__') {
+        _demoData.race = 'Other: ' + this.value;
+      }
+    });
+    document.querySelectorAll('input[name="ethnicity"]').forEach(function(el) {
+      el.addEventListener('change', function() {
+        _demoData.ethnicity = this.value;
+      });
+    });
+
+    // Validate on Submit: if any field is missing, block the click from bubbling
+    // up to jsPsych's wrapper-div listener so the trial doesn't advance.
     const btn = document.querySelector('.jspsych-btn');
     if (!btn) return;
     btn.addEventListener('click', function(e) {
-      const age       = document.getElementById('demo-age')?.value?.trim();
-      const gender    = document.querySelector('input[name="gender"]:checked');
-      const race      = document.querySelector('input[name="race"]:checked');
-      const ethnicity = document.querySelector('input[name="ethnicity"]:checked');
-      const errEl     = document.getElementById('demo-error');
-      if (!age || !gender || !race || !ethnicity) {
+      const errEl = document.getElementById('demo-error');
+      if (!_demoData.age || !_demoData.gender || !_demoData.race || !_demoData.ethnicity) {
         e.stopImmediatePropagation();
         if (errEl) errEl.style.display = 'block';
       } else {
         if (errEl) errEl.style.display = 'none';
-        // Capture values NOW — jsPsych clears the DOM before on_finish runs
-        _demoData.age       = age;
-        _demoData.gender    = gender.value === '__other__'
-          ? 'Other: ' + (document.getElementById('gender-other')?.value || '')
-          : gender.value;
-        _demoData.race      = race.value === '__other__'
-          ? 'Other: ' + (document.getElementById('race-other')?.value || '')
-          : race.value;
-        _demoData.ethnicity = ethnicity.value;
       }
-    }, true); // capture phase fires before jsPsych's own listener
+    }, true); // capture phase — runs before jsPsych's bubble-phase listener
   },
   on_finish: function(data) {
     data.age       = _demoData.age       || '';
@@ -676,12 +700,12 @@ const feedbackScreen = {
     </div>`,
   choices: ['Submit'],
   on_load: function() {
-    const btn = document.querySelector('.jspsych-btn');
-    if (!btn) return;
-    // Capture feedback before jsPsych clears the DOM
-    btn.addEventListener('click', function() {
-      _demoData.feedback = document.getElementById('feedback-input')?.value || '';
-    }, true);
+    const textarea = document.getElementById('feedback-input');
+    if (textarea) {
+      textarea.addEventListener('input', function() {
+        _demoData.feedback = this.value;
+      });
+    }
   },
   on_finish: function(data) {
     data.feedback = _demoData.feedback || '';
