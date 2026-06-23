@@ -564,6 +564,10 @@ shuffledAll.forEach((scenario, idx) => {
    ---------------------------------------------------------- */
 const demographicsScreen = {
   type: jsPsychHtmlButtonResponse,
+  // choices: [] means jsPsych renders NO button and registers NO click handler.
+  // Our own Submit button is embedded in the stimulus and calls jsPsych.finishTrial()
+  // directly, bypassing jsPsych's event system entirely.
+  choices: [],
   stimulus: `
     <div style="max-width:680px; margin:0 auto; padding:40px 30px; font-family:sans-serif; color:#333; font-size:15px; text-align:left;">
       <p style="text-align:center; font-weight:bold; font-size:17px; margin-bottom:28px;">Demographic information:</p>
@@ -626,63 +630,37 @@ const demographicsScreen = {
 
       <p style="margin-top:28px; font-size:15px;">Please press <strong>Submit</strong> to complete the experiment.</p>
       <p id="demo-error" style="color:#cc0000; font-size:14px; margin-top:8px; display:none; font-weight:500;">Please answer all questions before submitting.</p>
+      <div style="text-align:center; margin-top:16px;">
+        <button id="demo-submit-btn" class="jspsych-btn" style="padding:8px 28px; font-size:15px; cursor:pointer;">Submit</button>
+      </div>
     </div>`,
-  choices: ['Submit'],
   on_load: function() {
-    // Update _demoData live as the participant fills in fields so the values
-    // are always ready when on_finish runs (no race with jsPsych's click handler).
-    document.getElementById('demo-age')?.addEventListener('input', function() {
-      _demoData.age = this.value.trim();
-    });
-    document.querySelectorAll('input[name="gender"]').forEach(function(el) {
-      el.addEventListener('change', function() {
-        _demoData.gender = this.value === '__other__'
-          ? 'Other: ' + (document.getElementById('gender-other')?.value || '')
-          : this.value;
-      });
-    });
-    document.getElementById('gender-other')?.addEventListener('input', function() {
-      if (document.querySelector('input[name="gender"]:checked')?.value === '__other__') {
-        _demoData.gender = 'Other: ' + this.value;
-      }
-    });
-    document.querySelectorAll('input[name="race"]').forEach(function(el) {
-      el.addEventListener('change', function() {
-        _demoData.race = this.value === '__other__'
-          ? 'Other: ' + (document.getElementById('race-other')?.value || '')
-          : this.value;
-      });
-    });
-    document.getElementById('race-other')?.addEventListener('input', function() {
-      if (document.querySelector('input[name="race"]:checked')?.value === '__other__') {
-        _demoData.race = 'Other: ' + this.value;
-      }
-    });
-    document.querySelectorAll('input[name="ethnicity"]').forEach(function(el) {
-      el.addEventListener('change', function() {
-        _demoData.ethnicity = this.value;
-      });
-    });
-
-    // Validate on Submit: if any field is missing, block the click from bubbling
-    // up to jsPsych's wrapper-div listener so the trial doesn't advance.
-    const btn = document.querySelector('.jspsych-btn');
-    if (!btn) return;
-    btn.addEventListener('click', function(e) {
-      const errEl = document.getElementById('demo-error');
-      if (!_demoData.age || !_demoData.gender || !_demoData.race || !_demoData.ethnicity) {
-        e.stopImmediatePropagation();
+    const startTime = performance.now();
+    document.getElementById('demo-submit-btn').addEventListener('click', function() {
+      const age       = document.getElementById('demo-age')?.value?.trim();
+      const genderEl  = document.querySelector('input[name="gender"]:checked');
+      const raceEl    = document.querySelector('input[name="race"]:checked');
+      const ethnicEl  = document.querySelector('input[name="ethnicity"]:checked');
+      const errEl     = document.getElementById('demo-error');
+      if (!age || !genderEl || !raceEl || !ethnicEl) {
         if (errEl) errEl.style.display = 'block';
-      } else {
-        if (errEl) errEl.style.display = 'none';
+        return;
       }
-    }, true); // capture phase — runs before jsPsych's bubble-phase listener
-  },
-  on_finish: function(data) {
-    data.age       = _demoData.age       || '';
-    data.gender    = _demoData.gender    || '';
-    data.race      = _demoData.race      || '';
-    data.ethnicity = _demoData.ethnicity || '';
+      if (errEl) errEl.style.display = 'none';
+      const gender    = genderEl.value === '__other__'
+        ? 'Other: ' + (document.getElementById('gender-other')?.value || '')
+        : genderEl.value;
+      const race      = raceEl.value === '__other__'
+        ? 'Other: ' + (document.getElementById('race-other')?.value || '')
+        : raceEl.value;
+      jsPsych.finishTrial({
+        rt:        Math.round(performance.now() - startTime),
+        age:       age,
+        gender:    gender,
+        race:      race,
+        ethnicity: ethnicEl.value,
+      });
+    });
   },
   data: { is_demographic: true, is_practice: false },
   _debugLabel: 'Demographics',
@@ -690,6 +668,7 @@ const demographicsScreen = {
 
 const feedbackScreen = {
   type: jsPsychHtmlButtonResponse,
+  choices: [],
   stimulus: `
     <div style="text-align:center; padding:40px; max-width:700px; margin:0 auto; font-family:sans-serif;">
       <p style="font-size:20px; margin-bottom:20px;">Was anything confusing, or do you have any feedback about any part of this study?</p>
@@ -697,18 +676,18 @@ const feedbackScreen = {
         style="width:100%; font-size:16px; padding:12px; border:2px solid #ccc;
                border-radius:8px; resize:vertical; font-family:inherit;"
         placeholder="Your feedback here (optional)..."></textarea>
+      <div style="margin-top:16px;">
+        <button id="feedback-submit-btn" class="jspsych-btn" style="padding:8px 28px; font-size:15px; cursor:pointer;">Submit</button>
+      </div>
     </div>`,
-  choices: ['Submit'],
   on_load: function() {
-    const textarea = document.getElementById('feedback-input');
-    if (textarea) {
-      textarea.addEventListener('input', function() {
-        _demoData.feedback = this.value;
+    const startTime = performance.now();
+    document.getElementById('feedback-submit-btn').addEventListener('click', function() {
+      jsPsych.finishTrial({
+        rt:       Math.round(performance.now() - startTime),
+        feedback: document.getElementById('feedback-input')?.value || '',
       });
-    }
-  },
-  on_finish: function(data) {
-    data.feedback = _demoData.feedback || '';
+    });
   },
   data: { is_demographic: true, demographic_type: 'feedback', is_practice: false },
   _debugLabel: 'Feedback',
