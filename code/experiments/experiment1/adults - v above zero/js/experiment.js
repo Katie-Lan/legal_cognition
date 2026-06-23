@@ -7,6 +7,7 @@
    INITIALIZE jsPsych
    ---------------------------------------------------------- */
 var participantConsented = false;
+var _demoData = {}; // captured before jsPsych clears the display
 
 const jsPsych = initJsPsych({
   display_element: 'jspsych-target',
@@ -631,34 +632,33 @@ const demographicsScreen = {
     const btn = document.querySelector('.jspsych-btn');
     if (!btn) return;
     btn.addEventListener('click', function(e) {
-      const age      = document.getElementById('demo-age')?.value?.trim();
-      const gender   = document.querySelector('input[name="gender"]:checked');
-      const race     = document.querySelector('input[name="race"]:checked');
+      const age       = document.getElementById('demo-age')?.value?.trim();
+      const gender    = document.querySelector('input[name="gender"]:checked');
+      const race      = document.querySelector('input[name="race"]:checked');
       const ethnicity = document.querySelector('input[name="ethnicity"]:checked');
-      const errEl    = document.getElementById('demo-error');
+      const errEl     = document.getElementById('demo-error');
       if (!age || !gender || !race || !ethnicity) {
         e.stopImmediatePropagation();
         if (errEl) errEl.style.display = 'block';
       } else {
         if (errEl) errEl.style.display = 'none';
+        // Capture values NOW — jsPsych clears the DOM before on_finish runs
+        _demoData.age       = age;
+        _demoData.gender    = gender.value === '__other__'
+          ? 'Other: ' + (document.getElementById('gender-other')?.value || '')
+          : gender.value;
+        _demoData.race      = race.value === '__other__'
+          ? 'Other: ' + (document.getElementById('race-other')?.value || '')
+          : race.value;
+        _demoData.ethnicity = ethnicity.value;
       }
     }, true); // capture phase fires before jsPsych's own listener
   },
   on_finish: function(data) {
-    data.age = document.getElementById('demo-age')?.value || '';
-
-    const gSel = document.querySelector('input[name="gender"]:checked');
-    data.gender = gSel
-      ? (gSel.value === '__other__' ? 'Other: ' + (document.getElementById('gender-other')?.value || '') : gSel.value)
-      : '';
-
-    const rSel = document.querySelector('input[name="race"]:checked');
-    data.race = rSel
-      ? (rSel.value === '__other__' ? 'Other: ' + (document.getElementById('race-other')?.value || '') : rSel.value)
-      : '';
-
-    const eSel = document.querySelector('input[name="ethnicity"]:checked');
-    data.ethnicity = eSel ? eSel.value : '';
+    data.age       = _demoData.age       || '';
+    data.gender    = _demoData.gender    || '';
+    data.race      = _demoData.race      || '';
+    data.ethnicity = _demoData.ethnicity || '';
   },
   data: { is_demographic: true, is_practice: false },
   _debugLabel: 'Demographics',
@@ -675,9 +675,16 @@ const feedbackScreen = {
         placeholder="Your feedback here (optional)..."></textarea>
     </div>`,
   choices: ['Submit'],
+  on_load: function() {
+    const btn = document.querySelector('.jspsych-btn');
+    if (!btn) return;
+    // Capture feedback before jsPsych clears the DOM
+    btn.addEventListener('click', function() {
+      _demoData.feedback = document.getElementById('feedback-input')?.value || '';
+    }, true);
+  },
   on_finish: function(data) {
-    const el = document.getElementById('feedback-input');
-    data.feedback = el ? el.value : '';
+    data.feedback = _demoData.feedback || '';
   },
   data: { is_demographic: true, demographic_type: 'feedback', is_practice: false },
   _debugLabel: 'Feedback',
