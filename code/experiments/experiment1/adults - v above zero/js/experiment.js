@@ -22,7 +22,7 @@ const jsPsych = initJsPsych({
     }
     // Send trial and demographic data to proliferate for storage.
     // Upload status is shown to the participant in the #thanks element.
-    const trials      = jsPsych.data.get().filter(row => row.is_practice === false && !row.is_demographic).values();
+    const trials      = jsPsych.data.get().filter(row => row.is_practice === false && !row.is_demographic).values().sort((a, b) => a.scenario_id - b.scenario_id);
     const demographics = jsPsych.data.get().filter({ is_demographic: true }).values();
     if (typeof proliferate !== 'undefined') {
       proliferate.submit({ "trials": trials, "demographics": demographics });
@@ -547,22 +547,15 @@ const warmupBlock = [
   warmupDone,
 ];
 
-// Finn & Cleo block — randomized order (stable across jump-reloads)
-const shuffledFinnCleo = sessionGet('exp1_shuffle_fc',
-  () => jsPsych.randomization.shuffle(finnCleoScenarios.map((_, i) => i))
-).map(i => finnCleoScenarios[i]);
-// Second block — randomized among themselves, always after Finn & Cleo (stable across jump-reloads)
-const shuffledSecondBlock = sessionGet('exp1_shuffle_sb',
-  () => jsPsych.randomization.shuffle(secondBlockScenarios.map((_, i) => i))
-).map(i => secondBlockScenarios[i]);
-const totalTrials = shuffledFinnCleo.length + shuffledSecondBlock.length;
+// All scenarios combined — fully randomized per participant (stable across jump-reloads)
+const allScenarios = [...finnCleoScenarios, ...secondBlockScenarios];
+const shuffledAll = sessionGet('exp1_shuffle_all',
+  () => jsPsych.randomization.shuffle(allScenarios.map((_, i) => i))
+).map(i => allScenarios[i]);
+const totalTrials = shuffledAll.length;
 const testBlock = [];
-let trialIdx = 0;
-shuffledFinnCleo.forEach(scenario => {
-  buildTestTrial(scenario, trialIdx++, totalTrials).forEach(t => testBlock.push(t));
-});
-shuffledSecondBlock.forEach(scenario => {
-  buildTestTrial(scenario, trialIdx++, totalTrials).forEach(t => testBlock.push(t));
+shuffledAll.forEach((scenario, idx) => {
+  buildTestTrial(scenario, idx, totalTrials).forEach(t => testBlock.push(t));
 });
 
 /* ----------------------------------------------------------
