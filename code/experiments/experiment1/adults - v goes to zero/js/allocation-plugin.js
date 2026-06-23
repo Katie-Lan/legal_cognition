@@ -257,6 +257,7 @@ var jsPsychAllocation = (function (jspsych) {
         cookieEl.style.top     = top  + 'px';
         cookieEl.style.opacity = '1';
         vCookieDest[vCookieId] = 'v';
+        updateConfirmBtn();
       }
 
       /* -------------------------------------------------------
@@ -340,6 +341,7 @@ var jsPsychAllocation = (function (jspsych) {
             cookieEl.style.top     = pos.top  + 'px';
             cookieEl.style.opacity = '1';
             vCookieDest[cookieId]  = 'trash';
+            updateConfirmBtn();
           } else {
             returnVToPlate(cookieId);
           }
