@@ -543,6 +543,7 @@ const warmupBlock = [
   warmupPracticeV,
   warmupPracticeTrash,
   warmupPracticeBoth,
+  warmupPracticeFromV,
   warmupDone,
 ];
 

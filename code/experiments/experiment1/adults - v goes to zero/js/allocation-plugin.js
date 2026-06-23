@@ -23,6 +23,7 @@ var jsPsychAllocation = (function (jspsych) {
       require_v:          { type: jspsych.ParameterType.BOOL,        default: false },
       require_trash:      { type: jspsych.ParameterType.BOOL,        default: false },
       require_both:       { type: jspsych.ParameterType.BOOL,        default: false },
+      require_from_v:     { type: jspsych.ParameterType.BOOL,        default: false },
       is_practice:        { type: jspsych.ParameterType.BOOL,        default: false },
       scenario_id:        { type: jspsych.ParameterType.INT,         default: 0 },
       harm_type:          { type: jspsych.ParameterType.STRING,      default: '' },
@@ -217,8 +218,9 @@ var jsPsychAllocation = (function (jspsych) {
           if (inV < 1 && inTrash < 1) { ok = false; hintMsg = `⚠️ Move at least one cookie to ${trial.v_name}'s plate and at least one to the Cookie Jar.`; }
           else if (inV < 1)           { ok = false; hintMsg = `⚠️ Don't forget to move a cookie to ${trial.v_name}'s plate too.`; }
           else if (inTrash < 1)       { ok = false; hintMsg = "⚠️ Don't forget to move a cookie to the Cookie Jar too."; }
-        } else if (trial.require_v     && inV < 1)     { ok = false; hintMsg = `⚠️ Move at least one cookie to ${trial.v_name}'s plate to continue.`; }
-        else if   (trial.require_trash && inTrash < 1) { ok = false; hintMsg = "⚠️ Move at least one cookie to the Cookie Jar to continue."; }
+        } else if (trial.require_v      && inV < 1)                              { ok = false; hintMsg = `⚠️ Move at least one cookie to ${trial.v_name}'s plate to continue.`; }
+        else if   (trial.require_trash  && inTrash < 1)                          { ok = false; hintMsg = "⚠️ Move at least one cookie to the Cookie Jar to continue."; }
+        else if   (trial.require_from_v && vCookieDest.filter(d => d === 'trash').length < 1) { ok = false; hintMsg = `⚠️ Move at least one of ${trial.v_name}'s cookies to the Cookie Jar to continue.`; }
 
         btn.disabled = !ok;
         if (hintEl) {
