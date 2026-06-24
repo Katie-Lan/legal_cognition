@@ -351,6 +351,23 @@ const warmupPracticeV = {
   p_img: 'michael.png', v_img: 'claire.png',
 };
 
+// Slide 2b-intro – Cookie Jar explanation
+const warmupCookieJarExplain = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <div style="text-align:center; padding:60px 40px; max-width:700px; margin:0 auto; font-family:sans-serif; color:#333;">
+      <p style="font-size:22px; line-height:1.6;">
+        Think of the Cookie Jar as a <strong>penalty box</strong>.
+      </p>
+      <p style="font-size:20px; line-height:1.6; margin-top:20px;">
+        Any cookie you put in is taken away as a consequence — like paying a fine.
+        The person loses that cookie, and no one else gains it.
+      </p>
+    </div>`,
+  choices: ['Got it!'],
+  _debugLabel: 'Warmup: Cookie Jar Explanation',
+};
+
 // Slide 2b – Practice: move a cookie to the Cookie Jar
 const warmupPracticeTrash = {
   type: jsPsychAllocation,
@@ -542,6 +559,7 @@ const warmupBlock = [
   warmupIntroFinn,
   warmupIntroCleo,
   warmupPracticeV,
+  warmupCookieJarExplain,
   warmupPracticeTrash,
   warmupPracticeBoth,
   warmupPracticeFromV,
