@@ -693,7 +693,8 @@ const feedbackScreen = {
       <textarea id="feedback-input" rows="6"
         style="width:100%; font-size:16px; padding:12px; border:2px solid #ccc;
                border-radius:8px; resize:vertical; font-family:inherit;"
-        placeholder="Your feedback here (optional)..."></textarea>
+        placeholder="Please share your feedback here..."></textarea>
+      <p id="feedback-error" style="color:#cc0000; font-size:14px; margin-top:8px; display:none; font-weight:500;">Please enter your feedback before submitting.</p>
       <div style="margin-top:16px;">
         <button id="feedback-submit-btn" class="jspsych-btn" style="padding:8px 28px; font-size:15px; cursor:pointer;">Submit</button>
       </div>
@@ -701,9 +702,16 @@ const feedbackScreen = {
   on_load: function() {
     const startTime = performance.now();
     document.getElementById('feedback-submit-btn').addEventListener('click', function() {
+      const val = document.getElementById('feedback-input')?.value?.trim();
+      const errEl = document.getElementById('feedback-error');
+      if (!val) {
+        errEl.style.display = 'block';
+        document.getElementById('feedback-input').style.borderColor = '#cc0000';
+        return;
+      }
       jsPsych.finishTrial({
         rt:       Math.round(performance.now() - startTime),
-        feedback: document.getElementById('feedback-input')?.value || '',
+        feedback: val,
       });
     });
   },
