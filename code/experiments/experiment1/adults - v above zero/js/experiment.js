@@ -332,7 +332,39 @@ const warmupIntroCleo = {
   choices: ['Next'],
 };
 
-// Slide 2a – Practice: move a cookie to Claire
+// Slide 1c – Locked layout: show the game board and introduce the two ways
+const warmupLayoutLocked = {
+  type: jsPsychAllocation,
+  p_cookies: 3,
+  v_cookies_current: 3,
+  hud_p_cookies: 3,
+  hud_v_cookies: 3,
+  trash_on_left: TRASH_ON_LEFT,
+  harm_text: '',
+  instruction_text: "If someone does something wrong, you can decide whether they lose some cookies. They can lose cookies in two ways.",
+  locked: true,
+  is_practice: true,
+  scenario_id: 0,
+  p_name: 'Michael', v_name: 'Claire',
+  p_img: 'michael.png', v_img: 'claire.png',
+};
+
+// Slide 2a-intro – Way 1 explanation
+const warmupWay1Explain = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <div style="text-align:center; padding:60px 40px; max-width:700px; margin:0 auto; font-family:sans-serif; color:#333;">
+      <p style="font-size:22px; font-weight:600; line-height:1.6;">Way 1: Give their cookies to another person.</p>
+      <p style="font-size:20px; line-height:1.6; margin-top:20px;">
+        You can take Michael's cookies and give them to Claire,
+        or take Claire's cookies and give them to Michael.
+      </p>
+      <p style="font-size:20px; line-height:1.6; margin-top:20px;">Let's try it out!</p>
+    </div>`,
+  choices: ['Next'],
+};
+
+// Slide 2a – Practice: move Michael's cookie to Claire
 const warmupPracticeV = {
   type: jsPsychAllocation,
   p_cookies: 3,
@@ -341,7 +373,7 @@ const warmupPracticeV = {
   hud_v_cookies: 3,
   trash_on_left: TRASH_ON_LEFT,
   harm_text: '',
-  instruction_text: "Try it out! Move one of Michael's cookies to Claire's plate.",
+  instruction_text: "Move one of Michael's cookies to Claire's plate.",
   require_v: true,
   require_trash: false,
   require_both: false,
@@ -351,24 +383,39 @@ const warmupPracticeV = {
   p_img: 'michael.png', v_img: 'claire.png',
 };
 
-// Slide 2b-intro – Cookie Jar explanation
-const warmupCookieJarExplain = {
+// Slide 2b – Practice: move Claire's cookie to Michael
+const warmupPracticeVtoP = {
+  type: jsPsychAllocation,
+  p_cookies: 3,
+  v_cookies_current: 3,
+  hud_p_cookies: 3,
+  hud_v_cookies: 3,
+  trash_on_left: TRASH_ON_LEFT,
+  harm_text: '',
+  instruction_text: "Now move one of Claire's cookies to Michael's plate.",
+  require_v_to_p: true,
+  allow_v_to_p: true,
+  is_practice: true,
+  scenario_id: 0,
+  p_name: 'Michael', v_name: 'Claire',
+  p_img: 'michael.png', v_img: 'claire.png',
+};
+
+// Slide 2c-intro – Way 2 explanation
+const warmupWay2Explain = {
   type: jsPsychHtmlButtonResponse,
   stimulus: `
     <div style="text-align:center; padding:60px 40px; max-width:700px; margin:0 auto; font-family:sans-serif; color:#333;">
-      <p style="font-size:22px; line-height:1.6;">
-        Think of the Cookie Jar as a <strong>penalty box</strong>.
-      </p>
+      <p style="font-size:22px; font-weight:600; line-height:1.6;">Way 2: Put cookies in the cookie jar.</p>
       <p style="font-size:20px; line-height:1.6; margin-top:20px;">
-        Any cookie you put in is taken away as a consequence — like paying a fine.
-        The person loses that cookie, and no one else gains it.
+        Second, someone can also lose cookies by putting them in the cookie jar.
+        If they go in the cookie jar, nobody gets them.
       </p>
     </div>`,
   choices: ['Got it!'],
-  _debugLabel: 'Warmup: Cookie Jar Explanation',
 };
 
-// Slide 2b – Practice: move a cookie to the Cookie Jar
+// Slide 2c – Practice: move Michael's cookie to the Cookie Jar
 const warmupPracticeTrash = {
   type: jsPsychAllocation,
   p_cookies: 3,
@@ -377,7 +424,7 @@ const warmupPracticeTrash = {
   hud_v_cookies: 3,
   trash_on_left: TRASH_ON_LEFT,
   harm_text: '',
-  instruction_text: "Now move one of Michael's cookies to the Cookie Jar.",
+  instruction_text: "Move one of Michael's cookies to the Cookie Jar.",
   require_v: false,
   require_trash: true,
   require_both: false,
@@ -387,26 +434,7 @@ const warmupPracticeTrash = {
   p_img: 'michael.png', v_img: 'claire.png',
 };
 
-// Slide 2c – Practice: move a cookie to both Claire and the Cookie Jar
-const warmupPracticeBoth = {
-  type: jsPsychAllocation,
-  p_cookies: 3,
-  v_cookies_current: 3,
-  hud_p_cookies: 3,
-  hud_v_cookies: 3,
-  trash_on_left: TRASH_ON_LEFT,
-  harm_text: '',
-  instruction_text: "Last one! Move at least one cookie to Claire's plate AND at least one to the Cookie Jar.",
-  require_v: false,
-  require_trash: false,
-  require_both: true,
-  is_practice: true,
-  scenario_id: 0,
-  p_name: 'Michael', v_name: 'Claire',
-  p_img: 'michael.png', v_img: 'claire.png',
-};
-
-// Slide 2d – Practice: move a cookie FROM Claire to Michael
+// Slide 2d – Practice: move Claire's cookie to the Cookie Jar
 const warmupPracticeFromV = {
   type: jsPsychAllocation,
   p_cookies: 3,
@@ -415,11 +443,31 @@ const warmupPracticeFromV = {
   hud_v_cookies: 3,
   trash_on_left: TRASH_ON_LEFT,
   harm_text: '',
-  instruction_text: "Now try the other direction! Move one of Claire's cookies to the Cookie Jar.",
+  instruction_text: "Now move one of Claire's cookies to the Cookie Jar.",
   require_v: false,
   require_trash: false,
   require_both: false,
   require_from_v: true,
+  allow_v_to_p: false,
+  is_practice: true,
+  scenario_id: 0,
+  p_name: 'Michael', v_name: 'Claire',
+  p_img: 'michael.png', v_img: 'claire.png',
+};
+
+// Slide 2e – Practice: use both mechanics at once
+const warmupPracticeBoth = {
+  type: jsPsychAllocation,
+  p_cookies: 3,
+  v_cookies_current: 3,
+  hud_p_cookies: 3,
+  hud_v_cookies: 3,
+  trash_on_left: TRASH_ON_LEFT,
+  harm_text: '',
+  instruction_text: "Ok, so in our game you can decide that someone should lose cookies — you can give them to another person or put them in the cookie jar. Let's do both! Take a cookie and give it to Claire, and take one and put it in the cookie jar.",
+  require_v: false,
+  require_trash: false,
+  require_both: true,
   is_practice: true,
   scenario_id: 0,
   p_name: 'Michael', v_name: 'Claire',
@@ -431,9 +479,12 @@ const warmupDone = {
   type: jsPsychHtmlButtonResponse,
   stimulus: `
     <div style="text-align:center; padding:80px 40px; max-width:700px; margin:0 auto;">
-      <p class="slide-instruction">Great job! Now let's begin.</p>
+      <p class="slide-instruction">Good job!</p>
+      <p style="font-size:20px; margin-top:20px; color:#555; font-family:sans-serif;">
+        You're now ready to begin. Click Next when you're ready to start.
+      </p>
     </div>`,
-  choices: ['Begin'],
+  choices: ['Next'],
 };
 
 /* ----------------------------------------------------------
@@ -558,11 +609,14 @@ const warmupBlock = [
   welcomeScreen,
   warmupIntroFinn,
   warmupIntroCleo,
+  warmupLayoutLocked,
+  warmupWay1Explain,
   warmupPracticeV,
-  warmupCookieJarExplain,
+  warmupPracticeVtoP,
+  warmupWay2Explain,
   warmupPracticeTrash,
-  warmupPracticeBoth,
   warmupPracticeFromV,
+  warmupPracticeBoth,
   warmupDone,
 ];
 
@@ -764,13 +818,17 @@ const endScreen = {
    ---------------------------------------------------------- */
 consentScreen._debugLabel   = 'Consent Form';
 welcomeScreen._debugLabel   = 'Welcome Screen';
-warmupIntroFinn._debugLabel = 'Intro: Michael';
-warmupIntroCleo._debugLabel = 'Intro: Claire';
-warmupPracticeV._debugLabel          = 'Warmup: Practice (Claire)';
-warmupPracticeTrash._debugLabel      = 'Warmup: Practice (Jar)';
-warmupPracticeBoth._debugLabel       = 'Warmup: Practice (Both)';
-warmupPracticeFromV._debugLabel      = 'Warmup: Practice (move from Claire)';
-warmupDone._debugLabel               = 'Warmup: Done';
+warmupIntroFinn._debugLabel      = 'Intro: Michael';
+warmupIntroCleo._debugLabel      = 'Intro: Claire';
+warmupLayoutLocked._debugLabel   = 'Warmup: Layout (locked)';
+warmupWay1Explain._debugLabel    = 'Warmup: Way 1 Explanation';
+warmupPracticeV._debugLabel      = 'Warmup: Practice (Michael→Claire)';
+warmupPracticeVtoP._debugLabel   = 'Warmup: Practice (Claire→Michael)';
+warmupWay2Explain._debugLabel    = 'Warmup: Way 2 Explanation';
+warmupPracticeTrash._debugLabel  = 'Warmup: Practice (Michael→Jar)';
+warmupPracticeFromV._debugLabel  = 'Warmup: Practice (Claire→Jar)';
+warmupPracticeBoth._debugLabel   = 'Warmup: Practice (Both)';
+warmupDone._debugLabel           = 'Warmup: Done';
 demographicsScreen._debugLabel = 'Demographics';
 feedbackScreen._debugLabel     = 'Feedback';
 cookieJarScreen._debugLabel    = 'Cookie Jar Meaning';

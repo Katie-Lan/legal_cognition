@@ -25,6 +25,8 @@ var jsPsychAllocation = (function (jspsych) {
       require_trash:      { type: jspsych.ParameterType.BOOL,        default: false },
       require_both:       { type: jspsych.ParameterType.BOOL,        default: false },
       require_from_v:     { type: jspsych.ParameterType.BOOL,        default: false },
+      require_v_to_p:     { type: jspsych.ParameterType.BOOL,        default: false },
+      locked:             { type: jspsych.ParameterType.BOOL,        default: false },
       is_practice:        { type: jspsych.ParameterType.BOOL,        default: false },
       scenario_id:        { type: jspsych.ParameterType.INT,         default: 0 },
       harm_type:          { type: jspsych.ParameterType.STRING,      default: '' },
@@ -96,7 +98,7 @@ var jsPsychAllocation = (function (jspsych) {
          HTML BUILDERS
       ------------------------------------------------------- */
       function pPlateHTML() {
-        const draggable = trial.show_gate_question ? '' : ' draggable';
+        const draggable = (trial.show_gate_question || trial.locked) ? '' : ' draggable';
         let html = `<div class="cookie-plate" id="p-plate">`;
         for (let i = 0; i < trial.p_cookies; i++) {
           const { left, top } = homePositions[i];
@@ -107,7 +109,7 @@ var jsPsychAllocation = (function (jspsych) {
       }
 
       function vPanelHTML() {
-        const draggable = trial.show_gate_question ? '' : ' draggable';
+        const draggable = (trial.show_gate_question || trial.locked) ? '' : ' draggable';
         let plateHTML = `<div class="cookie-plate" id="v-plate">`;
         for (let i = 0; i < trial.v_cookies_current; i++) {
           const { left, top } = vHomePositions[i];
@@ -140,7 +142,7 @@ var jsPsychAllocation = (function (jspsych) {
       ------------------------------------------------------- */
       const leftPanel    = trial.trash_on_left ? trashPanelHTML() : vPanelHTML();
       const rightPanel   = trial.trash_on_left ? vPanelHTML()     : trashPanelHTML();
-      const confirmLabel = trial.is_practice ? 'Done' : 'Confirm';
+      const confirmLabel = trial.locked ? 'Next' : (trial.is_practice ? 'Done' : 'Confirm');
 
       const html = `
         <div class="allocation-screen">
@@ -169,7 +171,7 @@ var jsPsychAllocation = (function (jspsych) {
           </div>
           <div id="alloc-hint" class="alloc-hint-hidden"></div>
           <div class="allocation-btn-row"${trial.show_gate_question ? ' style="display:none"' : ''}>
-            <button id="confirm-btn" disabled>${confirmLabel}</button>
+            <button id="confirm-btn" ${trial.locked ? '' : 'disabled'}>${confirmLabel}</button>
           </div>
         </div>
         <div id="drag-ghost">🍪</div>
@@ -211,6 +213,7 @@ var jsPsychAllocation = (function (jspsych) {
       }
 
       function updateConfirmBtn() {
+        if (trial.locked) return;
         const btn    = display_element.querySelector('#confirm-btn');
         const hintEl = display_element.querySelector('#alloc-hint');
         const inV     = countInZone('v'),    inTrash  = countInZone('trash');
@@ -223,6 +226,7 @@ var jsPsychAllocation = (function (jspsych) {
           else if (inV < 1)           { ok = false; hintMsg = `⚠️ Don't forget to move a cookie to ${trial.v_name}'s plate too.`; }
           else if (inTrash < 1)       { ok = false; hintMsg = "⚠️ Don't forget to move a cookie to the Cookie Jar too."; }
         } else if (trial.require_from_v && vToTrash < 1) { ok = false; hintMsg = `⚠️ Move at least one of ${trial.v_name}'s cookies to the Cookie Jar to continue.`; }
+        else if   (trial.require_v_to_p && vToP < 1)   { ok = false; hintMsg = `⚠️ Move at least one of ${trial.v_name}'s cookies to ${trial.p_name}'s plate to continue.`; }
         else if   (trial.require_v     && inV < 1)     { ok = false; hintMsg = `⚠️ Move at least one cookie to ${trial.v_name}'s plate to continue.`; }
         else if   (trial.require_trash && inTrash < 1) { ok = false; hintMsg = "⚠️ Move at least one cookie to the Cookie Jar to continue."; }
         else if   (inV + inTrash + vToP + vToTrash < 1) { ok = false; }

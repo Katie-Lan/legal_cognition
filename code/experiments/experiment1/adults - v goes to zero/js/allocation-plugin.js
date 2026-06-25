@@ -24,6 +24,9 @@ var jsPsychAllocation = (function (jspsych) {
       require_trash:      { type: jspsych.ParameterType.BOOL,        default: false },
       require_both:       { type: jspsych.ParameterType.BOOL,        default: false },
       require_from_v:     { type: jspsych.ParameterType.BOOL,        default: false },
+      require_v_to_p:     { type: jspsych.ParameterType.BOOL,        default: false },
+      allow_v_to_p:       { type: jspsych.ParameterType.BOOL,        default: false },
+      locked:             { type: jspsych.ParameterType.BOOL,        default: false },
       is_practice:        { type: jspsych.ParameterType.BOOL,        default: false },
       scenario_id:        { type: jspsych.ParameterType.INT,         default: 0 },
       harm_type:          { type: jspsych.ParameterType.STRING,      default: '' },
@@ -93,7 +96,7 @@ var jsPsychAllocation = (function (jspsych) {
          HTML BUILDERS
       ------------------------------------------------------- */
       function pPlateHTML() {
-        const draggable = trial.show_gate_question ? '' : ' draggable';
+        const draggable = (trial.show_gate_question || trial.locked) ? '' : ' draggable';
         let html = `<div class="cookie-plate" id="p-plate">`;
         for (let i = 0; i < trial.p_cookies; i++) {
           const { left, top } = homePositions[i];
@@ -104,7 +107,7 @@ var jsPsychAllocation = (function (jspsych) {
       }
 
       function vPanelHTML() {
-        const draggable = trial.show_gate_question ? '' : ' draggable';
+        const draggable = (trial.show_gate_question || trial.locked) ? '' : ' draggable';
         let plateHTML = `<div class="cookie-plate" id="v-plate">`;
         for (let i = 0; i < trial.v_cookies_current; i++) {
           const { left, top } = vFixedPositions[i];
@@ -137,10 +140,10 @@ var jsPsychAllocation = (function (jspsych) {
       ------------------------------------------------------- */
       const leftPanel    = trial.trash_on_left ? trashPanelHTML() : vPanelHTML();
       const rightPanel   = trial.trash_on_left ? vPanelHTML()     : trashPanelHTML();
-      const confirmLabel = trial.is_practice ? 'Done' : 'Confirm';
+      const confirmLabel = trial.locked ? 'Next' : (trial.is_practice ? 'Done' : 'Confirm');
 
       function needsDisabled() {
-        return trial.require_v || trial.require_trash || trial.require_both;
+        return !trial.locked && (trial.require_v || trial.require_trash || trial.require_both || trial.require_from_v || trial.require_v_to_p);
       }
 
       const html = `
@@ -209,9 +212,11 @@ var jsPsychAllocation = (function (jspsych) {
       }
 
       function updateConfirmBtn() {
+        if (trial.locked) return;
         const btn    = display_element.querySelector('#confirm-btn');
         const hintEl = display_element.querySelector('#alloc-hint');
         const inV    = countInZone('v'), inTrash = countInZone('trash');
+        const vToP   = vCookieDest.filter(d => d === 'p').length;
         let ok = true;
         let hintMsg = '';
 
@@ -219,7 +224,8 @@ var jsPsychAllocation = (function (jspsych) {
           if (inV < 1 && inTrash < 1) { ok = false; hintMsg = `⚠️ Move at least one cookie to ${trial.v_name}'s plate and at least one to the Cookie Jar.`; }
           else if (inV < 1)           { ok = false; hintMsg = `⚠️ Don't forget to move a cookie to ${trial.v_name}'s plate too.`; }
           else if (inTrash < 1)       { ok = false; hintMsg = "⚠️ Don't forget to move a cookie to the Cookie Jar too."; }
-        } else if (trial.require_v      && inV < 1)                              { ok = false; hintMsg = `⚠️ Move at least one cookie to ${trial.v_name}'s plate to continue.`; }
+        } else if (trial.require_v_to_p  && vToP < 1)                                         { ok = false; hintMsg = `⚠️ Move at least one of ${trial.v_name}'s cookies to ${trial.p_name}'s plate to continue.`; }
+        else if   (trial.require_v      && inV < 1)                              { ok = false; hintMsg = `⚠️ Move at least one cookie to ${trial.v_name}'s plate to continue.`; }
         else if   (trial.require_trash  && inTrash < 1)                          { ok = false; hintMsg = "⚠️ Move at least one cookie to the Cookie Jar to continue."; }
         else if   (trial.require_from_v && vCookieDest.filter(d => d === 'trash').length < 1) { ok = false; hintMsg = `⚠️ Move at least one of ${trial.v_name}'s cookies to the Cookie Jar to continue.`; }
 
@@ -313,6 +319,7 @@ var jsPsychAllocation = (function (jspsych) {
         clearDropHovers();
         if (dragging.isVCookie) {
           if (target?.closest('#trash-panel')) trashPlate.classList.add('drop-hover');
+          else if (trial.allow_v_to_p && target?.closest('.p-pool-col')) pPlate.classList.add('drop-hover');
         } else {
           if      (target?.closest('#v-panel'))     vPlate.classList.add('drop-hover');
           else if (target?.closest('#trash-panel')) trashPlate.classList.add('drop-hover');
@@ -341,6 +348,14 @@ var jsPsychAllocation = (function (jspsych) {
             cookieEl.style.top     = pos.top  + 'px';
             cookieEl.style.opacity = '1';
             vCookieDest[cookieId]  = 'trash';
+            updateConfirmBtn();
+          } else if (trial.allow_v_to_p && target?.closest('.p-pool-col')) {
+            const pos = clampToPlate(pPlate, e.clientX, e.clientY);
+            pPlate.appendChild(cookieEl);
+            cookieEl.style.left    = pos.left + 'px';
+            cookieEl.style.top     = pos.top  + 'px';
+            cookieEl.style.opacity = '1';
+            vCookieDest[cookieId]  = 'p';
             updateConfirmBtn();
           } else {
             returnVToPlate(cookieId);
@@ -376,6 +391,7 @@ var jsPsychAllocation = (function (jspsych) {
         const fromPToC = doNothing ? 0 : countInZone('trash');
         const keptByP  = doNothing ? trial.p_cookies : countInZone('pool');
         const fromVToC = doNothing ? 0 : vCookieDest.filter(d => d === 'trash').length;
+        const fromVToP = doNothing ? 0 : vCookieDest.filter(d => d === 'p').length;
 
         const finalGateRt = trial.show_gate_question
           ? gate_rt
@@ -398,6 +414,7 @@ var jsPsychAllocation = (function (jspsych) {
           cookies_from_p_to_v: fromPToV,
           cookies_from_p_to_c: fromPToC,
           cookies_kept_by_p:   keptByP,
+          cookies_from_v_to_p: fromVToP,
           cookies_from_v_to_c: fromVToC,
           do_nothing:          !!doNothing,
           trash_on_left:       trial.trash_on_left,
