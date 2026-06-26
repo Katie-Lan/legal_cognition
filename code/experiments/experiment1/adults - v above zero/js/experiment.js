@@ -341,7 +341,7 @@ const warmupLayoutLocked = {
   hud_v_cookies: 3,
   trash_on_left: TRASH_ON_LEFT,
   harm_text: '',
-  instruction_text: "If someone does something wrong, you can decide whether they lose some cookies. They can lose cookies in two ways.",
+  instruction_text: "If you think anyone should be punished, you can decide how they lose their cookies",
   locked: true,
   is_practice: true,
   scenario_id: 0,
@@ -349,19 +349,38 @@ const warmupLayoutLocked = {
   p_img: 'michael.png', v_img: 'claire.png',
 };
 
-// Slide 2a-intro – Way 1 explanation
-const warmupWay1Explain = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: `
-    <div style="text-align:center; padding:60px 40px; max-width:700px; margin:0 auto; font-family:sans-serif; color:#333;">
-      <p style="font-size:22px; font-weight:600; line-height:1.6;">Way 1: Give their cookies to another person.</p>
-      <p style="font-size:20px; line-height:1.6; margin-top:20px;">
-        You can take Michael's cookies and give them to Claire,
-        or take Claire's cookies and give them to Michael.
-      </p>
-      <p style="font-size:20px; line-height:1.6; margin-top:20px;">Let's try it out!</p>
-    </div>`,
-  choices: ['Next'],
+// Slide 1d – Locked: two ways intro
+const warmupLayoutTwoWays = {
+  type: jsPsychAllocation,
+  p_cookies: 3,
+  v_cookies_current: 3,
+  hud_p_cookies: 3,
+  hud_v_cookies: 3,
+  trash_on_left: TRASH_ON_LEFT,
+  harm_text: '',
+  instruction_text: "They can lose cookies in two ways.",
+  locked: true,
+  is_practice: true,
+  scenario_id: 0,
+  p_name: 'Michael', v_name: 'Claire',
+  p_img: 'michael.png', v_img: 'claire.png',
+};
+
+// Slide 2a-intro – Way 1 explanation (locked)
+const warmupWay1Locked = {
+  type: jsPsychAllocation,
+  p_cookies: 3,
+  v_cookies_current: 3,
+  hud_p_cookies: 3,
+  hud_v_cookies: 3,
+  trash_on_left: TRASH_ON_LEFT,
+  harm_text: '',
+  instruction_text: "First, you can punish them by giving their cookies to another person. You can take Michael's cookies and give them to Claire, or take Claire's cookies and give them to Michael. Let's try it out!",
+  locked: true,
+  is_practice: true,
+  scenario_id: 0,
+  p_name: 'Michael', v_name: 'Claire',
+  p_img: 'michael.png', v_img: 'claire.png',
 };
 
 // Slide 2a – Practice: move Michael's cookie to Claire
@@ -401,18 +420,21 @@ const warmupPracticeVtoP = {
   p_img: 'michael.png', v_img: 'claire.png',
 };
 
-// Slide 2c-intro – Way 2 explanation
-const warmupWay2Explain = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: `
-    <div style="text-align:center; padding:60px 40px; max-width:700px; margin:0 auto; font-family:sans-serif; color:#333;">
-      <p style="font-size:22px; font-weight:600; line-height:1.6;">Way 2: Put cookies in the cookie jar.</p>
-      <p style="font-size:20px; line-height:1.6; margin-top:20px;">
-        Second, someone can also lose cookies by putting them in the cookie jar.
-        If they go in the cookie jar, nobody gets them.
-      </p>
-    </div>`,
-  choices: ['Got it!'],
+// Slide 2c-intro – Way 2 explanation (locked)
+const warmupWay2Locked = {
+  type: jsPsychAllocation,
+  p_cookies: 3,
+  v_cookies_current: 3,
+  hud_p_cookies: 3,
+  hud_v_cookies: 3,
+  trash_on_left: TRASH_ON_LEFT,
+  harm_text: '',
+  instruction_text: "Second, you can punish them by putting cookies in the cookie jar. If they go in the cookie jar, nobody gets them. Let's try it out!",
+  locked: true,
+  is_practice: true,
+  scenario_id: 0,
+  p_name: 'Michael', v_name: 'Claire',
+  p_img: 'michael.png', v_img: 'claire.png',
 };
 
 // Slide 2c – Practice: move Michael's cookie to the Cookie Jar
@@ -455,6 +477,23 @@ const warmupPracticeFromV = {
   p_img: 'michael.png', v_img: 'claire.png',
 };
 
+// Slide 2e-intro – Summary: both mechanics (locked)
+const warmupPracticeSummary = {
+  type: jsPsychAllocation,
+  p_cookies: 3,
+  v_cookies_current: 3,
+  hud_p_cookies: 3,
+  hud_v_cookies: 3,
+  trash_on_left: TRASH_ON_LEFT,
+  harm_text: '',
+  instruction_text: "Ok, so in our game you can decide that someone should lose cookies — you can give them to another person or put them in the cookie jar. Let's do both!",
+  locked: true,
+  is_practice: true,
+  scenario_id: 0,
+  p_name: 'Michael', v_name: 'Claire',
+  p_img: 'michael.png', v_img: 'claire.png',
+};
+
 // Slide 2e – Practice: use both mechanics at once
 const warmupPracticeBoth = {
   type: jsPsychAllocation,
@@ -464,7 +503,7 @@ const warmupPracticeBoth = {
   hud_v_cookies: 3,
   trash_on_left: TRASH_ON_LEFT,
   harm_text: '',
-  instruction_text: "Ok, so in our game you can decide that someone should lose cookies — you can give them to another person or put them in the cookie jar. Let's do both! Take a cookie and give it to Claire, and take one and put it in the cookie jar.",
+  instruction_text: "Take a cookie and give it to Claire, and take one and put it in the cookie jar.",
   require_v: false,
   require_trash: false,
   require_both: true,
@@ -610,12 +649,14 @@ const warmupBlock = [
   warmupIntroFinn,
   warmupIntroCleo,
   warmupLayoutLocked,
-  warmupWay1Explain,
+  warmupLayoutTwoWays,
+  warmupWay1Locked,
   warmupPracticeV,
   warmupPracticeVtoP,
-  warmupWay2Explain,
+  warmupWay2Locked,
   warmupPracticeTrash,
   warmupPracticeFromV,
+  warmupPracticeSummary,
   warmupPracticeBoth,
   warmupDone,
 ];
@@ -820,15 +861,17 @@ consentScreen._debugLabel   = 'Consent Form';
 welcomeScreen._debugLabel   = 'Welcome Screen';
 warmupIntroFinn._debugLabel      = 'Intro: Michael';
 warmupIntroCleo._debugLabel      = 'Intro: Claire';
-warmupLayoutLocked._debugLabel   = 'Warmup: Layout (locked)';
-warmupWay1Explain._debugLabel    = 'Warmup: Way 1 Explanation';
-warmupPracticeV._debugLabel      = 'Warmup: Practice (Michael→Claire)';
-warmupPracticeVtoP._debugLabel   = 'Warmup: Practice (Claire→Michael)';
-warmupWay2Explain._debugLabel    = 'Warmup: Way 2 Explanation';
-warmupPracticeTrash._debugLabel  = 'Warmup: Practice (Michael→Jar)';
-warmupPracticeFromV._debugLabel  = 'Warmup: Practice (Claire→Jar)';
-warmupPracticeBoth._debugLabel   = 'Warmup: Practice (Both)';
-warmupDone._debugLabel           = 'Warmup: Done';
+warmupLayoutLocked._debugLabel    = 'Warmup: Layout (locked)';
+warmupLayoutTwoWays._debugLabel   = 'Warmup: Two Ways (locked)';
+warmupWay1Locked._debugLabel      = 'Warmup: Way 1 (locked)';
+warmupPracticeV._debugLabel       = 'Warmup: Practice (Michael→Claire)';
+warmupPracticeVtoP._debugLabel    = 'Warmup: Practice (Claire→Michael)';
+warmupWay2Locked._debugLabel      = 'Warmup: Way 2 (locked)';
+warmupPracticeTrash._debugLabel   = 'Warmup: Practice (Michael→Jar)';
+warmupPracticeFromV._debugLabel   = 'Warmup: Practice (Claire→Jar)';
+warmupPracticeSummary._debugLabel = 'Warmup: Summary (locked)';
+warmupPracticeBoth._debugLabel    = 'Warmup: Practice (Both)';
+warmupDone._debugLabel            = 'Warmup: Done';
 demographicsScreen._debugLabel = 'Demographics';
 feedbackScreen._debugLabel     = 'Feedback';
 cookieJarScreen._debugLabel    = 'Cookie Jar Meaning';

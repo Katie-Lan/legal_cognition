@@ -153,7 +153,7 @@ var jsPsychAllocation = (function (jspsych) {
           ${trial.instruction_text ? `<div class="allocation-instruction">${trial.instruction_text}</div>` : ''}
           ${trial.show_gate_question ? `
             <div id="gate-question" style="text-align:center; margin:0 0 6px 0;">
-              <p style="font-size:18px; font-weight:600; margin:0 0 6px 0;">Now that you saw what happened, do you want to move any cookies?</p>
+              <p style="font-size:18px; font-weight:600; margin:0 0 6px 0;">Now that you saw what happened, do you think anyone should be punished?</p>
               <div style="display:flex; gap:20px; justify-content:center;">
                 <button id="gate-yes" class="jspsych-btn" style="padding:8px 28px; font-size:15px; margin-top:8px;">Yes</button>
                 <button id="gate-no"  class="jspsych-btn" style="padding:8px 28px; font-size:15px; margin-top:8px;">No</button>
@@ -196,6 +196,7 @@ var jsPsychAllocation = (function (jspsych) {
           gateEl.style.display     = 'none';
           moveInstr.style.display  = 'block';
           confirmRow.style.display = '';
+          display_element.querySelector('#confirm-btn').disabled = true;
         });
 
         display_element.querySelector('#gate-no').addEventListener('click', () => {
@@ -228,6 +229,7 @@ var jsPsychAllocation = (function (jspsych) {
         else if   (trial.require_v      && inV < 1)                              { ok = false; hintMsg = `⚠️ Move at least one cookie to ${trial.v_name}'s plate to continue.`; }
         else if   (trial.require_trash  && inTrash < 1)                          { ok = false; hintMsg = "⚠️ Move at least one cookie to the Cookie Jar to continue."; }
         else if   (trial.require_from_v && vCookieDest.filter(d => d === 'trash').length < 1) { ok = false; hintMsg = `⚠️ Move at least one of ${trial.v_name}'s cookies to the Cookie Jar to continue.`; }
+        else if   (inV + inTrash + vToP + vCookieDest.filter(d => d === 'trash').length < 1) { ok = false; }
 
         btn.disabled = !ok;
         if (hintEl) {
