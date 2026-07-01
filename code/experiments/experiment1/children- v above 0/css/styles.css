@@ -1,0 +1,870 @@
+/* ============================================================
+   GLOBAL LAYOUT OVERRIDES
+   ============================================================ */
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+}
+
+/* Override jsPsych's overflow-y: auto — no scrollbar anywhere */
+.jspsych-display-element {
+  overflow: hidden !important;
+  height: 100vh;
+}
+
+.jspsych-content-wrapper {
+  width: 100%;
+  min-height: 0;
+}
+
+.jspsych-content {
+  max-width: 1400px;
+  width: 96%;
+  padding: 0;
+}
+
+/* ============================================================
+   CHARACTER CARD
+   ============================================================ */
+
+.char-card {
+  border-radius: 22px;
+  border: 2px solid #ccc;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #333;
+  /* Slot for future image replacement: set background-image here */
+}
+
+.char-card.large {
+  width: 190px;
+  height: 165px;
+  font-size: 20px;
+}
+
+.char-card.medium {
+  width: 120px;
+  height: 104px;
+  font-size: 15px;
+  border-radius: 16px;
+}
+
+.char-card.small {
+  width: 82px;
+  height: 72px;
+  font-size: 12px;
+  border-radius: 12px;
+}
+
+/* ============================================================
+   COOKIE GRID  (3 top + 2 bottom)
+   ============================================================ */
+
+.cookie-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  user-select: none;
+}
+
+.cookie-row {
+  display: flex;
+  gap: 6px;
+}
+
+.cookie-row.row-bottom {
+  padding-left: 35px; /* centers 2 slots under 3 */
+}
+
+/* HUD-size grid adjustments */
+.hud-grid .cookie-row.row-bottom {
+  padding-left: 17px;
+}
+
+/* ============================================================
+   COOKIE SLOT
+   ============================================================ */
+
+.cookie-slot {
+  border-radius: 10px;
+  border: 1.5px solid #bbb;
+  background: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+/* Large slots (main display) */
+.cookie-slot.large {
+  width: 64px;
+  height: 48px;
+  border-radius: 10px;
+}
+
+/* Medium slots (allocation panel) */
+.cookie-slot.medium {
+  width: 56px;
+  height: 42px;
+  border-radius: 9px;
+}
+
+/* Small slots (HUD) */
+.cookie-slot.small {
+  width: 30px;
+  height: 22px;
+  border-radius: 6px;
+}
+
+/* Filled slots get white background to contrast the oval */
+.cookie-slot.filled {
+  background: #fff;
+  border-color: #aaa;
+}
+
+/* Drop target highlight */
+.cookie-slot.drop-hover {
+  border-color: #4a90d9;
+  background: #e8f1fb;
+}
+
+/* ============================================================
+   COOKIE OVAL
+   ============================================================ */
+
+.cookie-emoji {
+  pointer-events: none;
+  flex-shrink: 0;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.large .cookie-emoji  { font-size: 28px; }
+.medium .cookie-emoji { font-size: 24px; }
+.small .cookie-emoji  { font-size: 13px; }
+
+/* ============================================================
+   DRAGGABLE COOKIE SLOT
+   ============================================================ */
+
+.cookie-slot.draggable {
+  cursor: grab;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.cookie-slot.draggable:hover {
+  border-color: #888;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  transform: scale(1.05);
+}
+
+
+/* Ghost cookie (follows cursor while dragging) */
+#drag-ghost {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  display: none;
+  font-size: 44px;
+  line-height: 1;
+  opacity: 0.88;
+  transform: scale(1.12);
+  user-select: none;
+}
+
+/* Practice hint / warning */
+.alloc-hint-visible {
+  text-align: center;
+  font-size: 15px;
+  color: #c0392b;
+  background: #fff5f5;
+  border: 1.5px solid #e8a0a0;
+  border-radius: 8px;
+  padding: 6px 20px;
+  margin: 4px auto 0;
+  max-width: 560px;
+}
+.alloc-hint-hidden {
+  height: 0;
+  overflow: hidden;
+  margin: 0;
+}
+
+/* ============================================================
+   HUD (fixed top-left)
+   ============================================================ */
+
+.hud {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 8px 12px;
+  z-index: 500;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+}
+
+.hud-person {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.hud-label {
+  font-size: 11px;
+  color: #666;
+  font-weight: 500;
+}
+
+/* ============================================================
+   TWO-PERSON DISPLAY (intro slides)
+   ============================================================ */
+
+.two-person-display {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 120px;
+  margin: 40px auto;
+}
+
+.person-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.char-img {
+  width: 200px;
+  height: auto;
+  object-fit: contain;
+}
+
+.person-name {
+  font-size: 24px;
+  color: #333;
+  text-align: center;
+  margin: 8px 0 0;
+  font-weight: 500;
+}
+
+.char-img.intro-img {
+  width: 180px;
+  max-height: 40vh;
+  object-fit: contain;
+}
+
+.intro-name {
+  font-size: 26px;
+  color: #333;
+  text-align: center;
+  margin: 10px 0 0;
+  font-weight: 500;
+}
+
+.cookie-label {
+  font-size: 18px;
+  color: #555;
+  text-align: center;
+}
+
+/* ============================================================
+   SLIDE INSTRUCTION TEXT
+   ============================================================ */
+
+.slide-instruction {
+  font-size: 22px;
+  color: #555;
+  max-width: 520px;
+  line-height: 1.45;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.slide-title {
+  font-size: 52px;
+  font-weight: 400;
+  color: #222;
+  text-align: center;
+  margin: 0;
+  padding: 40px 0;
+}
+
+/* ============================================================
+   EVENT ANIMATION BOX
+   ============================================================ */
+
+.event-box {
+  width: 680px;
+  min-height: 220px;
+  border-radius: 24px;
+  border: 2px solid #ddd;
+  background: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 30px 40px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.event-scene {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 32px;
+}
+
+.event-person {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.event-person-label {
+  font-size: 13px;
+  color: #888;
+  font-weight: 600;
+}
+
+.event-description {
+  font-size: 17px;
+  color: #444;
+  text-align: center;
+  line-height: 1.5;
+  max-width: 440px;
+}
+
+.event-arrow {
+  font-size: 28px;
+  color: #999;
+}
+
+/* Intentional: red glow on perpetrator */
+.event-person.perpetrator .char-card.medium {
+  box-shadow: 0 0 0 3px rgba(220,60,60,0.25);
+}
+
+/* Negligent: orange glow */
+.event-person.negligent .char-card.medium {
+  box-shadow: 0 0 0 3px rgba(230,140,30,0.25);
+}
+
+/* Strict liability: blue glow */
+.event-person.strict-liability .char-card.medium {
+  box-shadow: 0 0 0 3px rgba(80,140,220,0.25);
+}
+
+/* ============================================================
+   HARM RESULT DISPLAY
+   ============================================================ */
+
+.harm-result-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 20px auto;
+}
+
+.harm-result-text {
+  font-size: 22px;
+  color: #555;
+  text-align: center;
+  max-width: 580px;
+  line-height: 1.4;
+}
+
+.harm-result-chars {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 60px;
+}
+
+.harm-result-char {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.decision-prompt {
+  font-size: 20px;
+  color: #333;
+  text-align: center;
+  max-width: 580px;
+  line-height: 1.4;
+  margin-top: 12px;
+  font-style: italic;
+}
+
+/* ============================================================
+   ALLOCATION SCREEN
+   ============================================================ */
+
+.allocation-screen {
+  width: 100%;
+  padding-top: 4px;
+  box-sizing: border-box;
+}
+
+.allocation-header-img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: 20vh;
+  margin: 0 auto 4px auto;
+  border-radius: 8px;
+}
+
+.allocation-harm-text {
+  font-size: 20px;
+  color: #555;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 20px auto;
+  line-height: 1.45;
+}
+
+.allocation-instruction {
+  font-size: 22px;
+  color: #555;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 24px auto;
+  line-height: 1.45;
+}
+
+/* Three-column layout */
+.allocation-columns {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 20px;
+  margin: 0 auto;
+}
+
+/* Outer panel (Trash or V) */
+.alloc-panel {
+  width: 260px;
+  min-height: 250px;
+  border: 2px solid transparent;
+  border-radius: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  gap: 4px;
+  background: #fff;
+}
+
+/* Character image and name inside allocation panels / P pool */
+.alloc-char-img {
+  width: 75px;
+  height: 72px;
+  object-fit: contain;
+}
+
+.alloc-char-name {
+  font-size: 17px;
+  color: #333;
+  font-weight: 500;
+  text-align: center;
+  margin: 2px 0 0;
+}
+
+/* Center P pool */
+.p-pool-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding-top: 4px;
+  width: 260px;
+}
+
+/* P pool cookie grid – medium sized, draggable */
+#p-pool-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#p-pool-grid .cookie-row.row-bottom {
+  padding-left: 31px;
+}
+
+/* Drop zone grid inside panels */
+.drop-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.drop-grid .cookie-row.row-bottom {
+  padding-left: 31px;
+}
+
+/* Existing V cookies (non-draggable) */
+.v-existing-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.v-existing-grid .cookie-row.row-bottom {
+  padding-left: 31px;
+}
+
+/* Cookie jar icon area */
+.trash-icon-area {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cookie-jar-img {
+  width: 120px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Panel label */
+.panel-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: #555;
+  text-align: center;
+}
+
+/* Button row (Confirm + Do Nothing) */
+.allocation-btn-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 8px;
+}
+
+#confirm-btn {
+  padding: 12px 48px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #4a86e8;
+  color: #fff;
+  border: none;
+}
+
+#confirm-btn:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+
+#confirm-btn:not(:disabled):hover {
+  background: #3a72cc;
+}
+
+#do-nothing-btn {
+  padding: 12px 36px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #fff;
+  color: #555;
+  border: 2px solid #ccc;
+}
+
+#do-nothing-btn:hover {
+  background: #f5f5f5;
+  border-color: #aaa;
+}
+
+/* ============================================================
+   FREE-FLOATING COOKIE ICONS (intro slides — no slots)
+   ============================================================ */
+
+.free-cookies-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  max-width: 220px;
+  margin-top: 4px;
+}
+
+.free-cookie-emoji {
+  font-size: 38px;
+  line-height: 1;
+  user-select: none;
+  display: inline-block;
+}
+
+.free-cookie-emoji.animate-cookie-appear {
+  animation: cookie-appear 0.35s ease-out both;
+}
+
+/* ============================================================
+   OPEN PLATE (allocation screen)
+   ============================================================ */
+
+/* Circular plate that replaces the slot grid in the allocation screen */
+.cookie-plate {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 38% 32%, #fdf9f2, #ede0c8);
+  border: 3px solid #c8b898;
+  box-shadow:
+    inset 0 3px 10px rgba(0,0,0,0.07),
+    inset 0 -2px 6px rgba(255,255,255,0.6),
+    0 3px 8px rgba(0,0,0,0.09);
+  position: relative;
+  flex-shrink: 0;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+/* Highlight when a cookie is being dragged over this plate */
+.cookie-plate.drop-hover {
+  border-color: #4a90d9;
+  box-shadow:
+    inset 0 3px 10px rgba(0,0,0,0.07),
+    0 0 0 4px rgba(74,144,217,0.22),
+    0 3px 8px rgba(0,0,0,0.09);
+}
+
+/* Trash panel highlight (uses the panel border, not a plate) */
+#trash-panel.drop-hover {
+  border-color: #4a90d9;
+  box-shadow: 0 0 0 3px rgba(74,144,217,0.2);
+}
+
+/* Individual cookie sitting on a plate.
+   left/top = desired CENTER of cookie within the plate (px from plate top-left).
+   transform: translate(-50%,-50%) centers the element at that point. */
+.plate-cookie {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  transition: filter 0.1s, transform 0.1s;
+  user-select: none;
+}
+
+.plate-cookie .cookie-emoji {
+  font-size: 36px;
+  pointer-events: none;
+  line-height: 1;
+}
+
+/* Draggable cookies show a grab cursor and scale up on hover */
+.plate-cookie.draggable {
+  cursor: grab;
+}
+
+.plate-cookie.draggable:hover {
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));
+  transform: translate(-50%, -50%) scale(1.14);
+}
+
+/* Trash pile — free-form area below the cookie jar where trashed cookies land */
+#trash-pile {
+  position: relative;
+  width: 200px;
+  min-height: 100px;
+  flex: 1;        /* expands to fill remaining space in the trash panel */
+}
+
+/* Cookies inside the trash pile are also absolute-positioned */
+#trash-pile .plate-cookie {
+  /* inherits position:absolute, left/top set inline */
+}
+
+/* ============================================================
+   COOKIE ANIMATIONS
+   ============================================================ */
+
+@keyframes cookie-appear {
+  0%   { opacity: 0; transform: scale(0.3); }
+  70%  { transform: scale(1.12); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes cookie-disappear {
+  0%   { opacity: 1; transform: scale(1); }
+  25%  { transform: scale(1.1) rotate(-8deg); }
+  60%  { transform: scale(0.7) rotate(12deg); opacity: 0.4; }
+  100% { opacity: 0; transform: scale(0); }
+}
+
+@keyframes slot-shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-6px); }
+  40%       { transform: translateX(6px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+
+.animate-cookie-appear .cookie-emoji {
+  animation: cookie-appear 0.35s ease-out both;
+}
+
+.animate-cookie-disappear {
+  animation: cookie-disappear 0.5s ease-in forwards;
+}
+
+.animate-shake {
+  animation: slot-shake 0.45s ease-in-out;
+}
+
+/* Staggered delays for cookie-appear (applied via JS data-delay) */
+.stagger-0  { animation-delay: 0s; }
+.stagger-1  { animation-delay: 0.12s; }
+.stagger-2  { animation-delay: 0.24s; }
+.stagger-3  { animation-delay: 0.36s; }
+.stagger-4  { animation-delay: 0.48s; }
+
+/* ============================================================
+   SLIDE WRAPPER (centers content vertically for intro slides)
+   ============================================================ */
+
+.slide-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 30px;
+  box-sizing: border-box;
+  gap: 24px;
+}
+
+.slide-content-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  max-width: 560px;
+}
+
+/* ============================================================
+   SCENARIO PROGRESS BAR (fixed top, test trials only)
+   ============================================================ */
+
+#scenario-progress-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: none;
+  background: #f8f8f8;
+  border-bottom: 1px solid #e8e8e8;
+  padding: 10px 24px 8px;
+}
+
+#scenario-progress-track {
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+#scenario-progress-fill {
+  height: 100%;
+  background: #4a86e8;
+  border-radius: 4px;
+  width: 0%;
+  transition: width 0.5s ease;
+}
+
+
+/* jspsych button override */
+.jspsych-btn {
+  margin-top: 28px;
+  padding: 10px 36px;
+  font-size: 17px;
+}
+
+/* ============================================================
+   RESEARCHER DEBUG PANEL — DELETE BEFORE GIVING TO PARTICIPANTS
+   ============================================================ */
+#researcher-debug-panel {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 9999;
+  background: #fffbea;
+  border: 2px dashed #f0b429;
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-family: monospace;
+  font-size: 13px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  min-width: 260px;
+}
+
+#rdp-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #7b4f00;
+}
+
+#rdp-select {
+  width: 100%;
+  padding: 5px 6px;
+  font-size: 13px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+#rdp-jump {
+  width: 100%;
+  padding: 6px 10px;
+  font-size: 13px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  background: #f0b429;
+  color: #fff;
+  font-weight: bold;
+}
+
+#rdp-jump:hover { background: #d49a1a; }
+/* *** END OF RESEARCHER DEBUG STYLES *** */
