@@ -341,7 +341,7 @@ const warmupLayoutLocked = {
   hud_v_cookies: 3,
   trash_on_left: TRASH_ON_LEFT,
   harm_text: '',
-  instruction_text: "If you think anyone should be punished, you can decide how they lose their cookies",
+  instruction_text: "If you think anyone should be punished, you can decide how they lose their cookies.",
   locked: true,
   is_practice: true,
   scenario_id: 0,
