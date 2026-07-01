@@ -178,7 +178,8 @@ const finnCleoScenarios = [
     v_initial: 2, v_after_harm: 0, harm_amount: 2,
     event_text: 'Finn spills water and doesn\'t clean it up. Cleo slips on the wet floor and 2 of Cleo\'s cookies are destroyed.',
     event_title: 'Finn Spills Water — Cleo Slips',
-    story_slides: ['img/trailppt/finn_cleo/finn_cleo_1.png','img/trailppt/finn_cleo/finn_cleo_2.png','img/trailppt/finn_cleo/finn_cleo_3.png','img/trailppt/finn_cleo/finn_cleo_4.png','img/trailppt/finn_cleo/finn_cleo_5.png','img/trailppt/finn_cleo/finn_cleo_6.png','img/trailppt/finn_cleo/finn_cleo_7.png','img/trailppt/finn_cleo/finn_cleo_8.png','img/trailppt/finn_cleo/finn_cleo_9.png','img/trailppt/finn_cleo/finn_cleo_10.png','img/trailppt/finn_cleo/finn_cleo_11.png']
+    story_slides: ['img/trailppt/finn_cleo/finn_cleo_1.png','img/trailppt/finn_cleo/finn_cleo_2.png','img/trailppt/finn_cleo/finn_cleo_3.png','img/trailppt/finn_cleo/finn_cleo_4.png','img/trailppt/finn_cleo/finn_cleo_5.png','img/trailppt/finn_cleo/finn_cleo_6.png','img/trailppt/finn_cleo/finn_cleo_7.png','img/trailppt/finn_cleo/finn_cleo_8.png','img/trailppt/finn_cleo/finn_cleo_9.png','img/trailppt/finn_cleo/finn_cleo_10.png','img/trailppt/finn_cleo/finn_cleo_11.png'],
+    story_video: 'videos%20vgo0/finn%20and%20cleo%20vgo0.mov'
   }
 ];
 
@@ -192,7 +193,8 @@ const secondBlockScenarios = [
     v_initial: 2, v_after_harm: 0, harm_amount: 2,
     event_text: 'Milo is angry at Sasha. He walks over and deliberately knocks off 2 of Sasha\'s cookies.',
     event_title: 'Milo Knocks Sasha\'s Cookies',
-    story_slides: ['img/trailppt/milo_sasha/milo_sasha_1.png','img/trailppt/milo_sasha/milo_sasha_2.png','img/trailppt/milo_sasha/milo_sasha_3.png','img/trailppt/milo_sasha/milo_sasha_4.png','img/trailppt/milo_sasha/milo_sasha_5.png','img/trailppt/milo_sasha/milo_sasha_6.png','img/trailppt/milo_sasha/milo_sasha_7.png','img/trailppt/milo_sasha/milo_sasha_8.png']
+    story_slides: ['img/trailppt/milo_sasha/milo_sasha_1.png','img/trailppt/milo_sasha/milo_sasha_2.png','img/trailppt/milo_sasha/milo_sasha_3.png','img/trailppt/milo_sasha/milo_sasha_4.png','img/trailppt/milo_sasha/milo_sasha_5.png','img/trailppt/milo_sasha/milo_sasha_6.png','img/trailppt/milo_sasha/milo_sasha_7.png','img/trailppt/milo_sasha/milo_sasha_8.png'],
+    story_video: 'videos%20vgo0/milo%20and%20sasha%20vgo0.mov'
   },
   {
     id: 6,
@@ -202,7 +204,8 @@ const secondBlockScenarios = [
     v_initial: 2, v_after_harm: 0, harm_amount: 2,
     event_text: 'Zoe wants Rex to have fewer cookies. She deliberately throws away 2 of Rex\'s cookies.',
     event_title: 'Zoe Throws Rex\'s Cookies Away',
-    story_slides: ['img/trailppt/rex_zoe/rex_zoe_1.png','img/trailppt/rex_zoe/rex_zoe_2.png','img/trailppt/rex_zoe/rex_zoe_3.png','img/trailppt/rex_zoe/rex_zoe_4.png','img/trailppt/rex_zoe/rex_zoe_5.png','img/trailppt/rex_zoe/rex_zoe_6.png','img/trailppt/rex_zoe/rex_zoe_7.png']
+    story_slides: ['img/trailppt/rex_zoe/rex_zoe_1.png','img/trailppt/rex_zoe/rex_zoe_2.png','img/trailppt/rex_zoe/rex_zoe_3.png','img/trailppt/rex_zoe/rex_zoe_4.png','img/trailppt/rex_zoe/rex_zoe_5.png','img/trailppt/rex_zoe/rex_zoe_6.png','img/trailppt/rex_zoe/rex_zoe_7.png'],
+    story_video: 'videos%20vgo0/rex%20and%20zoe%20vgo0.mov'
   },
   {
     id: 7,
@@ -212,7 +215,8 @@ const secondBlockScenarios = [
     v_initial: 2, v_after_harm: 0, harm_amount: 2,
     event_text: 'Kai walks without looking where he is going and bumps into Ruby. 2 of Ruby\'s cookies fall off.',
     event_title: 'Kai Bumps Into Ruby',
-    story_slides: ['img/trailppt/kai_ruby/kai_ruby_1.png','img/trailppt/kai_ruby/kai_ruby_2.png','img/trailppt/kai_ruby/kai_ruby_3.png','img/trailppt/kai_ruby/kai_ruby_4.png','img/trailppt/kai_ruby/kai_ruby_5.png','img/trailppt/kai_ruby/kai_ruby_6.png','img/trailppt/kai_ruby/kai_ruby_7.png','img/trailppt/kai_ruby/kai_ruby_8.png','img/trailppt/kai_ruby/kai_ruby_9.png']
+    story_slides: ['img/trailppt/kai_ruby/kai_ruby_1.png','img/trailppt/kai_ruby/kai_ruby_2.png','img/trailppt/kai_ruby/kai_ruby_3.png','img/trailppt/kai_ruby/kai_ruby_4.png','img/trailppt/kai_ruby/kai_ruby_5.png','img/trailppt/kai_ruby/kai_ruby_6.png','img/trailppt/kai_ruby/kai_ruby_7.png','img/trailppt/kai_ruby/kai_ruby_8.png','img/trailppt/kai_ruby/kai_ruby_9.png'],
+    story_video: 'videos%20vgo0/kai%20and%20ruby%20vgo0.mov'
   },
   {
     id: 8,
@@ -222,7 +226,8 @@ const secondBlockScenarios = [
     v_initial: 2, v_after_harm: 0, harm_amount: 2,
     event_text: 'Sam is walking his dog on a leash when the dog breaks free and eats 2 of Ella\'s cookies.',
     event_title: 'Sam\'s Dog Eats Ella\'s Cookies',
-    story_slides: ['img/trailppt/sam_ella/sam_ella_1.png','img/trailppt/sam_ella/sam_ella_2.png','img/trailppt/sam_ella/sam_ella_3.png','img/trailppt/sam_ella/sam_ella_4.png','img/trailppt/sam_ella/sam_ella_5.png','img/trailppt/sam_ella/sam_ella_6.png','img/trailppt/sam_ella/sam_ella_7.png','img/trailppt/sam_ella/sam_ella_8.png','img/trailppt/sam_ella/sam_ella_9.png']
+    story_slides: ['img/trailppt/sam_ella/sam_ella_1.png','img/trailppt/sam_ella/sam_ella_2.png','img/trailppt/sam_ella/sam_ella_3.png','img/trailppt/sam_ella/sam_ella_4.png','img/trailppt/sam_ella/sam_ella_5.png','img/trailppt/sam_ella/sam_ella_6.png','img/trailppt/sam_ella/sam_ella_7.png','img/trailppt/sam_ella/sam_ella_8.png','img/trailppt/sam_ella/sam_ella_9.png'],
+    story_video: 'videos%20vgo0/sam%20and%20ella%20vgo0.mov'
   },
   {
     id: 9,
@@ -232,7 +237,8 @@ const secondBlockScenarios = [
     v_initial: 2, v_after_harm: 0, harm_amount: 2,
     event_text: 'Andy and Catherine bumped into each other accidentally. Catherine\'s wolf ate 2 of Andy\'s cookies.',
     event_title: 'Catherine\'s Wolf Eats Andy\'s Cookies',
-    story_slides: ['img/trailppt/andy_catherine/andy_catherine_1.png','img/trailppt/andy_catherine/andy_catherine_2.png','img/trailppt/andy_catherine/andy_catherine_3.png','img/trailppt/andy_catherine/andy_catherine_4.png','img/trailppt/andy_catherine/andy_catherine_5.png','img/trailppt/andy_catherine/andy_catherine_6.png','img/trailppt/andy_catherine/andy_catherine_7.png','img/trailppt/andy_catherine/andy_catherine_8.png']
+    story_slides: ['img/trailppt/andy_catherine/andy_catherine_1.png','img/trailppt/andy_catherine/andy_catherine_2.png','img/trailppt/andy_catherine/andy_catherine_3.png','img/trailppt/andy_catherine/andy_catherine_4.png','img/trailppt/andy_catherine/andy_catherine_5.png','img/trailppt/andy_catherine/andy_catherine_6.png','img/trailppt/andy_catherine/andy_catherine_7.png','img/trailppt/andy_catherine/andy_catherine_8.png'],
+    story_video: 'videos%20vgo0/andy%20and%20catherine%20vgo0.mov'
   },
   {
     id: 10,
@@ -242,7 +248,8 @@ const secondBlockScenarios = [
     v_initial: 2, v_after_harm: 0, harm_amount: 2,
     event_text: 'Katie and Tony are having a picnic when a gust of wind blows 2 of Katie\'s cookies away.',
     event_title: 'Wind Blows Away Katie\'s Cookies',
-    story_slides: ['img/trailppt/harry_katie/harry_katie_1.png','img/trailppt/harry_katie/harry_katie_2.png','img/trailppt/harry_katie/harry_katie_3.png','img/trailppt/harry_katie/harry_katie_4.png','img/trailppt/harry_katie/harry_katie_5.png','img/trailppt/harry_katie/harry_katie_6.png','img/trailppt/harry_katie/harry_katie_7.png','img/trailppt/harry_katie/harry_katie_8.png']
+    story_slides: ['img/trailppt/harry_katie/harry_katie_1.png','img/trailppt/harry_katie/harry_katie_2.png','img/trailppt/harry_katie/harry_katie_3.png','img/trailppt/harry_katie/harry_katie_4.png','img/trailppt/harry_katie/harry_katie_5.png','img/trailppt/harry_katie/harry_katie_6.png','img/trailppt/harry_katie/harry_katie_7.png','img/trailppt/harry_katie/harry_katie_8.png'],
+    story_video: 'videos%20vgo0/harry%20and%20katie%20vgo0.mov'
   },
   {
     id: 11,
@@ -252,7 +259,8 @@ const secondBlockScenarios = [
     v_initial: 2, v_after_harm: 0, harm_amount: 2,
     event_text: 'While Eric is tying his shoelaces, a squirrel eats 2 of Eric\'s cookies.',
     event_title: 'Squirrel Eats Eric\'s Cookies',
-    story_slides: ['img/trailppt/nora_eric/nora_eric_1.png','img/trailppt/nora_eric/nora_eric_2.png','img/trailppt/nora_eric/nora_eric_3.png','img/trailppt/nora_eric/nora_eric_4.png','img/trailppt/nora_eric/nora_eric_5.png','img/trailppt/nora_eric/nora_eric_6.png','img/trailppt/nora_eric/nora_eric_7.png']
+    story_slides: ['img/trailppt/nora_eric/nora_eric_1.png','img/trailppt/nora_eric/nora_eric_2.png','img/trailppt/nora_eric/nora_eric_3.png','img/trailppt/nora_eric/nora_eric_4.png','img/trailppt/nora_eric/nora_eric_5.png','img/trailppt/nora_eric/nora_eric_6.png','img/trailppt/nora_eric/nora_eric_7.png'],
+    story_video: 'videos%20vgo0/nora%20and%20eric%20vgo0.mov'
   }
 ];
 
@@ -539,54 +547,29 @@ function buildTestTrial(scenario, scenarioIdx, total) {
 
   const trialLabel = `${pName} & ${vName}`;
 
-  // Story slide – all slides
-  const _storyImgs = scenario.story_slides;
+  // Story slide – video
+  const _storyVideo = scenario.story_video;
   const storySlide = {
     _debugLabel: `${trialLabel} — Story`,
     type: jsPsychHtmlButtonResponse,
     stimulus: `
       <div style="display:flex; flex-direction:column; align-items:center; gap:16px; padding-top:20px;">
-        <img id="story-img" src="${_storyImgs[0]}"
-             style="max-width:860px; width:100%; max-height:62vh; object-fit:contain; border-radius:8px;">
-        <div style="display:flex; align-items:center; gap:16px;">
-          <button id="story-prev"
-                  style="padding:8px 20px; font-size:15px; border-radius:6px; cursor:pointer;">
-            ◀ Prev
-          </button>
-          <span id="story-counter" style="font-size:15px; color:#555;">
-            1 / ${_storyImgs.length}
-          </span>
-          <button id="story-next"
-                  style="padding:8px 20px; font-size:15px; border-radius:6px; cursor:pointer;">
-            Next ▶
-          </button>
-        </div>
+        <video id="story-video" src="${_storyVideo}" autoplay playsinline controls
+               style="max-width:860px; width:100%; max-height:62vh; border-radius:8px;">
+        </video>
       </div>`,
     choices: ['Continue'],
     on_start: function() { updateProgressBar(scenarioIdx, total); },
     on_load: function() {
-      const imgs = _storyImgs;
-      let cur = 0;
+      const video = document.getElementById('story-video');
       const continueBtn = document.querySelector('.jspsych-btn');
-      if (imgs.length > 1) {
-        continueBtn.disabled = true;
-        continueBtn.style.opacity = '0.4';
-        continueBtn.style.cursor = 'not-allowed';
-      }
-      function update() {
-        document.getElementById('story-img').src = imgs[cur];
-        document.getElementById('story-counter').textContent = (cur + 1) + ' / ' + imgs.length;
-        if (cur === imgs.length - 1) {
-          continueBtn.disabled = false;
-          continueBtn.style.opacity = '1';
-          continueBtn.style.cursor = 'pointer';
-        }
-      }
-      document.getElementById('story-prev').addEventListener('click', () => {
-        if (cur > 0) { cur--; update(); }
-      });
-      document.getElementById('story-next').addEventListener('click', () => {
-        if (cur < imgs.length - 1) { cur++; update(); }
+      continueBtn.disabled = true;
+      continueBtn.style.opacity = '0.4';
+      continueBtn.style.cursor = 'not-allowed';
+      video.addEventListener('ended', () => {
+        continueBtn.disabled = false;
+        continueBtn.style.opacity = '1';
+        continueBtn.style.cursor = 'pointer';
       });
     },
   };
@@ -895,7 +878,7 @@ const timeline = [
    Hidden by default for public / participant deployment.
    To reveal it (researcher use only), set SHOW_DEBUG_PANEL = true.
    ============================================================ */
-const SHOW_DEBUG_PANEL = false;   // ← change to true to show the Jump-to-Screen panel
+const SHOW_DEBUG_PANEL = true;   // ← change to true to show the Jump-to-Screen panel
 
 (function () {
   // Public deployment: panel stays hidden — just run the experiment normally.
