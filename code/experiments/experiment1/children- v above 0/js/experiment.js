@@ -391,6 +391,82 @@ const warmupWay1Locked = {
   p_img: 'michael.png', v_img: 'claire.png',
 };
 
+// Slide 2a-demo — Maggie demonstrates moving a cookie from Michael to Claire
+const warmupPracticeDemoMaggie = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <style>
+      @keyframes mgCookieZoom {
+        0%   { left:20%; top:50%; transform:translate(-50%,-50%) scale(1);   opacity:1; }
+        45%  { left:50%; top:28%; transform:translate(-50%,-50%) scale(1.6); opacity:1; }
+        100% { left:78%; top:50%; transform:translate(-50%,-50%) scale(0.9); opacity:0; }
+      }
+      #mg-flying-cookie {
+        position:absolute;
+        font-size:40px;
+        animation: mgCookieZoom 1.8s ease-in-out 1s forwards;
+        pointer-events:none;
+      }
+      .mg-bubble {
+        background:#fffbe6;
+        border:2px solid #f5c542;
+        border-radius:16px;
+        padding:12px 18px;
+        font-size:18px;
+        max-width:280px;
+        line-height:1.5;
+        position:relative;
+        text-align:left;
+      }
+      .mg-bubble::after {
+        content:'';
+        position:absolute;
+        left:-14px; top:18px;
+        border:7px solid transparent;
+        border-right-color:#f5c542;
+      }
+    </style>
+    <div style="text-align:center; padding:16px 30px; font-family:sans-serif; max-width:680px; margin:0 auto;">
+
+      <!-- Maggie + speech bubble -->
+      <div style="display:flex; align-items:center; justify-content:center; gap:18px; margin-bottom:24px;">
+        <img src="img/maggie.png" alt="Maggie" style="width:84px; height:auto;">
+        <div class="mg-bubble">Watch me! I'll move one of Michael's cookies to Claire's plate! 🍪</div>
+      </div>
+
+      <!-- Characters with flying cookie overlay -->
+      <div style="position:relative; display:flex; justify-content:space-around; align-items:center; height:180px;">
+        <div style="text-align:center; z-index:1;">
+          <img src="img/michael.png" style="width:76px; height:auto; display:block; margin:0 auto 6px;">
+          <strong>Michael</strong>
+          <div style="font-size:26px; margin-top:4px; letter-spacing:2px;">🍪🍪🍪</div>
+        </div>
+        <span id="mg-flying-cookie">🍪</span>
+        <div style="text-align:center; z-index:1;">
+          <img src="img/claire.png" style="width:76px; height:auto; display:block; margin:0 auto 6px;">
+          <strong>Claire</strong>
+          <div style="font-size:26px; margin-top:4px; letter-spacing:2px;">🍪🍪🍪</div>
+        </div>
+      </div>
+
+    </div>`,
+  choices: ["Got it! Now I'll try!"],
+  on_load: function() {
+    const btn = document.querySelector('.jspsych-btn');
+    if (btn) {
+      btn.disabled = true;
+      btn.style.opacity = '0.4';
+      btn.style.cursor = 'not-allowed';
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.style.cursor = 'pointer';
+      }, 3200);
+    }
+  },
+  _debugLabel: 'Warmup: Maggie Demo (Michael→Claire)',
+};
+
 // Slide 2a – Practice: move Michael's cookie to Claire
 const warmupPracticeV = {
   type: jsPsychAllocation,
@@ -400,7 +476,7 @@ const warmupPracticeV = {
   hud_v_cookies: 3,
   trash_on_left: TRASH_ON_LEFT,
   harm_text: '',
-  instruction_text: "Move one of Michael's cookies to Claire's plate.",
+  instruction_text: "Now you try! Move one of Michael's cookies to Claire's plate.",
   require_v: true,
   require_trash: false,
   require_both: false,
@@ -634,6 +710,7 @@ const warmupBlock = [
   warmupLayoutLocked,
   warmupLayoutTwoWays,
   warmupWay1Locked,
+  warmupPracticeDemoMaggie,
   warmupPracticeV,
   warmupPracticeVtoP,
   warmupWay2Locked,
@@ -847,6 +924,7 @@ warmupIntroCleo._debugLabel      = 'Intro: Claire';
 warmupLayoutLocked._debugLabel    = 'Warmup: Layout (locked)';
 warmupLayoutTwoWays._debugLabel   = 'Warmup: Two Ways (locked)';
 warmupWay1Locked._debugLabel      = 'Warmup: Way 1 (locked)';
+warmupPracticeDemoMaggie._debugLabel = 'Warmup: Maggie Demo (Michael→Claire)';
 warmupPracticeV._debugLabel       = 'Warmup: Practice (Michael→Claire)';
 warmupPracticeVtoP._debugLabel    = 'Warmup: Practice (Claire→Michael)';
 warmupWay2Locked._debugLabel      = 'Warmup: Way 2 (locked)';
