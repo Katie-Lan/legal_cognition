@@ -130,7 +130,7 @@ var jsPsychAllocation = (function (jspsych) {
           <div class="alloc-panel" id="v-panel">
             <img src="img/${trial.v_img}" class="alloc-char-img" alt="${trial.v_name}">
             <p class="alloc-char-name">${trial.v_name}</p>
-            <div class="panel-name">${vLabel}</div>
+            <div class="panel-name" id="v-panel-name">${vLabel}</div>
             ${plateHTML}
           </div>`;
       }
@@ -172,7 +172,7 @@ var jsPsychAllocation = (function (jspsych) {
             <div class="p-pool-col">
               <img src="img/${trial.p_img}" class="alloc-char-img" alt="${trial.p_name}">
               <p class="alloc-char-name">${trial.p_name}</p>
-              <div class="panel-name">${trial.p_name} has ${trial.p_cookies} cookie${trial.p_cookies !== 1 ? 's' : ''}</div>
+              <div class="panel-name" id="p-panel-name">${trial.p_name} has ${trial.p_cookies} cookie${trial.p_cookies !== 1 ? 's' : ''}</div>
               ${pPlateHTML()}
             </div>
             ${rightPanel}
@@ -433,6 +433,9 @@ var jsPsychAllocation = (function (jspsych) {
         const cookieEl      = getPCookieEl(demoCookieId);
         const vPlate        = display_element.querySelector('#v-plate');
         const confirmBtn    = display_element.querySelector('#confirm-btn');
+        const pLabelEl      = display_element.querySelector('#p-panel-name');
+        const vLabelEl      = display_element.querySelector('#v-panel-name');
+        const countLabel = (n, name) => `${name} has ${n} cookie${n !== 1 ? 's' : ''}`;
 
         if (cookieEl && vPlate && confirmBtn) {
           confirmBtn.disabled = true;
@@ -461,10 +464,11 @@ var jsPsychAllocation = (function (jspsych) {
             cursor.classList.add('grabbing');
             cookieEl.style.opacity = '0';
             showGhost(start.x, start.y);
+            if (pLabelEl) pLabelEl.textContent = countLabel(trial.p_cookies - 1, trial.p_name);
 
             const vRect = vPlate.getBoundingClientRect();
             const end = { x: vRect.left + vRect.width / 2, y: vRect.top + vRect.height / 2 };
-            const duration = 1100;
+            const duration = 2200; // 0.5x speed of the original 1100ms flight
             const t0 = performance.now();
 
             function step(now) {
@@ -481,6 +485,7 @@ var jsPsychAllocation = (function (jspsych) {
               cursor.classList.remove('grabbing');
               const pos = clampToPlate(vPlate, end.x, end.y);
               placePCookie(cookieEl, vPlate, pos.left, pos.top, 'v', demoCookieId);
+              if (vLabelEl) vLabelEl.textContent = countLabel(trial.v_cookies_current + 1, trial.v_name);
 
               setTimeout(() => {
                 cursor.remove();
