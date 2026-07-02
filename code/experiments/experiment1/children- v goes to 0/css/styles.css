@@ -185,6 +185,43 @@ body {
   user-select: none;
 }
 
+/* Auto-demo overlay (narrator character + cursor demonstrating a drag) */
+.demo-maggie-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 0 auto 14px auto;
+  max-width: 560px;
+}
+.demo-maggie-img {
+  width: 64px;
+  height: auto;
+  flex-shrink: 0;
+}
+.demo-bubble {
+  background: #fffbe6;
+  border: 2px solid #f5c542;
+  border-radius: 16px;
+  padding: 10px 16px;
+  font-size: 16px;
+  line-height: 1.4;
+  text-align: left;
+}
+#demo-cursor {
+  position: fixed;
+  z-index: 10000;
+  font-size: 34px;
+  line-height: 1;
+  pointer-events: none;
+  transform: translate(-6px, -4px);
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.25));
+  transition: transform 0.15s ease;
+}
+#demo-cursor.grabbing {
+  transform: translate(-6px, -4px) scale(1.15);
+}
+
 /* Practice hint / warning */
 .alloc-hint-visible {
   text-align: center;

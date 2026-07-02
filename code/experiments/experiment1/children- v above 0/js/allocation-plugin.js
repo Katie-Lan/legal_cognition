@@ -38,6 +38,14 @@ var jsPsychAllocation = (function (jspsych) {
       header_img:         { type: jspsych.ParameterType.STRING,      default: '' },
       /** Show yes/no gate question on the allocation screen before cookies are movable */
       show_gate_question: { type: jspsych.ParameterType.BOOL,        default: false },
+      /** Auto-play a demo drag animation on load (a narrator character demonstrating the mechanic) */
+      auto_demo:          { type: jspsych.ParameterType.BOOL,        default: false },
+      demo_cookie_id:     { type: jspsych.ParameterType.INT,         default: 0 },
+      demo_char_img:      { type: jspsych.ParameterType.STRING,      default: 'maggie.png' },
+      demo_char_name:     { type: jspsych.ParameterType.STRING,      default: 'Maggie' },
+      demo_text:          { type: jspsych.ParameterType.HTML_STRING, default: '' },
+      demo_text_after:    { type: jspsych.ParameterType.HTML_STRING, default: '' },
+      confirm_label:      { type: jspsych.ParameterType.STRING,      default: '' },
     }
   };
 
@@ -412,6 +420,80 @@ var jsPsychAllocation = (function (jspsych) {
       display_element.querySelector('#confirm-btn').addEventListener('click', () => {
         finishAllocation.call(this, false);
       });
+
+      /* -------------------------------------------------------
+         AUTO DEMO
+         Plays out a pickup → move → drop sequence on this same panel
+         (a narrator character showing how dragging works) by driving
+         the real ghost-cookie + placement code, then hands control
+         back to the participant via the confirm button.
+      ------------------------------------------------------- */
+      if (trial.auto_demo) {
+        const demoCookieId = trial.demo_cookie_id ?? 0;
+        const cookieEl      = getPCookieEl(demoCookieId);
+        const vPlate        = display_element.querySelector('#v-plate');
+        const confirmBtn    = display_element.querySelector('#confirm-btn');
+
+        if (cookieEl && vPlate && confirmBtn) {
+          confirmBtn.disabled = true;
+          if (trial.confirm_label) confirmBtn.textContent = trial.confirm_label;
+
+          const screenEl = display_element.querySelector('.allocation-screen');
+          const banner = document.createElement('div');
+          banner.className = 'demo-maggie-banner';
+          banner.innerHTML = `
+            <img src="img/${trial.demo_char_img}" alt="${trial.demo_char_name}" class="demo-maggie-img">
+            <div class="demo-bubble">${trial.demo_text}</div>
+          `;
+          screenEl.prepend(banner);
+
+          const cursor = document.createElement('div');
+          cursor.id = 'demo-cursor';
+          cursor.textContent = '👆';
+          display_element.appendChild(cursor);
+
+          const cookieRect = cookieEl.getBoundingClientRect();
+          const start = { x: cookieRect.left + cookieRect.width / 2, y: cookieRect.top + cookieRect.height / 2 };
+          const setCursorPos = (p) => { cursor.style.left = p.x + 'px'; cursor.style.top = p.y + 'px'; };
+          setCursorPos(start);
+
+          setTimeout(() => {
+            cursor.classList.add('grabbing');
+            cookieEl.style.opacity = '0';
+            showGhost(start.x, start.y);
+
+            const vRect = vPlate.getBoundingClientRect();
+            const end = { x: vRect.left + vRect.width / 2, y: vRect.top + vRect.height / 2 };
+            const duration = 1100;
+            const t0 = performance.now();
+
+            function step(now) {
+              const t = Math.min(1, (now - t0) / duration);
+              const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+              const cur = { x: start.x + (end.x - start.x) * eased, y: start.y + (end.y - start.y) * eased };
+              setCursorPos(cur);
+              showGhost(cur.x, cur.y);
+              if (t < 1) {
+                requestAnimationFrame(step);
+                return;
+              }
+              hideGhost();
+              cursor.classList.remove('grabbing');
+              const pos = clampToPlate(vPlate, end.x, end.y);
+              placePCookie(cookieEl, vPlate, pos.left, pos.top, 'v', demoCookieId);
+
+              setTimeout(() => {
+                cursor.remove();
+                const bubble = banner.querySelector('.demo-bubble');
+                if (bubble && trial.demo_text_after) bubble.textContent = trial.demo_text_after;
+                confirmBtn.disabled = false;
+                setTimeout(() => banner.remove(), 1800);
+              }, 350);
+            }
+            requestAnimationFrame(step);
+          }, 900);
+        }
+      }
 
     } // end trial()
   } // end class
